@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>alexa carmona</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: #f5f5f5;
+            color: #000;
+            font-size: 16px;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #f5f5f5;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            gap: 40px;
+            align-items: baseline;
+        }
+
+        .header-left a,
+        .header-right a {
+            color: #000;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 300;
+            cursor: pointer;
+        }
+
+        .header-left a:hover,
+        .header-right a:hover {
+            opacity: 0.5;
+        }
+
+        /* Project List Sidebar */
+        .project-list-sidebar {
+            position: fixed;
+            right: 40px;
+            bottom: 40px;
+            z-index: 50;
+            display: none;
+        }
+
+        .project-list-sidebar.show {
+            display: block;
+        }
+
+        .project-list-sidebar a {
+            display: block;
+            font-size: 14px;
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 8px;
+            font-weight: 300;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .project-list-sidebar a.active {
+            color: #000;
+        }
+
+        /* Scroll View */
+        .scroll-view {
+            padding: 100px 40px 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .works-label {
+            font-size: 64px;
+            font-weight: 700;
+            position: fixed;
+            left: 40px;
+            bottom: 40px;
+            z-index: 10;
+            text-transform: uppercase;
+        }
+
+        .scroll-item {
+            margin-bottom: 60px;
+            cursor: pointer;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .scroll-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* About Section */
+        .about-section {
+            display: none;
+            padding: 100px 40px 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .about-section.active {
+            display: block;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        .about-text h2 {
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            letter-spacing: -0.02em;
+        }
+
+        .about-text p {
+            font-size: 18px;
+            line-height: 1.6;
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+
+        .about-text a {
+            color: #000;
+            font-weight: 300;
+        }
+
+        /* Project Detail Modal */
+        .project-detail {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #f5f5f5;
+            z-index: 200;
+            overflow-y: auto;
+            padding: 100px 40px 80px;
+        }
+
+        .project-detail.active {
+            display: block;
+        }
+
+        .project-detail-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 400px 1fr 600px;
+            gap: 60px;
+            align-items: start;
+        }
+
+        .project-detail-info {
+            position: sticky;
+            top: 100px;
+        }
+
+        .project-detail-title {
+            font-size: 48px;
+            font-weight: 400;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .project-detail-year {
+            font-size: 18px;
+            font-weight: 300;
+            color: #666;
+            margin-bottom: 40px;
+        }
+
+        .project-detail-description {
+            font-size: 16px;
+            line-height: 1.8;
+            font-weight: 300;
+            margin-bottom: 30px;
+        }
+
+        .project-detail-meta {
+            font-size: 14px;
+            line-height: 1.8;
+            font-weight: 300;
+            color: #666;
+        }
+
+        .project-detail-scroll {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .project-detail-scroll-item {
+            width: 100%;
+            cursor: pointer;
+            opacity: 0.4;
+            transition: opacity 0.3s;
+        }
+
+        .project-detail-scroll-item.active {
+            opacity: 1;
+        }
+
+        .project-detail-scroll-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .project-detail-preview {
+            position: sticky;
+            top: 100px;
+        }
+
+        .project-detail-preview img {
+            width: 100%;
+            height: auto;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            right: 40px;
+            background: none;
+            border: none;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 16px;
+            font-weight: 300;
+            cursor: pointer;
+            z-index: 201;
+        }
+
+        .back-btn:hover {
+            opacity: 0.5;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px;
+            border-top: 1px solid #ddd;
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-content a {
+            color: #000;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 300;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 20px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header-left {
+                gap: 20px;
+            }
+
+            .works-label {
+                font-size: 36px;
+                position: static;
+                margin-bottom: 40px;
+            }
+
+            .project-list-sidebar {
+                display: none !important;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .project-detail-container {
+                grid-template-columns: 1fr;
+            }
+
+            .project-detail-preview {
+                position: static;
+            }
+
+            .project-detail-title {
+                font-size: 32px;
+            }
+
+            .scroll-item {
+                max-width: 100%;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <a href="#" onclick="showHome()">alexa</a>
+            <a href="#" onclick="filterPhotography()">photography</a>
+        </div>
+        <div class="header-right">
+            <a href="#" onclick="showAbout()">about</a>
+        </div>
+    </header>
+
+    <div class="project-list-sidebar" id="projectListSidebar"></div>
+
+    <main>
+        <div class="scroll-view" id="scrollView">
+            <div id="scrollContainer"></div>
+        </div>
+        <div class="works-label" id="worksLabel">works</div>
+
+        <div class="about-section" id="aboutSection">
+            <div class="about-content">
+                <div class="about-image">
+                    <img src="images/alexa_headshot-9.JPG" alt="alexa carmona">
+                </div>
+                <div class="about-text">
+                    <h2>about</h2>
+                    <p>as a graphic design bfa and photography student at scad, i use design and image-making as tools for exploration. i experiment boldly, collaborate intentionally, and embrace creative risk. my work is fueled by movement, curiosity, and the constant pursuit of expanding what's visually possible.</p>
+                    <p>
+                        <a href="mailto:alexaxcarmona@gmail.com">alexaxcarmona@gmail.com</a><br>
+                        <a href="https://instagram.com/alexacarmonaa" target="_blank">instagram</a><br>
+                        <a href="https://linkedin.com/in/alexacarmona" target="_blank">linkedin</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-detail" id="projectDetail">
+            <button class="back-btn" onclick="closeProject()">← back</button>
+            <div class="project-detail-container" id="projectDetailContainer"></div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div>
+                <a href="mailto:alexaxcarmona@gmail.com">alexaxcarmona@gmail.com</a>
+            </div>
+            <div>
+                <a href="https://instagram.com/alexacarmonaa" target="_blank">instagram</a> / 
+                <a href="https://linkedin.com/in/alexacarmona" target="_blank">linkedin</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const projects = [
+            {
+                id: 1,
+                title: "breadly",
+                year: "2025",
+                categories: ["design", "photography"],
+                description: "Breadly blends craftsmanship, fashion, and attitude to build a community where culture rises right alongside good bread.",
+                details: "branding, packaging, art direction<br>collaborators: rose davis, bradley looney",
+                thumbnail: "images/DSC01941.jpg",
+                images: [
+                    "images/DSC01941.jpg",
+                    "images/DSC02361.jpg",
+                    "images/DSC02371__1_.jpg",
+                    "images/alexa_breadly1-44.jpg",
+                    "images/alexa_breadly1-50.jpg"
+                ]
+            },
+            {
+                id: 2,
+                title: "shirley zhang-hamlin",
+                year: "2026",
+                categories: ["photography"],
+                description: "Editorial portrait and spread design for Atlanta Hawks creative director profile.",
+                details: "editorial photography<br>publication: georgia entertainment magazine<br>designer: leo ruiz",
+                thumbnail: "images/alexa_shirley-21.jpg",
+                images: [
+                    "images/alexa_shirley-21.jpg",
+                    "images/alexa_shirley-30.jpg",
+                    "images/Screenshot_2026-02-15_at_5_09_06_PM.png",
+                    "images/spread3-2.jpg"
+                ]
+            },
+            {
+                id: 4,
+                title: "the secret life of walter mitty movie book",
+                year: "2025",
+                categories: ["design"],
+                description: "Typographic exploration through three scenes of transformation, courage, and self-discovery.",
+                details: "publication design, typography",
+                thumbnail: "images/ATL_202530_GRDS353_A2_Photography_CARMONA_A5.jpg",
+                images: [
+                    "images/ATL_202530_GRDS353_A2_Photography_CARMONA_A5.jpg",
+                    "images/ATL_202530_GRDS353_A2_Photography_CARMONA_A6.jpg",
+                    "images/ATL_202530_GRDS353_A2_Photography_CARMONA_A7.jpg",
+                    "images/ATL_202530_GRDS353_A2_Photography_CARMONA_A12.jpg",
+                    "images/ATL_202530_GRDS353_A2_Photography_CARMONA_A13.jpg",
+                    "images/ATL_202530_GRDS353_A2_Photography_CARMONA_A20.jpg",
+                    "images/ATL_202530_GRDS353_A2_Photography_CARMONA_A27.jpg"
+                ]
+            },
+            {
+                id: 5,
+                title: "trade-mark",
+                year: "2026",
+                categories: ["design"],
+                description: "Experiential pop-up celebrating Chicago's creative community through design, culture, and connection.",
+                details: "branding, experiential design<br>client: ftop (for the one percent)<br>collaborators: ahana, bella, kaki kwan",
+                thumbnail: "images/tent.jpg",
+                images: [
+                    "images/tent.jpg",
+                    "images/TRADEMARK_Artboard_1_copy_4__2_.jpg",
+                    "images/TRADEMARKPATCH_Artboard_10.png",
+                    "images/updated_posters_alexa-04__1_.png",
+                    "images/updated_posters_alexa-08__1_.png"
+                ]
+            },
+            {
+                id: 6,
+                title: "garbage magazine",
+                year: "2024",
+                categories: ["design", "photography"],
+                description: "Photography publication capturing the raw beauty and culture around Atlanta's MARTA transit system.",
+                details: "publication design, photography",
+                thumbnail: "images/_MG_0006.jpg",
+                images: [
+                    "images/_MG_0006.jpg",
+                    "images/_MG_0077.jpg",
+                    "images/IMG_5027_3.jpg",
+                    "images/alexa-atlBikes-8.jpg",
+                    "images/alexa-atlBikes-19.jpg",
+                    "images/alexa-atlBikes-24.jpg"
+                ]
+            },
+            {
+                id: 7,
+                title: "mariana robledo fashion collection",
+                year: "2025",
+                categories: ["photography"],
+                description: "Studio fashion photography showcasing avant-garde wearable art and sculptural silhouettes.",
+                details: "fashion photography<br>designer: mariana robledo",
+                thumbnail: "images/Alexa_Fash2025-58.jpg",
+                images: [
+                    "images/Alexa_Fash2025-91.jpg",
+                    "images/Alexa_Fash2025-40.jpg",
+                    "images/Alexa_Fash2025-58.jpg",
+                    "images/Alexa_Fash2025-67.jpg",
+                    "images/Alexa_Fash2025-123.jpg",
+                    "images/Alexa_Fash2025-128.jpg",
+                    "images/Alexa_Fash2025-135.jpg",
+                    "images/Alexa_Fash2025-136.jpg",
+                    "images/Alexa_Fash2025-155.jpg"
+                ]
+            },
+            {
+                id: 8,
+                title: "swiss design commemorative stamps",
+                year: "2024",
+                categories: ["design"],
+                description: "Stamp collection honoring the Swiss design movement and pioneers Ernst Keller, Max Huber, and Anton Stankowski.",
+                details: "branding, typography",
+                thumbnail: "images/376_BUSINESS_OF_GRAPHIC_DESIGN-3904.jpg",
+                images: [
+                    "images/376_BUSINESS_OF_GRAPHIC_DESIGN-3896.jpg",
+                    "images/376_BUSINESS_OF_GRAPHIC_DESIGN-3904.jpg",
+                    "images/376_BUSINESS_OF_GRAPHIC_DESIGN-3906.jpg",
+                    "images/376_BUSINESS_OF_GRAPHIC_DESIGN-3913.jpg",
+                    "images/376_BUSINESS_OF_GRAPHIC_DESIGN-3924.jpg",
+                    "images/376_BUSINESS_OF_GRAPHIC_DESIGN-3926.jpg",
+                    "images/376_BUSINESS_OF_GRAPHIC_DESIGN-3927.jpg"
+                ]
+            },
+            {
+                id: 9,
+                title: "gold: olympic women type specimen",
+                year: "2025",
+                categories: ["design"],
+                description: "Helvetica type specimen celebrating female Olympic gold medalists through bold typography and sports data visualization.",
+                details: "publication design, typography",
+                thumbnail: "images/ATL_202530_GRDS353_A1_Photography_8_CARMONA_A.jpg",
+                images: [
+                    "images/ATL_202530_GRDS353_A1_Photography_3_CARMONA_A.jpg",
+                    "images/ATL_202530_GRDS353_A1_Photography_4_CARMONA_A.jpg",
+                    "images/ATL_202530_GRDS353_A1_Photography_5_CARMONA_A.jpg",
+                    "images/ATL_202530_GRDS353_A1_Photography_6_CARMONA_A.jpg",
+                    "images/ATL_202530_GRDS353_A1_Photography_8_CARMONA_A.jpg"
+                ]
+            },
+            {
+                id: 10,
+                title: "red and blue chair miniature",
+                year: "2024",
+                categories: ["design"],
+                description: "Physical study of Gerrit Rietveld's iconic 1918 De Stijl chair through acrylic model and architectural documentation.",
+                details: "product design, research",
+                thumbnail: "images/angelina_digitals-6.jpg",
+                images: [
+                    "images/angelina_digitals-3.jpg",
+                    "images/angelina_digitals-5.jpg",
+                    "images/angelina_digitals-6.jpg",
+                    "images/angelina_digitals-7.jpg",
+                    "images/angelina_digitals-9.jpg",
+                    "images/angelina_digitals-10.jpg",
+                    "images/angelina_digitals.jpg"
+                ]
+            },
+            {
+                id: 11,
+                title: "kris lee studio portraits",
+                year: "2025",
+                categories: ["photography"],
+                description: "Editorial fashion photography exploring power dressing and contemporary tailoring with dramatic studio lighting.",
+                details: "fashion photography<br>model: kris lee",
+                thumbnail: "images/alexa-kris_112.jpg",
+                images: [
+                    "images/alexa-kris_112.jpg",
+                    "images/alexa-kris_156.jpg",
+                    "images/67ab7e48-2dfc-499f-a617-2eedac8ba19c_rw_3840.jpg",
+                    "images/bf48da75-d7a7-4f25-825f-2c7a2089341b_rw_3840.jpg",
+                    "images/d0bcaf70-8a8c-42dc-9ab8-1caca5d587a2_rw_3840.jpg"
+                ]
+            },
+            {
+                id: 12,
+                title: "got em' coffee brand",
+                year: "2025",
+                categories: ["design", "photography"],
+                description: "Branding and campaign photography for a collaborative coffee shop targeting creatives and coffee enthusiasts.",
+                details: "branding, photography",
+                thumbnail: "images/Screenshot_2026-02-15_at_5_54_08_PM.png",
+                images: [
+                    "images/Screenshot_2026-02-15_at_5_54_08_PM.png",
+                    "images/202530_ATL_GRDS_Quarzo_alexa_carmona_designdynamics__01.jpg"
+                ]
+            },
+            {
+                id: 13,
+                title: "art & athletics",
+                year: "2026",
+                categories: ["design"],
+                description: "Editorial design highlighting SCAD Athletics' championship facilities and student-athlete achievements.",
+                details: "editorial design<br>publication: georgia entertainment magazine",
+                thumbnail: "images/art_athletics_spreads2.jpg",
+                images: [
+                    "images/art_athletics_spreads2.jpg",
+                    "images/Screenshot_2026-02-15_at_5_57_20_PM.png"
+                ]
+            },
+            {
+                id: 14,
+                title: "jayden hibbert sports portraits",
+                year: "2025",
+                categories: ["photography"],
+                description: "Studio sports photography capturing athleticism and movement for Atlanta United goalkeeper.",
+                details: "sports photography<br>athlete: jayden hibbert, atlanta united",
+                thumbnail: "images/Alexa_jayden-11.jpg",
+                images: [
+                    "images/Alexa_jayden-11.jpg",
+                    "images/Alexa_jayden-14.jpg",
+                    "images/Alexa_jayden-15.jpg",
+                    "images/Alexa_jayden-26.jpg",
+                    "images/Alexa_jayden-31.jpg",
+                    "images/Alexa_jayden-40.jpg",
+                    "images/Alexa_jayden-45.jpg",
+                    "images/Alexa_jayden-46.jpg",
+                    "images/Alexa_jayden.jpg"
+                ]
+            }
+        ];
+
+        let currentFilter = 'all';
+
+        function renderScrollView(filter = 'all') {
+            const container = document.getElementById('scrollContainer');
+            const sidebar = document.getElementById('projectListSidebar');
+            const worksLabel = document.getElementById('worksLabel');
+            container.innerHTML = '';
+            sidebar.innerHTML = '';
+            
+            if (filter === 'photography') {
+                worksLabel.style.display = 'none';
+            } else {
+                worksLabel.style.display = 'block';
+            }
+            
+            const filtered = filter === 'all' ? projects : projects.filter(p => p.categories.includes(filter));
+            
+            filtered.forEach(project => {
+                const item = document.createElement('div');
+                item.className = 'scroll-item';
+                item.id = `project-${project.id}`;
+                item.onclick = () => openProject(project.id);
+                item.innerHTML = `<img src="${project.thumbnail}" alt="${project.title}">`;
+                container.appendChild(item);
+                
+                const link = document.createElement('a');
+                link.href = `#project-${project.id}`;
+                link.textContent = project.title;
+                link.onclick = (e) => {
+                    e.preventDefault();
+                    document.getElementById(`project-${project.id}`).scrollIntoView({ behavior: 'smooth' });
+                };
+                sidebar.appendChild(link);
+            });
+            
+            setupScrollSpy();
+        }
+
+        function filterPhotography() {
+            currentFilter = currentFilter === 'photography' ? 'all' : 'photography';
+            renderScrollView(currentFilter);
+        }
+
+        function showAbout() {
+            document.getElementById('scrollView').classList.add('hidden');
+            document.getElementById('aboutSection').classList.add('active');
+            document.getElementById('projectListSidebar').classList.remove('show');
+            document.getElementById('worksLabel').style.display = 'none';
+        }
+
+        function showHome() {
+            currentFilter = 'all';
+            document.getElementById('aboutSection').classList.remove('active');
+            document.getElementById('projectDetail').classList.remove('active');
+            document.getElementById('scrollView').classList.remove('hidden');
+            document.getElementById('projectListSidebar').classList.add('show');
+            renderScrollView('all');
+        }
+
+        function openProject(id) {
+            const project = projects.find(p => p.id === id);
+            const detail = document.getElementById('projectDetail');
+            const container = document.getElementById('projectDetailContainer');
+            
+            container.innerHTML = `
+                <div class="project-detail-info">
+                    <div class="project-detail-title">${project.title}</div>
+                    <div class="project-detail-year">${project.year}</div>
+                    <div class="project-detail-description">${project.description}</div>
+                    <div class="project-detail-meta">${project.details}</div>
+                </div>
+                <div class="project-detail-scroll" id="projectScroll">
+                    ${project.images.map((img, i) => `
+                        <div class="project-detail-scroll-item ${i === 0 ? 'active' : ''}" data-src="${img}">
+                            <img src="${img}" alt="${project.title}">
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="project-detail-preview">
+                    <img src="${project.images[0]}" id="previewImage" alt="${project.title}">
+                </div>
+            `;
+            
+            detail.classList.add('active');
+            document.getElementById('worksLabel').style.display = 'none';
+            document.getElementById('projectListSidebar').classList.remove('show');
+            document.body.style.overflow = 'auto';
+            
+            setupProjectScroll();
+        }
+
+        function setupProjectScroll() {
+            const scrollItems = document.querySelectorAll('.project-detail-scroll-item');
+            const previewImage = document.getElementById('previewImage');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        scrollItems.forEach(item => item.classList.remove('active'));
+                        entry.target.classList.add('active');
+                        previewImage.src = entry.target.dataset.src;
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            scrollItems.forEach(item => observer.observe(item));
+        }
+
+        function closeProject() {
+            document.getElementById('projectDetail').classList.remove('active');
+            if (currentFilter !== 'photography') {
+                document.getElementById('worksLabel').style.display = 'block';
+            }
+            document.getElementById('projectListSidebar').classList.add('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        function setupScrollSpy() {
+            const sidebar = document.getElementById('projectListSidebar');
+            const links = sidebar.querySelectorAll('a');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = '#' + entry.target.id;
+                        links.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href') === id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            document.querySelectorAll('.scroll-item').forEach(item => observer.observe(item));
+        }
+
+        // Initial render
+        renderScrollView();
+        document.getElementById('projectListSidebar').classList.add('show');
+    </script>
+</body>
+</html>
