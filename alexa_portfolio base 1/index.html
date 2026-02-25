@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>alexa carmona</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f0efed;
+      --fg: #111111;
+      --fg-muted: #999;
+      --card-bg: #e4e3e0;
+      --overlay-bg: rgba(240,239,237,0.98);
+      --nav-h: 64px;
+      --footer-h: 52px;
+      --tr: 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    [data-theme="dark"] {
+      --bg: #111111;
+      --fg: #f0efed;
+      --fg-muted: #555;
+      --card-bg: #1e1e1e;
+      --overlay-bg: rgba(17,17,17,0.98);
+    }
+
+    html, body {
+      height: 100%; overflow: hidden;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--fg);
+      transition: background var(--tr), color var(--tr);
+    }
+
+    /* ══ NAV ══════════════════════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 200; height: var(--nav-h);
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background: var(--bg);
+      transition: background var(--tr);
+    }
+    .name {
+      font-size: 22px; font-weight: 500; letter-spacing: -0.01em;
+      color: var(--fg); cursor: pointer; user-select: none;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .name:hover { opacity: 0.5; }
+    .nav-right {
+      display: flex; align-items: center; gap: 32px;
+    }
+    .nav-link {
+      font-size: 11px; font-weight: 400; letter-spacing: 0.06em;
+      color: var(--fg-muted); text-decoration: none;
+      transition: color 0.2s; cursor: pointer; user-select: none;
+    }
+    .nav-link:hover { color: var(--fg); }
+    .theme-btn {
+      font-size: 11px; font-weight: 400; letter-spacing: 0.06em;
+      color: var(--fg-muted); background: none; border: none;
+      cursor: pointer; font-family: inherit; transition: color 0.2s; padding: 0;
+    }
+    .theme-btn:hover { color: var(--fg); }
+
+    /* ══ SECTIONS — CSS :target based switching ══════════
+       Default: #home is shown. Clicking nav links changes
+       the hash, CSS :target handles visibility instantly.
+       Works 100% from local filesystem, no server needed.
+    ════════════════════════════════════════════════════ */
+
+    /* all sections hidden by default */
+    .section {
+      position: fixed; inset: 0;
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+      background: var(--bg);
+    }
+
+    /* home is default visible (no hash = show home) */
+    #home {
+      opacity: 1;
+      pointer-events: all;
+      z-index: 60;
+    }
+
+    /* when a section is targeted, show it and hide home */
+    #design:target,
+    #photography:target,
+    #about:target {
+      opacity: 1;
+      pointer-events: all;
+      z-index: 70;
+    }
+
+    /* hide home when any other section is targeted */
+    #design:target ~ #home,
+    #photography:target ~ #home,
+    #about:target ~ #home {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* active nav link styling via :target */
+    #design:target        ~ nav .nav-link[href="#design"],
+    #photography:target   ~ nav .nav-link[href="#photography"],
+    #about:target         ~ nav .nav-link[href="#about"] {
+      color: var(--fg);
+    }
+
+    /* footer visibility */
+    .site-footer {
+      position: fixed; bottom: 0; left: 0; right: 0;
+      z-index: 190; height: var(--footer-h);
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      border-top: 1px solid var(--card-bg);
+      background: var(--bg);
+      transition: background var(--tr), opacity 0.35s;
+      opacity: 0; pointer-events: none;
+    }
+    #design:target    ~ .site-footer,
+    #about:target     ~ .site-footer { opacity: 1; pointer-events: all; }
+
+    .footer-left, .footer-right {
+      font-size: 11px; font-weight: 400; letter-spacing: 0.03em; color: var(--fg-muted);
+    }
+    .footer-center {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      display: flex; align-items: center; gap: 6px;
+      font-size: 11px; color: var(--fg-muted);
+    }
+    .footer-link { color: var(--fg-muted); text-decoration: none; transition: color 0.2s; }
+    .footer-link:hover { color: var(--fg); }
+    .footer-sep { opacity: 0.5; }
+
+    /* scroll hint */
+    .scroll-hint {
+      position: fixed; bottom: 26px; left: 60px;
+      display: flex; align-items: center; gap: 10px;
+      font-size: 10px; letter-spacing: 0.1em; color: var(--fg-muted);
+      pointer-events: none; z-index: 100; transition: opacity 0.5s;
+    }
+    #design:target    ~ .scroll-hint,
+    #photography:target ~ .scroll-hint,
+    #about:target     ~ .scroll-hint { opacity: 0; }
+
+    .scroll-hint-line { width: 36px; height: 1px; background: var(--fg-muted); position: relative; overflow: hidden; }
+    .scroll-hint-line::after {
+      content: ''; position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%; background: var(--fg);
+      animation: slideline 1.8s ease-in-out infinite;
+    }
+    @keyframes slideline { 0%{left:-100%} 50%{left:100%} 100%{left:100%} }
+
+    /* ══ HOME ════════════════════════════════════════════ */
+    #home {
+      overflow: hidden;
+    }
+    .scroll-track {
+      position: absolute; inset: 0;
+      display: flex; align-items: center;
+      overflow-x: auto; overflow-y: hidden;
+      scrollbar-width: none;
+      padding: var(--nav-h) 0 40px;
+    }
+    .scroll-track::-webkit-scrollbar { display: none; }
+
+    .intro-panel {
+      flex: 0 0 auto; width: min(560px, 82vw); height: 100%;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 100px 70px 60px;
+    }
+    .intro-title {
+      font-size: clamp(36px, 5vw, 62px);
+      font-weight: 400; line-height: 1.06; letter-spacing: -0.025em;
+      margin-bottom: 18px;
+      animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+    }
+    .intro-sub {
+      font-size: 11px; font-weight: 400; letter-spacing: 0.1em;
+      color: var(--fg-muted); text-transform: lowercase;
+      animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s both;
+    }
+
+    .cards-row {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: flex-end;
+      gap: 0;
+      padding: 0 160px 0 0;
+      height: 100%;
+    }
+
+    .card {
+      flex: 0 0 auto; border-radius: 0; overflow: hidden;
+      position: relative; cursor: pointer; background: var(--card-bg);
+      transition: opacity 0.35s ease;
+      margin: 0 70px;
+    }
+    .card:hover { opacity: 0.88; }
+
+    .card.pos-top    { align-self: flex-start; margin-top: calc(var(--nav-h) + 20px); }
+    .card.pos-upper  { align-self: flex-start; margin-top: calc(var(--nav-h) + 80px); }
+    .card.pos-mid    { align-self: center; }
+    .card.pos-lower  { align-self: flex-end; margin-bottom: 60px; }
+    .card.pos-bottom { align-self: flex-end; margin-bottom: 20px; }
+
+    .card.portrait  { width: 280px; height: 420px; }
+    .card.landscape { width: 460px; height: 310px; }
+    .card.tall      { width: 320px; height: 520px; }
+    .card.wide      { width: 520px; height: 340px; }
+    .card.small     { width: 220px; height: 300px; }
+
+    .card-img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .card:hover .card-img { transform: scale(1.04); }
+
+    .card-hover-overlay {
+      position: absolute; inset: 0; opacity: 0;
+      transition: opacity 0.35s ease; pointer-events: none;
+    }
+    .card:hover .card-hover-overlay { opacity: 1; }
+    .cards-row > .card:nth-child(1) .card-hover-overlay { background: rgba(255,90,70,0.36); }
+    .cards-row > .card:nth-child(2) .card-hover-overlay { background: rgba(70,150,255,0.33); }
+    .cards-row > .card:nth-child(3) .card-hover-overlay { background: rgba(80,210,150,0.33); }
+    .cards-row > .card:nth-child(4) .card-hover-overlay { background: rgba(200,90,240,0.33); }
+    .cards-row > .card:nth-child(5) .card-hover-overlay { background: rgba(255,195,50,0.36); }
+    .cards-row > .card:nth-child(6) .card-hover-overlay { background: rgba(255,120,50,0.33); }
+    .cards-row > .card:nth-child(7) .card-hover-overlay { background: rgba(50,195,215,0.33); }
+    .cards-row > .card:nth-child(8) .card-hover-overlay { background: rgba(160,230,90,0.33); }
+
+    .card-label {
+      position: absolute; bottom: 18px; left: 20px; right: 20px;
+      opacity: 0; transform: translateY(5px);
+      transition: opacity 0.3s, transform 0.3s; z-index: 2;
+    }
+    .card:hover .card-label { opacity: 1; transform: translateY(0); }
+    .card-title { font-size: 12px; font-weight: 500; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.5); }
+    .card-cat   { font-size: 10px; color: rgba(255,255,255,0.75); letter-spacing: 0.08em; margin-top: 2px; text-shadow: 0 1px 8px rgba(0,0,0,0.5); }
+    .card-tag   { position: absolute; top: 16px; left: 16px; font-size: 9px; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); z-index: 2; }
+
+    /* placeholders */
+    .ph1{background:#c8c4bc} .ph2{background:#b2afa9} .ph3{background:#d0cdc8}
+    .ph4{background:#a8a4a0} .ph5{background:#bfbbb5} .ph6{background:#c4c0ba}
+    .ph7{background:#b0aca8} .ph8{background:#d4d0cb}
+    [data-theme="dark"] .ph1{background:#2a2a2a} [data-theme="dark"] .ph2{background:#242424}
+    [data-theme="dark"] .ph3{background:#303030} [data-theme="dark"] .ph4{background:#1e1e1e}
+    [data-theme="dark"] .ph5{background:#282828} [data-theme="dark"] .ph6{background:#2c2c2c}
+    [data-theme="dark"] .ph7{background:#222222} [data-theme="dark"] .ph8{background:#323232}
+
+    /* ══ DESIGN ══════════════════════════════════════════ */
+    #design {
+      overflow-y: auto;
+      scrollbar-width: thin; scrollbar-color: var(--fg-muted) transparent;
+      padding-bottom: var(--footer-h);
+    }
+    .section-inner { max-width: 1200px; margin: 0 auto; padding: calc(var(--nav-h) + 44px) 60px 60px; }
+    .section-title { font-size: clamp(34px, 5vw, 60px); font-weight: 400; letter-spacing: -0.025em; margin-bottom: 44px; }
+    .works-grid { columns: 3; column-gap: 14px; }
+    .works-grid-item {
+      break-inside: avoid; margin-bottom: 14px;
+      border-radius: 0; overflow: hidden; cursor: pointer; transition: opacity 0.3s;
+    }
+    .works-grid-item:hover { opacity: 0.85; }
+    .works-grid-item .fill { display: block; width: 100%; }
+
+    /* ══ PHOTOGRAPHY — infinite swipe canvas ════════════ */
+    #photography {
+      overflow: hidden;
+      touch-action: none;
+    }
+    #photoCanvas {
+      position: absolute;
+      display: grid;
+      gap: 6px;
+      will-change: transform;
+    }
+    .photo-cell {
+      overflow: hidden; cursor: pointer;
+      border-radius: 0; position: relative;
+    }
+    .photo-cell .fill {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), opacity 0.3s;
+      pointer-events: none;
+    }
+    .photo-cell:hover .fill { transform: scale(1.07); opacity: 0.88; }
+    .drag-hint {
+      position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
+      font-size: 10px; letter-spacing: 0.12em; color: var(--fg-muted);
+      pointer-events: none; z-index: 10;
+      display: flex; align-items: center; gap: 8px;
+      transition: opacity 0.6s;
+    }
+    .drag-hint.hidden { opacity: 0; }
+
+    /* ══ ABOUT ═══════════════════════════════════════════ */
+    #about {
+      overflow-y: auto;
+      scrollbar-width: thin; scrollbar-color: var(--fg-muted) transparent;
+      padding-bottom: var(--footer-h);
+    }
+    .about-layout {
+      display: grid; grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - var(--nav-h) - var(--footer-h));
+      padding-top: var(--nav-h);
+    }
+    .about-photo-col { padding: 60px 50px 60px 60px; display: flex; align-items: center; justify-content: center; }
+    .about-photo-wrap { width: 100%; max-width: 400px; aspect-ratio: 3/4; border-radius: 0; overflow: hidden; background: var(--card-bg); }
+    .about-photo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; object-position: center top; }
+    .about-text-col { padding: 80px 60px 60px 40px; display: flex; flex-direction: column; justify-content: center; }
+    .about-heading  { font-size: clamp(40px, 5vw, 64px); font-weight: 300; letter-spacing: -0.03em; margin-bottom: 36px; }
+    .about-bio      { font-size: 15px; font-weight: 300; line-height: 1.78; max-width: 480px; margin-bottom: 40px; }
+    .about-links    { display: flex; flex-direction: column; gap: 6px; }
+    .about-link     { font-size: 14px; font-weight: 300; color: var(--fg); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; width: fit-content; transition: opacity 0.2s; }
+    .about-link:hover { opacity: 0.55; }
+
+    /* ══ CASE STUDY OVERLAY ══════════════════════════════ */
+    .case-overlay {
+      position: fixed; inset: 0; z-index: 300;
+      background: var(--overlay-bg); opacity: 0; pointer-events: none;
+      transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1);
+      overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--fg-muted) transparent;
+    }
+    .case-overlay.open { opacity: 1; pointer-events: all; }
+    .case-close {
+      position: fixed; top: 22px; right: 40px;
+      font-size: 10px; letter-spacing: 0.1em; color: var(--fg-muted);
+      background: none; border: none; cursor: pointer;
+      font-family: inherit; z-index: 301; transition: color 0.2s;
+    }
+    .case-close:hover { color: var(--fg); }
+    .case-inner { max-width: 1100px; margin: 0 auto; padding: 90px 60px 100px; }
+    .case-hero  { width: 100%; aspect-ratio: 16/9; border-radius: 0; margin-bottom: 56px; overflow: hidden; }
+    .case-hero .fill { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .case-header { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 72px; }
+    .case-client { font-size: 10px; letter-spacing: 0.12em; color: var(--fg-muted); margin-bottom: 10px; }
+    .case-title  { font-size: clamp(28px, 4vw, 50px); font-weight: 400; letter-spacing: -0.025em; line-height: 1.0; margin-bottom: 18px; }
+    .case-tags   { display: flex; flex-wrap: wrap; gap: 8px; }
+    .case-tag-pill { font-size: 9px; letter-spacing: 0.1em; border: 1px solid var(--fg-muted); border-radius: 20px; padding: 4px 12px; color: var(--fg-muted); }
+    .case-desc   { font-size: 14px; font-weight: 300; line-height: 1.75; opacity: 0.8; padding-top: 6px; }
+    .case-desc p + p { margin-top: 14px; }
+    .case-section-label { font-size: 9px; letter-spacing: 0.14em; color: var(--fg-muted); padding-top: 56px; margin-bottom: 24px; border-top: 1px solid var(--card-bg); }
+    .case-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .case-grid-img { border-radius: 0; overflow: hidden; background: var(--card-bg); }
+    .case-grid-img .fill { width: 100%; object-fit: cover; display: block; min-height: 200px; }
+    .case-grid-img.tall .fill { min-height: 280px; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 800px) {
+      nav { padding: 0 20px; }
+      .name { font-size: 18px; }
+      .intro-panel { width: 88vw; padding: 0 30px 50px; }
+      .cards-row { padding: 0 40px 0 0; }
+      .card { margin: 0 30px; }
+      .card.portrait { width: 220px; height: 340px; }
+      .card.tall { width: 240px; height: 400px; }
+      .card.landscape { width: 340px; height: 230px; }
+      .card.wide { width: 360px; height: 240px; }
+      .card.small { width: 180px; height: 240px; }
+      .case-inner { padding: 80px 24px 60px; }
+      .case-header { grid-template-columns: 1fr; gap: 28px; }
+      .about-layout { grid-template-columns: 1fr; }
+      .about-photo-col { padding: 60px 32px 20px; }
+      .about-text-col { padding: 20px 32px 60px; }
+      .works-grid { columns: 2; }
+      .section-inner { padding: calc(var(--nav-h) + 24px) 24px 60px; }
+      .site-footer { padding: 0 20px; }
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <!-- sections must come BEFORE nav for CSS :target sibling selectors to work -->
+
+  <div id="home" class="section">
+    <div class="scroll-track">
+      <div class="intro-panel">
+        <h1 class="intro-title">graphic design<br>&amp; photography</h1>
+        <p class="intro-sub">art is in all</p>
+      </div>
+      <div class="cards-row">
+        <div class="card portrait pos-top" onclick="openCase(0)">
+          <div class="card-img ph1" style="height:100%;"></div>
+          <div class="card-hover-overlay"></div>
+          <span class="card-tag">design</span>
+          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">branding, identity</div></div>
+        </div>
+        <div class="card tall pos-lower" onclick="openCase(1)">
+          <div class="card-img ph2" style="height:100%;"></div>
+          <div class="card-hover-overlay"></div>
+          <span class="card-tag">photography</span>
+          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">editorial</div></div>
+        </div>
+        <div class="card landscape pos-upper" onclick="openCase(2)">
+          <div class="card-img ph3" style="height:100%;"></div>
+          <div class="card-hover-overlay"></div>
+          <span class="card-tag">design</span>
+          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">packaging</div></div>
+        </div>
+        <div class="card small pos-bottom" onclick="openCase(3)">
+          <div class="card-img ph4" style="height:100%;"></div>
+          <div class="card-hover-overlay"></div>
+          <span class="card-tag">photography</span>
+          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">portrait</div></div>
+        </div>
+        <div class="card portrait pos-mid" onclick="openCase(4)">
+          <div class="card-img ph5" style="height:100%;"></div>
+          <div class="card-hover-overlay"></div>
+          <span class="card-tag">design</span>
+          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">art direction</div></div>
+        </div>
+        <div class="card wide pos-top" onclick="openCase(5)">
+          <div class="card-img ph6" style="height:100%;"></div>
+          <div class="card-hover-overlay"></div>
+          <span class="card-tag">photography</span>
+          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">campaign</div></div>
+        </div>
+        <div class="card tall pos-lower" onclick="openCase(6)">
+          <div class="card-img ph7" style="height:100%;"></div>
+          <div class="card-hover-overlay"></div>
+          <span class="card-tag">design</span>
+          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">digital</div></div>
+        </div>
+        <div class="card landscape pos-upper" onclick="openCase(7)">
+          <div class="card-img ph8" style="height:100%;"></div>
+          <div class="card-hover-overlay"></div>
+          <span class="card-tag">photography</span>
+          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">lifestyle</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="design" class="section">
+    <div class="section-inner">
+      <h2 class="section-title">design</h2>
+      <div class="works-grid">
+        <div class="works-grid-item" onclick="openCase(0)"><div class="fill ph1" style="height:280px;"></div></div>
+        <div class="works-grid-item" onclick="openCase(2)"><div class="fill ph3" style="height:200px;"></div></div>
+        <div class="works-grid-item" onclick="openCase(4)"><div class="fill ph5" style="height:320px;"></div></div>
+        <div class="works-grid-item" onclick="openCase(6)"><div class="fill ph7" style="height:220px;"></div></div>
+        <div class="works-grid-item" onclick="openCase(0)"><div class="fill ph2" style="height:260px;"></div></div>
+        <div class="works-grid-item" onclick="openCase(2)"><div class="fill ph8" style="height:180px;"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="photography" class="section">
+    <div id="photoCanvas"></div>
+    <div class="drag-hint" id="dragHint">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">
+        <path d="M8 2v12M2 8h12M4.5 4.5l-3 3 3 3M11.5 4.5l3 3-3 3"/>
+      </svg>
+      swipe to explore
+    </div>
+  </div>
+
+  <div id="about" class="section">
+    <div class="about-layout">
+      <div class="about-photo-col">
+        <div class="about-photo-wrap">
+          <img src="alexa_headshot.jpg" alt="alexa carmona" />
+        </div>
+      </div>
+      <div class="about-text-col">
+        <h2 class="about-heading">about</h2>
+        <p class="about-bio">as a graphic design bfa and photography student at scad, i use design and image-making as tools for exploration. i experiment boldly, collaborate intentionally, and embrace creative risk. my work is fueled by movement, curiosity, and the constant pursuit of expanding what's visually possible.</p>
+        <div class="about-links">
+          <a class="about-link" href="mailto:alexaxcarmona@gmail.com">alexaxcarmona@gmail.com</a>
+          <a class="about-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank">instagram</a>
+          <a class="about-link" href="https://www.linkedin.com/in/alexacarmona" target="_blank">linkedin</a>
+          <a class="about-link" href="AlexaCarmona_Resume.pdf" target="_blank">resume</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAV comes after sections so :target general sibling selector (~) works -->
+  <nav>
+    <a class="name" href="#home">alexa</a>
+    <div class="nav-right">
+      <a class="nav-link" href="#design">design</a>
+      <a class="nav-link" href="#photography">photography</a>
+      <a class="nav-link" href="#about">about</a>
+      <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">dark</button>
+    </div>
+  </nav>
+
+  <footer class="site-footer">
+    <span class="footer-left">
+      <a class="footer-link" href="mailto:alexaxcarmona@gmail.com">alexaxcarmona@gmail.com</a>
+    </span>
+    <div class="footer-center">
+      <a class="footer-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank">instagram</a>
+      <span class="footer-sep">/</span>
+      <a class="footer-link" href="https://www.linkedin.com/in/alexacarmona" target="_blank">linkedin</a>
+    </div>
+    <span class="footer-right">© alexacarmona 2026</span>
+  </footer>
+
+  <div class="scroll-hint" id="scrollHint">
+    <div class="scroll-hint-line"></div>
+    scroll
+  </div>
+
+  <!-- Case study overlay — still uses JS since it's above everything -->
+  <div class="case-overlay" id="caseOverlay">
+    <button class="case-close" onclick="closeCase()">close ×</button>
+    <div class="case-inner">
+      <div class="case-hero">
+        <div class="fill ph1" id="caseHeroImg" style="height:100%;min-height:300px;"></div>
+      </div>
+      <div class="case-header">
+        <div>
+          <p class="case-client" id="caseClient">client name</p>
+          <h2 class="case-title" id="caseTitle">Project Title</h2>
+          <div class="case-tags" id="caseTags"><span class="case-tag-pill">category</span></div>
+        </div>
+        <div class="case-desc" id="caseDesc">
+          <p>placeholder — project description goes here.</p>
+          <p>placeholder — your approach and outcome.</p>
+        </div>
+      </div>
+      <p class="case-section-label">process &amp; detail</p>
+      <div class="case-grid">
+        <div class="case-grid-img"><div class="fill ph2"></div></div>
+        <div class="case-grid-img tall"><div class="fill ph3"></div></div>
+        <div class="case-grid-img tall"><div class="fill ph4"></div></div>
+        <div class="case-grid-img"><div class="fill ph5"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* THEME */
+    let currentTheme = 'light';
+    function toggleTheme() {
+      currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.body.dataset.theme = currentTheme;
+      document.getElementById('themeBtn').textContent = currentTheme === 'light' ? 'dark' : 'light';
+    }
+
+    /* PHOTOGRAPHY CANVAS */
+    const COLS = 8, ROWS = 6, CELL = 240, GAP = 6;
+    const phClasses = ['ph1','ph2','ph3','ph4','ph5','ph6','ph7','ph8'];
+    const photoSection = document.getElementById('photography');
+    const canvas = document.getElementById('photoCanvas');
+
+    canvas.style.gridTemplateColumns = `repeat(${COLS}, ${CELL}px)`;
+    canvas.style.gridTemplateRows    = `repeat(${ROWS}, ${CELL}px)`;
+    canvas.style.width  = (COLS * CELL + (COLS-1) * GAP) + 'px';
+    canvas.style.height = (ROWS * CELL + (ROWS-1) * GAP) + 'px';
+
+    for (let i = 0; i < COLS * ROWS; i++) {
+      const cell = document.createElement('div');
+      cell.className   = 'photo-cell';
+      cell.dataset.pid = i % 8;
+      cell.style.width  = CELL + 'px';
+      cell.style.height = CELL + 'px';
+      const fill = document.createElement('div');
+      fill.className = 'fill ' + phClasses[i % phClasses.length];
+      cell.appendChild(fill);
+      canvas.appendChild(cell);
+    }
+
+    let posX = 0, posY = 0, velX = 0, velY = 0, rafId = null;
+    let isDown = false, prevX = 0, prevY = 0, lastT = 0;
+    let movedX = 0, movedY = 0;
+    const CLICK_THRESH = 6;
+
+    function centerCanvas() {
+      const cW = COLS * CELL + (COLS-1) * GAP;
+      const cH = ROWS * CELL + (ROWS-1) * GAP;
+      posX = (window.innerWidth  - cW) / 2;
+      posY = (window.innerHeight - cH) / 2;
+      canvas.style.transform = `translate(${posX}px,${posY}px)`;
+    }
+    centerCanvas();
+
+    function applyPos() { canvas.style.transform = `translate(${posX}px,${posY}px)`; }
+    function stopMomentum() { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
+    function runMomentum() {
+      velX *= 0.935; velY *= 0.935;
+      posX += velX; posY += velY;
+      applyPos();
+      if (Math.abs(velX) > 0.15 || Math.abs(velY) > 0.15) rafId = requestAnimationFrame(runMomentum);
+    }
+
+    photoSection.addEventListener('pointerdown', e => {
+      stopMomentum(); isDown = true; movedX = 0; movedY = 0;
+      prevX = e.clientX; prevY = e.clientY; lastT = Date.now();
+      velX = 0; velY = 0;
+      photoSection.setPointerCapture(e.pointerId);
+    });
+    photoSection.addEventListener('pointermove', e => {
+      if (!isDown) return;
+      const dx = e.clientX - prevX, dy = e.clientY - prevY;
+      movedX += Math.abs(dx); movedY += Math.abs(dy);
+      const dt = Math.max(1, Date.now() - lastT);
+      velX = dx / dt * 14; velY = dy / dt * 14;
+      lastT = Date.now();
+      posX += dx; posY += dy; prevX = e.clientX; prevY = e.clientY;
+      applyPos();
+    });
+    photoSection.addEventListener('pointerup', e => {
+      if (!isDown) return; isDown = false;
+      if (movedX < CLICK_THRESH && movedY < CLICK_THRESH) {
+        const cell = e.target.closest('.photo-cell');
+        if (cell) openCase(parseInt(cell.dataset.pid));
+      } else { runMomentum(); }
+    });
+    photoSection.addEventListener('pointercancel', () => { isDown = false; runMomentum(); });
+    photoSection.addEventListener('pointerdown', () => {
+      document.getElementById('dragHint').classList.add('hidden');
+    }, { once: true });
+
+    // re-center when photo section becomes visible via hash
+    window.addEventListener('hashchange', () => {
+      if (location.hash === '#photography') centerCanvas();
+    });
+    window.addEventListener('resize', () => {
+      if (location.hash === '#photography') centerCanvas();
+    });
+
+    /* CASE STUDY */
+    const projects = [
+      { client: 'client name', title: 'Project One',   tags: ['branding','identity'],    ph: 'ph1' },
+      { client: 'client name', title: 'Project Two',   tags: ['photography','editorial'], ph: 'ph2' },
+      { client: 'client name', title: 'Project Three', tags: ['design','packaging'],      ph: 'ph3' },
+      { client: 'client name', title: 'Project Four',  tags: ['photography','portrait'],  ph: 'ph4' },
+      { client: 'client name', title: 'Project Five',  tags: ['art direction'],           ph: 'ph5' },
+      { client: 'client name', title: 'Project Six',   tags: ['photography','campaign'],  ph: 'ph6' },
+      { client: 'client name', title: 'Project Seven', tags: ['design','digital'],        ph: 'ph7' },
+      { client: 'client name', title: 'Project Eight', tags: ['photography','lifestyle'], ph: 'ph8' },
+    ];
+
+    function openCase(i) {
+      const p = projects[i];
+      const hero = document.getElementById('caseHeroImg');
+      hero.className = 'fill ' + p.ph;
+      hero.style.cssText = 'height:100%;min-height:300px;';
+      document.getElementById('caseClient').textContent = p.client;
+      document.getElementById('caseTitle').textContent  = p.title;
+      document.getElementById('caseTags').innerHTML = p.tags.map(t =>
+        `<span class="case-tag-pill">${t}</span>`).join('');
+      document.getElementById('caseOverlay').scrollTop = 0;
+      document.getElementById('caseOverlay').classList.add('open');
+    }
+    function closeCase() { document.getElementById('caseOverlay').classList.remove('open'); }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCase(); });
+  </script>
+</body>
+</html>
