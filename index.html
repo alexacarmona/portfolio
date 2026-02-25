@@ -267,10 +267,37 @@
     .works-grid { columns: 3; column-gap: 14px; }
     .works-grid-item {
       break-inside: avoid; margin-bottom: 14px;
-      border-radius: 0; overflow: hidden; cursor: pointer; transition: opacity 0.3s;
+      border-radius: 0; overflow: hidden; cursor: pointer;
+      position: relative;
     }
-    .works-grid-item:hover { opacity: 0.85; }
+    .works-grid-item img { display: block; width: 100%; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
+    .works-grid-item:hover img { transform: scale(1.04); }
     .works-grid-item .fill { display: block; width: 100%; }
+
+    /* colored hover overlay per project */
+    .works-grid-item .wg-overlay {
+      position: absolute; inset: 0; opacity: 0;
+      transition: opacity 0.35s ease; pointer-events: none; z-index: 1;
+      display: flex; align-items: flex-end; padding: 20px;
+    }
+    .works-grid-item:hover .wg-overlay { opacity: 1; }
+    .works-grid-item[data-proj="0"] .wg-overlay { background: rgba(255,90,70,0.38); }
+    .works-grid-item[data-proj="1"] .wg-overlay { background: rgba(70,150,255,0.36); }
+    .works-grid-item[data-proj="2"] .wg-overlay { background: rgba(80,210,150,0.36); }
+    .works-grid-item[data-proj="3"] .wg-overlay { background: rgba(200,90,240,0.36); }
+    .works-grid-item[data-proj="4"] .wg-overlay { background: rgba(255,195,50,0.38); }
+    .works-grid-item[data-proj="5"] .wg-overlay { background: rgba(255,120,50,0.36); }
+    .works-grid-item[data-proj="6"] .wg-overlay { background: rgba(50,195,215,0.36); }
+    .works-grid-item[data-proj="7"] .wg-overlay { background: rgba(160,230,90,0.36); }
+
+    .wg-title {
+      font-size: 13px; font-weight: 500; color: #fff;
+      text-shadow: 0 1px 10px rgba(0,0,0,0.4);
+      transform: translateY(4px);
+      transition: transform 0.3s ease;
+      letter-spacing: -0.01em;
+    }
+    .works-grid-item:hover .wg-title { transform: translateY(0); }
 
     /* ══ PHOTOGRAPHY — infinite swipe canvas ════════════ */
     #photography {
@@ -351,8 +378,10 @@
     .case-section-label { font-size: 9px; letter-spacing: 0.14em; color: var(--fg-muted); padding-top: 56px; margin-bottom: 24px; border-top: 1px solid var(--card-bg); }
     .case-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .case-grid-img { border-radius: 0; overflow: hidden; background: var(--card-bg); }
+    .case-grid-img img { width: 100%; display: block; object-fit: cover; }
     .case-grid-img .fill { width: 100%; object-fit: cover; display: block; min-height: 200px; }
     .case-grid-img.tall .fill { min-height: 280px; }
+    .case-grid-img.wide { grid-column: span 2; }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(18px); }
@@ -448,12 +477,31 @@
     <div class="section-inner">
       <h2 class="section-title">design</h2>
       <div class="works-grid">
-        <div class="works-grid-item" onclick="openCase(0)"><div class="fill ph1" style="height:280px;"></div></div>
-        <div class="works-grid-item" onclick="openCase(2)"><div class="fill ph3" style="height:200px;"></div></div>
-        <div class="works-grid-item" onclick="openCase(4)"><div class="fill ph5" style="height:320px;"></div></div>
-        <div class="works-grid-item" onclick="openCase(6)"><div class="fill ph7" style="height:220px;"></div></div>
-        <div class="works-grid-item" onclick="openCase(0)"><div class="fill ph2" style="height:260px;"></div></div>
-        <div class="works-grid-item" onclick="openCase(2)"><div class="fill ph8" style="height:180px;"></div></div>
+        <!-- proj1: secret life of walter — thumbnail: image 2 -->
+        <div class="works-grid-item" data-proj="0" onclick="openCase(0)">
+          <img src="2secretlifeofwalter_proj1.jpg" alt="Secret Life of Walter" />
+          <div class="wg-overlay"><span class="wg-title">secret life of walter</span></div>
+        </div>
+        <!-- proj2: red blue chair — thumbnail: image 4 -->
+        <div class="works-grid-item" data-proj="1" onclick="openCase(1)">
+          <img src="4redbluechair_proj2.jpg" alt="Red and Blue Chair" />
+          <div class="wg-overlay"><span class="wg-title">red and blue chair</span></div>
+        </div>
+        <!-- proj3: swiss design stamps — thumbnail: image 6 -->
+        <div class="works-grid-item" data-proj="2" onclick="openCase(2)">
+          <img src="6swissdesignstamps_proj3.jpg" alt="Swiss Design Stamps" />
+          <div class="wg-overlay"><span class="wg-title">swiss design stamps</span></div>
+        </div>
+        <!-- proj4: garbage magazine — thumbnail: image 3 -->
+        <div class="works-grid-item" data-proj="3" onclick="openCase(3)">
+          <img src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" />
+          <div class="wg-overlay"><span class="wg-title">garbage magazine</span></div>
+        </div>
+        <!-- proj5: breadly — thumbnail: image 24 -->
+        <div class="works-grid-item" data-proj="4" onclick="openCase(4)">
+          <img src="24breadly_proj5.jpg" alt="Breadly" />
+          <div class="wg-overlay"><span class="wg-title">breadly</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -479,7 +527,7 @@
         <h2 class="about-heading">about</h2>
         <p class="about-bio">as a graphic design bfa and photography student at scad, i use design and image-making as tools for exploration. i experiment boldly, collaborate intentionally, and embrace creative risk. my work is fueled by movement, curiosity, and the constant pursuit of expanding what's visually possible.</p>
         <div class="about-links">
-          <a class="about-link" href="mailto:alexaxcarmona@gmail.com">alexaxcarmona@gmail.com</a>
+          <a class="about-link" href="/cdn-cgi/l/email-protection#4e2f222b362f362d2f3c2321202f0e29232f2722602d2123"><span class="__cf_email__" data-cfemail="7819141d0019001b190a15171619381f15191114561b1715">[email&#160;protected]</span></a>
           <a class="about-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank">instagram</a>
           <a class="about-link" href="https://www.linkedin.com/in/alexacarmona" target="_blank">linkedin</a>
           <a class="about-link" href="AlexaCarmona_Resume.pdf" target="_blank">resume</a>
@@ -501,7 +549,7 @@
 
   <footer class="site-footer">
     <span class="footer-left">
-      <a class="footer-link" href="mailto:alexaxcarmona@gmail.com">alexaxcarmona@gmail.com</a>
+      <a class="footer-link" href="/cdn-cgi/l/email-protection#82e3eee7fae3fae1e3f0efedece3c2e5efe3ebeeace1edef"><span class="__cf_email__" data-cfemail="e1808d849980998280938c8e8f80a1868c80888dcf828e8c">[email&#160;protected]</span></a>
     </span>
     <div class="footer-center">
       <a class="footer-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank">instagram</a>
@@ -535,7 +583,7 @@
         </div>
       </div>
       <p class="case-section-label">process &amp; detail</p>
-      <div class="case-grid">
+      <div class="case-grid" id="caseGrid">
         <div class="case-grid-img"><div class="fill ph2"></div></div>
         <div class="case-grid-img tall"><div class="fill ph3"></div></div>
         <div class="case-grid-img tall"><div class="fill ph4"></div></div>
@@ -544,7 +592,7 @@
     </div>
   </div>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     /* THEME */
     let currentTheme = 'light';
     function toggleTheme() {
@@ -637,11 +685,41 @@
 
     /* CASE STUDY */
     const projects = [
-      { client: 'client name', title: 'Project One',   tags: ['branding','identity'],    ph: 'ph1' },
-      { client: 'client name', title: 'Project Two',   tags: ['photography','editorial'], ph: 'ph2' },
-      { client: 'client name', title: 'Project Three', tags: ['design','packaging'],      ph: 'ph3' },
-      { client: 'client name', title: 'Project Four',  tags: ['photography','portrait'],  ph: 'ph4' },
-      { client: 'client name', title: 'Project Five',  tags: ['art direction'],           ph: 'ph5' },
+      {
+        client: 'personal project',
+        title: 'Secret Life of Walter',
+        tags: ['graphic design', 'packaging', 'editorial'],
+        hero: '1secretlifeofwalter_proj1.jpg',
+        images: ['3secretlifeofwalter_proj1.jpg','4secretlifeofwalter_proj1.jpg','5secretlifeofwalter_proj1.jpg','6secretlifeofwalter_proj1.jpg','7secretlifeofwalter_proj1.jpg']
+      },
+      {
+        client: 'personal project',
+        title: 'Red and Blue Chair',
+        tags: ['graphic design', '3d', 'installation'],
+        hero: '1redbluechair_proj2.jpg',
+        images: ['2redbluechair_proj2.jpg','3redbluechair_proj2.jpg','5redbluechair_proj2.jpg','6redbluechair_proj2.jpg']
+      },
+      {
+        client: 'personal project',
+        title: 'Swiss Design Stamps',
+        tags: ['graphic design', 'print', 'identity'],
+        hero: '1swissdesignstamps_proj3.jpg',
+        images: ['2swissdesignstamps_proj3.jpg','3swissdesignstamps_proj3.jpg','4swissdesignstamps_proj3.jpg','5swissdesignstamps_proj3.jpg','7swissdesignstamps_proj3.jpg']
+      },
+      {
+        client: 'personal project',
+        title: 'Garbage Magazine',
+        tags: ['graphic design', 'editorial', 'photography'],
+        hero: '1gargabemagazine_proj4.jpg',
+        images: ['2gargabemagazine_proj4.jpg','4gargabemagazine_proj4.jpg','5gargabemagazine_proj4.jpg']
+      },
+      {
+        client: 'breadly',
+        title: 'Breadly',
+        tags: ['branding', 'packaging', 'art direction'],
+        hero: '22breadly_proj5.jpg',
+        images: ['1breadly_proj5.jpeg','3breadly_proj5.jpeg','5breadly_proj5.jpeg','10breadly_proj5.jpg','14breadly_proj5.jpg','15breadly_proj5.jpg','23breadly_proj5.jpg','25breadly_proj5.jpg','26breadly_proj5.jpg']
+      },
       { client: 'client name', title: 'Project Six',   tags: ['photography','campaign'],  ph: 'ph6' },
       { client: 'client name', title: 'Project Seven', tags: ['design','digital'],        ph: 'ph7' },
       { client: 'client name', title: 'Project Eight', tags: ['photography','lifestyle'], ph: 'ph8' },
@@ -649,17 +727,39 @@
 
     function openCase(i) {
       const p = projects[i];
-      const hero = document.getElementById('caseHeroImg');
-      hero.className = 'fill ' + p.ph;
-      hero.style.cssText = 'height:100%;min-height:300px;';
+
+      // Hero image
+      const heroWrap = document.querySelector('.case-hero');
+      if (p.hero) {
+        heroWrap.innerHTML = `<img src="${p.hero}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover;display:block;" />`;
+      } else {
+        heroWrap.innerHTML = `<div class="fill ${p.ph}" style="height:100%;min-height:300px;"></div>`;
+      }
+
       document.getElementById('caseClient').textContent = p.client;
       document.getElementById('caseTitle').textContent  = p.title;
       document.getElementById('caseTags').innerHTML = p.tags.map(t =>
         `<span class="case-tag-pill">${t}</span>`).join('');
+
+      // Process grid
+      const grid = document.getElementById('caseGrid');
+      if (p.images && p.images.length) {
+        grid.innerHTML = p.images.map((src, idx) =>
+          `<div class="case-grid-img${idx % 3 === 1 ? ' tall' : ''}">
+            <img src="${src}" alt="${p.title}" style="width:100%;display:block;object-fit:cover;" />
+          </div>`
+        ).join('');
+      } else {
+        grid.innerHTML = `
+          <div class="case-grid-img"><div class="fill ph2" style="min-height:200px;"></div></div>
+          <div class="case-grid-img tall"><div class="fill ph3" style="min-height:280px;"></div></div>
+          <div class="case-grid-img tall"><div class="fill ph4" style="min-height:280px;"></div></div>
+          <div class="case-grid-img"><div class="fill ph5" style="min-height:200px;"></div></div>`;
+      }
+
       document.getElementById('caseOverlay').scrollTop = 0;
       document.getElementById('caseOverlay').classList.add('open');
-    }
-    function closeCase() { document.getElementById('caseOverlay').classList.remove('open'); }
+    }    function closeCase() { document.getElementById('caseOverlay').classList.remove('open'); }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCase(); });
   </script>
 </body>
