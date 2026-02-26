@@ -124,8 +124,9 @@
       transition: background var(--tr), opacity 0.35s;
       opacity: 0; pointer-events: none;
     }
-    #design:target    ~ .site-footer,
-    #about:target     ~ .site-footer { opacity: 1; pointer-events: all; }
+    #design:target       ~ .site-footer,
+    #photography:target   ~ .site-footer,
+    #about:target         ~ .site-footer { opacity: 1; pointer-events: all; }
 
     .footer-left, .footer-right {
       font-size: 11px; font-weight: 400; letter-spacing: 0.03em; color: var(--fg-muted);
@@ -299,35 +300,158 @@
     }
     .works-grid-item:hover .wg-title { transform: translateY(0); }
 
-    /* ══ PHOTOGRAPHY — infinite swipe canvas ════════════ */
+    /* ══ PHOTOGRAPHY — scroll-anywhere grid (no drag) ═══════ */
     #photography {
-      overflow: hidden;
-      touch-action: none;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
     }
+
+    #photoScrollWrap {
+      position: relative;
+      min-width: 100%;
+      min-height: 100%;
+    }
+
+    /* canvas: absolute-positioned tile grid inside scroll wrap */
     #photoCanvas {
       position: absolute;
-      display: grid;
-      gap: 6px;
+      top: 0; left: 0;
       will-change: transform;
     }
     .photo-cell {
-      overflow: hidden; cursor: pointer;
-      border-radius: 0; position: relative;
+      position: absolute;
+      cursor: pointer;
+      overflow: hidden;
     }
-    .photo-cell .fill {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-      transition: transform 0.45s cubic-bezier(0.16,1,0.3,1), opacity 0.3s;
+    .photo-cell img,
+    .photo-cell .ph-placeholder {
+      display: block;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+      transition: opacity 0.3s;
+    }
+    .photo-cell img { object-fit: cover; }
+    .photo-cell:hover img,
+    .photo-cell:hover .ph-placeholder { opacity: 0.8; }
+    .photo-cell .ph-label {
+      position: absolute;
+      bottom: -20px; left: 0;
+      font-size: 10px; letter-spacing: 0.07em;
+      color: var(--fg-muted); white-space: nowrap;
+      opacity: 0; transition: opacity 0.2s;
       pointer-events: none;
     }
-    .photo-cell:hover .fill { transform: scale(1.07); opacity: 0.88; }
-    .drag-hint {
-      position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
-      font-size: 10px; letter-spacing: 0.12em; color: var(--fg-muted);
-      pointer-events: none; z-index: 10;
-      display: flex; align-items: center; gap: 8px;
-      transition: opacity 0.6s;
+    .photo-cell:hover .ph-label { opacity: 1; }
+
+    /* ── Photo detail view ──────────────────────────────── */
+    .photo-detail {
+      position: absolute; inset: 0;
+      display: grid;
+      grid-template-columns: 320px 1fr 200px;
+      grid-template-rows: 1fr;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(16px);
+      transition: opacity 0.45s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.45s cubic-bezier(0.16,1,0.3,1);
+      z-index: 10;
+      background: var(--bg);
     }
-    .drag-hint.hidden { opacity: 0; }
+    .photo-detail.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+
+    /* back button */
+    .photo-back {
+      position: absolute;
+      top: calc(var(--nav-h) + 20px); left: 28px;
+      font-size: 10px; letter-spacing: 0.1em;
+      color: var(--fg-muted); background: none; border: none;
+      cursor: pointer; font-family: inherit;
+      transition: color 0.2s; z-index: 20;
+      padding: 0;
+    }
+    .photo-back:hover { color: var(--fg); }
+
+    /* left panel */
+    .pd-left {
+      position: relative;
+      overflow: hidden;
+      display: flex; flex-direction: column; justify-content: flex-end;
+    }
+    .pd-bg {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+      transition: background-image 0.4s;
+    }
+    .pd-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.58);
+    }
+    .pd-info {
+      position: relative; z-index: 2;
+      padding: calc(var(--nav-h) + 60px) 28px 32px;
+      color: #fff;
+      overflow-y: auto;
+      scrollbar-width: none;
+      max-height: 100%;
+    }
+    .pd-info::-webkit-scrollbar { display: none; }
+    .pd-title {
+      font-size: clamp(18px, 2vw, 26px);
+      font-weight: 400; letter-spacing: -0.02em;
+      line-height: 1.1; margin-bottom: 10px;
+    }
+    .pd-year { font-size: 10px; letter-spacing: 0.1em; opacity: 0.6; margin-bottom: 6px; }
+    .pd-loc  { font-size: 10px; letter-spacing: 0.08em; opacity: 0.5; margin-bottom: 18px; }
+    .pd-desc { font-size: 13px; line-height: 1.7; opacity: 0.82; margin-bottom: 12px; font-weight: 300; }
+    .pd-dets { font-size: 11px; opacity: 0.55; line-height: 1.6; margin-bottom: 24px; }
+
+    /* thumb strip */
+    .pd-thumbs {
+      display: flex; flex-wrap: wrap; gap: 6px;
+      margin-top: 4px;
+    }
+    .pd-thumb {
+      width: 52px; height: 52px;
+      object-fit: cover; cursor: pointer;
+      opacity: 0.5; transition: opacity 0.2s;
+      border: 1.5px solid transparent;
+      flex-shrink: 0;
+    }
+    .pd-thumb:hover { opacity: 0.85; }
+    .pd-thumb.active { opacity: 1; border-color: #fff; }
+
+    /* center panel — main image, no black bars */
+    .pd-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: calc(var(--nav-h) + 32px) 40px 48px;
+      background: var(--bg);
+      overflow: hidden;
+    }
+    .pd-main-img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      transition: opacity 0.3s;
+    }
+    .pd-main-img.switching { opacity: 0; }
+
+    /* right panel */
+    .pd-right {
+      position: relative; overflow: hidden;
+    }
+    .pd-right .pd-overlay { background: rgba(0,0,0,0.65); }
 
     /* ══ ABOUT ═══════════════════════════════════════════ */
     #about {
@@ -507,12 +631,32 @@
   </div>
 
   <div id="photography" class="section">
-    <div id="photoCanvas"></div>
-    <div class="drag-hint" id="dragHint">
-      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.3">
-        <path d="M8 2v12M2 8h12M4.5 4.5l-3 3 3 3M11.5 4.5l3 3-3 3"/>
-      </svg>
-      swipe to explore
+    <!-- scrollable wrapper for 2D grid -->
+    <div id="photoScrollWrap">
+      <div id="photoCanvas"></div>
+    </div>
+    <!-- Photo detail view -->
+    <div id="photoDetail" class="photo-detail">
+      <button class="photo-back" onclick="closePhotoDetail()">← back</button>
+      <div class="pd-left">
+        <div class="pd-bg" id="pdBgLeft"></div>
+        <div class="pd-overlay"></div>
+        <div class="pd-info">
+          <h2 class="pd-title" id="pdTitle"></h2>
+          <p  class="pd-year"  id="pdYear"></p>
+          <p  class="pd-loc"   id="pdLoc"></p>
+          <p  class="pd-desc"  id="pdDesc"></p>
+          <p  class="pd-dets"  id="pdDets"></p>
+          <div class="pd-thumbs" id="pdThumbs"></div>
+        </div>
+      </div>
+      <div class="pd-center">
+        <img class="pd-main-img" id="pdMainImg" src="" alt="" />
+      </div>
+      <div class="pd-right">
+        <div class="pd-bg" id="pdBgRight"></div>
+        <div class="pd-overlay"></div>
+      </div>
     </div>
   </div>
 
@@ -601,87 +745,165 @@
       document.getElementById('themeBtn').textContent = currentTheme === 'light' ? 'dark' : 'light';
     }
 
-    /* PHOTOGRAPHY CANVAS */
-    const COLS = 8, ROWS = 6, CELL = 240, GAP = 6;
-    const phClasses = ['ph1','ph2','ph3','ph4','ph5','ph6','ph7','ph8'];
-    const photoSection = document.getElementById('photography');
-    const canvas = document.getElementById('photoCanvas');
+    /* ══ PHOTOGRAPHY SECTION ══════════════════════════════════
+       Scroll anywhere (wheel/trackpad) to explore; click a cell to open detail.
+       No click-and-drag — native scroll only.
+    ═══════════════════════════════════════════════════════════ */
+    (function() {
+      const COL_W = 280;
+      const GAP   = 24;
+      const CELL_H = 280;
+      const N_COLS = 5;
+      const N_ROWS = 4;
+      const COPIES = 3;
 
-    canvas.style.gridTemplateColumns = `repeat(${COLS}, ${CELL}px)`;
-    canvas.style.gridTemplateRows    = `repeat(${ROWS}, ${CELL}px)`;
-    canvas.style.width  = (COLS * CELL + (COLS-1) * GAP) + 'px';
-    canvas.style.height = (ROWS * CELL + (ROWS-1) * GAP) + 'px';
+      const photoSection = document.getElementById('photography');
+      const scrollWrap   = document.getElementById('photoScrollWrap');
+      const canvas      = document.getElementById('photoCanvas');
 
-    for (let i = 0; i < COLS * ROWS; i++) {
-      const cell = document.createElement('div');
-      cell.className   = 'photo-cell';
-      cell.dataset.pid = i % 8;
-      cell.style.width  = CELL + 'px';
-      cell.style.height = CELL + 'px';
-      const fill = document.createElement('div');
-      fill.className = 'fill ' + phClasses[i % phClasses.length];
-      cell.appendChild(fill);
-      canvas.appendChild(cell);
+      const TILE_W = N_COLS * (COL_W + GAP);
+      const TILE_H = N_ROWS * (CELL_H + GAP);
+      const totalW = COPIES * TILE_W;
+      const totalH = COPIES * TILE_H;
+
+      function buildGrid() {
+        const projs = window.photoProjects || [];
+        if (projs.length === 0) return;
+
+        canvas.innerHTML = '';
+        canvas.style.width  = totalW + 'px';
+        canvas.style.height = totalH + 'px';
+        scrollWrap.style.width  = totalW + 'px';
+        scrollWrap.style.height = totalH + 'px';
+
+        for (let tr = 0; tr < COPIES; tr++) {
+          for (let tc = 0; tc < COPIES; tc++) {
+            for (let i = 0; i < N_COLS * N_ROWS; i++) {
+              const proj = projs[i % projs.length];
+              const col = i % N_COLS;
+              const row = Math.floor(i / N_COLS);
+              const x = tc * TILE_W + col * (COL_W + GAP);
+              const y = tr * TILE_H + row * (CELL_H + GAP);
+
+              const el = document.createElement('div');
+              el.className = 'photo-cell';
+              el.style.cssText = `left:${x}px;top:${y}px;width:${COL_W}px;height:${CELL_H}px;`;
+              el.dataset.pid = proj.id;
+
+              const img = document.createElement('img');
+              img.src = proj.thumbnail;
+              img.alt = proj.title || '';
+              el.appendChild(img);
+
+              el.addEventListener('click', function(e) {
+                e.preventDefault();
+                openPhotoDetail(parseInt(this.dataset.pid));
+              });
+              canvas.appendChild(el);
+            }
+          }
+        }
+      }
+
+      function centerScroll() {
+        photoSection.scrollLeft = Math.max(0, (totalW - photoSection.clientWidth) / 2);
+        photoSection.scrollTop  = Math.max(0, (totalH - photoSection.clientHeight) / 2);
+      }
+
+      function initPhotoGrid() {
+        buildGrid();
+        if (location.hash === '#photography') centerScroll();
+      }
+      window.initPhotoGrid = initPhotoGrid;
+
+      const _orig = window.toggleTheme;
+      window.toggleTheme = function() { _orig(); buildGrid(); };
+
+      window.addEventListener('hashchange', () => { if (location.hash==='#photography') centerScroll(); });
+      window.addEventListener('resize',     () => { if (location.hash==='#photography') centerScroll(); });
+    })();
+
+    /* ══ PHOTO PROJECTS — photography section data ══════════ */
+    const photoProjects = [
+      {
+        id: 0,
+        title: 'mariana robledo fashion collection',
+        year: '2025',
+        location: '',
+        description: 'Studio fashion photography showcasing avant-garde wearable art and sculptural silhouettes.',
+        details: 'fashion photography\ndesigner: mariana robledo',
+        thumbnail: '1marianafashiondesign_proj9.jpg',
+        images: [
+          '1marianafashiondesign_proj9.jpg',
+          '2marianafashiondesign_proj9.jpg',
+          '3marianafashiondesign_proj9.jpg',
+        ]
+      },
+    ];
+    window.photoProjects = photoProjects;
+    if (window.initPhotoGrid) window.initPhotoGrid();
+    if (location.hash === '#photography') window.dispatchEvent(new Event('hashchange'));
+
+    function openPhotoDetail(pid) {
+      const proj = photoProjects.find(p => p.id === pid);
+      if (!proj) return;
+
+      const imgs  = proj.images;
+      let mainIdx = 0;
+
+      function setMainImage(idx) {
+        mainIdx = idx;
+        const mainImg = document.getElementById('pdMainImg');
+        mainImg.classList.add('switching');
+        setTimeout(() => {
+          mainImg.src = imgs[idx];
+          mainImg.alt = proj.title;
+          mainImg.classList.remove('switching');
+        }, 150);
+
+        // update bg panels
+        const prevSrc = imgs[Math.max(0, idx - 1)];
+        const nextSrc = imgs[Math.min(imgs.length - 1, idx + 1)];
+        document.getElementById('pdBgLeft').style.backgroundImage  = `url('${prevSrc}')`;
+        document.getElementById('pdBgRight').style.backgroundImage = `url('${nextSrc}')`;
+
+        // update active thumb
+        document.querySelectorAll('.pd-thumb').forEach((t, i) => {
+          t.classList.toggle('active', i === idx);
+        });
+      }
+
+      // Populate left panel text
+      document.getElementById('pdTitle').textContent = proj.title;
+      document.getElementById('pdYear').textContent  = proj.year || '';
+      const locEl = document.getElementById('pdLoc');
+      locEl.textContent = proj.location || '';
+      locEl.style.display = proj.location ? '' : 'none';
+      document.getElementById('pdDesc').textContent = proj.description || '';
+      document.getElementById('pdDets').innerHTML   = (proj.details || '').replace(/\n/g, '<br>');
+
+      // Build thumb strip
+      const thumbsEl = document.getElementById('pdThumbs');
+      thumbsEl.innerHTML = '';
+      imgs.forEach((src, i) => {
+        const t = document.createElement('img');
+        t.src = src; t.className = 'pd-thumb';
+        t.addEventListener('click', () => setMainImage(i));
+        thumbsEl.appendChild(t);
+      });
+
+      // Set initial image
+      setMainImage(0);
+
+      // Show detail view and prevent background scroll
+      document.getElementById('photoDetail').classList.add('open');
+      document.getElementById('photography').style.overflow = 'hidden';
     }
 
-    let posX = 0, posY = 0, velX = 0, velY = 0, rafId = null;
-    let isDown = false, prevX = 0, prevY = 0, lastT = 0;
-    let movedX = 0, movedY = 0;
-    const CLICK_THRESH = 6;
-
-    function centerCanvas() {
-      const cW = COLS * CELL + (COLS-1) * GAP;
-      const cH = ROWS * CELL + (ROWS-1) * GAP;
-      posX = (window.innerWidth  - cW) / 2;
-      posY = (window.innerHeight - cH) / 2;
-      canvas.style.transform = `translate(${posX}px,${posY}px)`;
+    function closePhotoDetail() {
+      document.getElementById('photoDetail').classList.remove('open');
+      document.getElementById('photography').style.overflow = 'auto';
     }
-    centerCanvas();
-
-    function applyPos() { canvas.style.transform = `translate(${posX}px,${posY}px)`; }
-    function stopMomentum() { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
-    function runMomentum() {
-      velX *= 0.935; velY *= 0.935;
-      posX += velX; posY += velY;
-      applyPos();
-      if (Math.abs(velX) > 0.15 || Math.abs(velY) > 0.15) rafId = requestAnimationFrame(runMomentum);
-    }
-
-    photoSection.addEventListener('pointerdown', e => {
-      stopMomentum(); isDown = true; movedX = 0; movedY = 0;
-      prevX = e.clientX; prevY = e.clientY; lastT = Date.now();
-      velX = 0; velY = 0;
-      photoSection.setPointerCapture(e.pointerId);
-    });
-    photoSection.addEventListener('pointermove', e => {
-      if (!isDown) return;
-      const dx = e.clientX - prevX, dy = e.clientY - prevY;
-      movedX += Math.abs(dx); movedY += Math.abs(dy);
-      const dt = Math.max(1, Date.now() - lastT);
-      velX = dx / dt * 14; velY = dy / dt * 14;
-      lastT = Date.now();
-      posX += dx; posY += dy; prevX = e.clientX; prevY = e.clientY;
-      applyPos();
-    });
-    photoSection.addEventListener('pointerup', e => {
-      if (!isDown) return; isDown = false;
-      if (movedX < CLICK_THRESH && movedY < CLICK_THRESH) {
-        const cell = e.target.closest('.photo-cell');
-        if (cell) openCase(parseInt(cell.dataset.pid));
-      } else { runMomentum(); }
-    });
-    photoSection.addEventListener('pointercancel', () => { isDown = false; runMomentum(); });
-    photoSection.addEventListener('pointerdown', () => {
-      document.getElementById('dragHint').classList.add('hidden');
-    }, { once: true });
-
-    // re-center when photo section becomes visible via hash
-    window.addEventListener('hashchange', () => {
-      if (location.hash === '#photography') centerCanvas();
-    });
-    window.addEventListener('resize', () => {
-      if (location.hash === '#photography') centerCanvas();
-    });
 
     /* CASE STUDY */
     const projects = [
@@ -720,9 +942,13 @@
         hero: '22breadly_proj5.jpg',
         images: ['1breadly_proj5.jpeg','3breadly_proj5.jpeg','5breadly_proj5.jpeg','10breadly_proj5.jpg','14breadly_proj5.jpg','15breadly_proj5.jpg','23breadly_proj5.jpg','25breadly_proj5.jpg','26breadly_proj5.jpg']
       },
-      { client: 'client name', title: 'Project Six',   tags: ['photography','campaign'],  ph: 'ph6' },
-      { client: 'client name', title: 'Project Seven', tags: ['design','digital'],        ph: 'ph7' },
-      { client: 'client name', title: 'Project Eight', tags: ['photography','lifestyle'], ph: 'ph8' },
+      {
+        client: 'mariana fashion design',
+        title: 'Mariana Fashion Design',
+        tags: ['photography', 'fashion', 'editorial'],
+        hero: '2marianafashiondesign_proj9.jpg',
+        images: ['1marianafashiondesign_proj9.jpg','3marianafashiondesign_proj9.jpg']
+      },
     ];
 
     function openCase(i) {
