@@ -587,8 +587,8 @@
     .about-heading  { font-size: clamp(40px, 5vw, 64px); font-weight: 300; letter-spacing: -0.03em; margin-bottom: 36px; }
     .about-bio      { font-size: 15px; font-weight: 300; line-height: 1.78; max-width: 480px; margin-bottom: 40px; }
     .about-links    { display: flex; flex-direction: column; gap: 6px; }
-    .about-link     { font-size: 14px; font-weight: 300; color: var(--fg); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; width: fit-content; transition: opacity 0.2s; }
-    .about-link:hover { opacity: 0.55; }
+    .about-link     { font-size: 14px; font-weight: 300; color: var(--fg); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; width: fit-content; transition: color 0.2s; }
+    .about-link:hover { color: #e6b800; }
 
     /* ══ CASE STUDY OVERLAY ══════════════════════════════ */
     .case-overlay {
@@ -669,11 +669,11 @@
         <p class="intro-sub">art is in all</p>
       </div>
       <div class="cards-row">
-        <div class="card portrait pos-top" onclick="openCase(0)">
-          <div class="card-img ph1" style="height:100%;"></div>
+        <div class="card portrait pos-top" onclick="openPhotoDetail(9)">
+          <div class="card-img" style="height:100%;"><img src="9quintinwilliamsshoedesign_proj17.jpg" alt="Quintin Williams shoe design" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
           <div class="card-hover-overlay"></div>
-          <span class="card-tag">design</span>
-          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">branding, identity</div></div>
+          <span class="card-tag">photography</span>
+          <div class="card-label"><div class="card-title">quintin williams shoe design</div><div class="card-cat">product, fashion</div></div>
         </div>
         <div class="card tall pos-lower" onclick="openCase(4)">
           <div class="card-img" style="height:100%;"><img src="25breadly_proj5.jpg" alt="Breadly" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
@@ -792,8 +792,8 @@
       <div class="about-photo-col">
         <div class="about-photo-wrap" id="aboutPhotoWrap">
           <img class="about-photo base" src="alexa_headshot.jpg" alt="alexa carmona" />
-          <img class="about-photo alt1" src="2alexaabout_proj15.jpg" alt="alexa carmona alternate" />
-          <img class="about-photo alt2" src="1alexaabout_proj15.jpg" alt="alexa carmona alternate" />
+          <img class="about-photo alt1" src="2alexaabout_proj15.JPG" alt="alexa carmona alternate" />
+          <img class="about-photo alt2" src="1alexaabout_proj15.JPG" alt="alexa carmona alternate" />
         </div>
       </div>
       <div class="about-text-col">
@@ -1131,6 +1131,27 @@
           { src: '2oldskate_proj13.jpg', orientation: 'landscape' },
           { src: '3oldskate_proj13.jpg', orientation: 'landscape' },
           { src: '4oldskate_proj13.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 9,
+        title: 'quintin williams shoe design',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: '9quintinwilliamsshoedesign_proj17.jpg',
+        images: [
+          { src: '1quintinwilliamsshoedesign_proj17.jpg', orientation: 'landscape' },
+          { src: '2quintinwilliamsshoedesign_proj17.jpg', orientation: 'landscape' },
+          { src: '3quintinwilliamsshoedesign_proj17.jpg', orientation: 'landscape' },
+          { src: '4quintinwilliamsshoedesign_proj17.jpg', orientation: 'landscape' },
+          { src: '5quintinwilliamsshoedesign_proj17.jpg', orientation: 'landscape' },
+          { src: '6quintinwilliamsshoedesign_proj17.jpg', orientation: 'landscape' },
+          { src: '7quintinwilliamsshoedesign_proj17.jpg', orientation: 'landscape' },
+          { src: '8quintinwilliamsshoedesign_proj17.jpg', orientation: 'landscape' },
+          { src: '9quintinwilliamsshoedesign_proj17.jpg', orientation: 'landscape' }
         ]
       },
     ];
