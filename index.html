@@ -222,6 +222,20 @@
     .card.wide      { width: 520px; height: 340px; }
     .card.small     { width: 220px; height: 300px; }
 
+    /* home card that sizes to the image's original proportions (no crop) */
+    .card.auto-thumb {
+      width: auto;
+      height: 300px;
+    }
+    .card.auto-thumb .card-img { height: 100%; }
+    .card.auto-thumb .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      background: var(--card-bg);
+    }
+
     .card-img {
       width: 100%; height: 100%; object-fit: cover; display: block;
       transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
@@ -543,8 +557,32 @@
       padding-top: var(--nav-h);
     }
     .about-photo-col { padding: 60px 50px 60px 60px; display: flex; align-items: center; justify-content: center; }
-    .about-photo-wrap { width: 100%; max-width: 400px; aspect-ratio: 3/4; border-radius: 0; overflow: hidden; background: var(--card-bg); }
-    .about-photo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; object-position: center top; }
+    .about-photo-wrap {
+      width: 100%;
+      max-width: 400px;
+      aspect-ratio: 3/4;
+      border-radius: 0;
+      overflow: hidden;
+      background: var(--card-bg);
+      position: relative;
+    }
+    .about-photo-wrap .about-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      object-position: center top;
+      transition: opacity 0.35s ease;
+    }
+    .about-photo-wrap .about-photo.base { opacity: 1; }
+    .about-photo-wrap .about-photo.alt1,
+    .about-photo-wrap .about-photo.alt2 { opacity: 0; }
+    .about-photo-wrap.active-alt-1 .about-photo.base { opacity: 0; }
+    .about-photo-wrap.active-alt-1 .about-photo.alt1 { opacity: 1; }
+    .about-photo-wrap.active-alt-2 .about-photo.base { opacity: 0; }
+    .about-photo-wrap.active-alt-2 .about-photo.alt2 { opacity: 1; }
     .about-text-col { padding: 80px 60px 60px 40px; display: flex; flex-direction: column; justify-content: center; }
     .about-heading  { font-size: clamp(40px, 5vw, 64px); font-weight: 300; letter-spacing: -0.03em; margin-bottom: 36px; }
     .about-bio      { font-size: 15px; font-weight: 300; line-height: 1.78; max-width: 480px; margin-bottom: 40px; }
@@ -594,6 +632,7 @@
       .card.landscape { width: 340px; height: 230px; }
       .card.wide { width: 360px; height: 240px; }
       .card.small { width: 180px; height: 240px; }
+      .card.auto-thumb { height: 240px; }
       .case-inner { padding: 80px 24px 60px; }
       .case-header { grid-template-columns: 1fr; gap: 28px; }
       .about-layout { grid-template-columns: 1fr; }
@@ -602,6 +641,20 @@
       .works-grid { columns: 2; }
       .section-inner { padding: calc(var(--nav-h) + 24px) 24px 60px; }
       .site-footer { padding: 0 20px; }
+    }
+
+    /* phones: make photography projects bigger */
+    @media (max-width: 520px) {
+      #photoCanvas {
+        grid-template-columns: repeat(14, 360px);
+        grid-auto-rows: 420px;
+        gap: 32px;
+        padding: 0 28px 40px;
+      }
+
+      .photo-cell.orientation-landscape { --pw: 360px; --ph: 270px; }
+      .photo-cell.orientation-portrait  { --pw: 270px; --ph: 420px; }
+      .photo-cell.orientation-square    { --pw: 320px; --ph: 320px; }
     }
   </style>
 </head>
@@ -634,11 +687,11 @@
           <span class="card-tag">photography</span>
           <div class="card-label"><div class="card-title">bird in monaco</div><div class="card-cat">travel</div></div>
         </div>
-        <div class="card small pos-bottom" onclick="openCase(3)">
-          <div class="card-img ph4" style="height:100%;"></div>
+        <div class="card auto-thumb pos-bottom" onclick="openCase(3)" style="aspect-ratio: 2000 / 1333;">
+          <div class="card-img"><img src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" /></div>
           <div class="card-hover-overlay"></div>
-          <span class="card-tag">photography</span>
-          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">portrait</div></div>
+          <span class="card-tag">design</span>
+          <div class="card-label"><div class="card-title">garbage magazine</div><div class="card-cat">editorial, photography</div></div>
         </div>
         <div class="card portrait pos-mid" onclick="openPhotoDetail(6)">
           <div class="card-img" style="height:100%;"><img src="1sunrise_proj11.jpg" alt="Sunrise" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
@@ -652,11 +705,11 @@
           <span class="card-tag">photography</span>
           <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">campaign</div></div>
         </div>
-        <div class="card tall pos-lower" onclick="openCase(6)">
-          <div class="card-img ph7" style="height:100%;"></div>
+        <div class="card tall pos-lower" onclick="openCase(0)">
+          <div class="card-img" style="height:100%;"><img src="6secretlifeofwalter_proj1.jpg" alt="Secret Life of Walter Mitty" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
           <div class="card-hover-overlay"></div>
           <span class="card-tag">design</span>
-          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">digital</div></div>
+          <div class="card-label"><div class="card-title">secret life of walter mitty</div><div class="card-cat">packaging, editorial</div></div>
         </div>
         <div class="card landscape pos-upper" onclick="openCase(7)">
           <div class="card-img ph8" style="height:100%;"></div>
@@ -732,8 +785,10 @@
   <div id="about" class="section">
     <div class="about-layout">
       <div class="about-photo-col">
-        <div class="about-photo-wrap">
-          <img src="alexa_headshot.jpg" alt="alexa carmona" />
+        <div class="about-photo-wrap" id="aboutPhotoWrap">
+          <img class="about-photo base" src="alexa_headshot.jpg" alt="alexa carmona" />
+          <img class="about-photo alt1" src="2alexaabout_proj15.jpg" alt="alexa carmona alternate" />
+          <img class="about-photo alt2" src="1alexaabout_proj15.jpg" alt="alexa carmona alternate" />
         </div>
       </div>
       <div class="about-text-col">
@@ -806,6 +861,21 @@
   </div>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    /* ABOUT PHOTO — cycle alt images on each hover */
+    (function() {
+      var wrap = document.getElementById('aboutPhotoWrap');
+      if (!wrap) return;
+      var altIndex = 0;
+      wrap.addEventListener('pointerenter', function() {
+        wrap.classList.remove('active-alt-1', 'active-alt-2');
+        wrap.classList.add(altIndex === 0 ? 'active-alt-1' : 'active-alt-2');
+        altIndex = 1 - altIndex;
+      });
+      wrap.addEventListener('pointerleave', function() {
+        wrap.classList.remove('active-alt-1', 'active-alt-2');
+      });
+    })();
+
     /* THEME */
     let currentTheme = 'light';
     function toggleTheme() {
