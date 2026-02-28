@@ -35,7 +35,7 @@
     /* ══ NAV ══════════════════════════════════════════════ */
     nav {
       position: fixed; top: 0; left: 0; right: 0;
-      z-index: 200; height: var(--nav-h);
+      z-index: 350; height: var(--nav-h);
       display: flex; align-items: center;
       justify-content: space-between;
       padding: 0 40px;
@@ -54,14 +54,16 @@
     }
     .nav-link {
       font-size: 11px; font-weight: 400; letter-spacing: 0.06em;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: var(--fg-muted); text-decoration: none;
       transition: color 0.2s; cursor: pointer; user-select: none;
     }
     .nav-link:hover { color: var(--fg); }
     .theme-btn {
       font-size: 11px; font-weight: 400; letter-spacing: 0.06em;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: var(--fg-muted); background: none; border: none;
-      cursor: pointer; font-family: inherit; transition: color 0.2s; padding: 0;
+      cursor: pointer; transition: color 0.2s; padding: 0;
     }
     .theme-btn:hover { color: var(--fg); }
 
@@ -115,7 +117,7 @@
     /* footer visibility */
     .site-footer {
       position: fixed; bottom: 0; left: 0; right: 0;
-      z-index: 190; height: var(--footer-h);
+      z-index: 340; height: var(--footer-h);
       display: flex; align-items: center;
       justify-content: space-between;
       padding: 0 40px;
@@ -187,7 +189,9 @@
       font-size: 11px; font-weight: 400; letter-spacing: 0.1em;
       color: var(--fg-muted); text-transform: lowercase;
       animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s both;
+      transition: color 0.2s;
     }
+    .intro-sub:hover { color: #e6b800; }
 
     .cards-row {
       flex: 0 0 auto;
@@ -244,7 +248,7 @@
       transition: opacity 0.3s, transform 0.3s; z-index: 2;
     }
     .card:hover .card-label { opacity: 1; transform: translateY(0); }
-    .card-title { font-size: 12px; font-weight: 500; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.5); }
+    .card-title { font-size: 12px; font-weight: 300; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.5); text-transform: uppercase; }
     .card-cat   { font-size: 10px; color: rgba(255,255,255,0.75); letter-spacing: 0.08em; margin-top: 2px; text-shadow: 0 1px 8px rgba(0,0,0,0.5); }
     .card-tag   { position: absolute; top: 16px; left: 16px; font-size: 9px; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); z-index: 2; }
 
@@ -292,15 +296,18 @@
     .works-grid-item[data-proj="7"] .wg-overlay { background: rgba(160,230,90,0.36); }
 
     .wg-title {
-      font-size: 13px; font-weight: 500; color: #fff;
+      font-size: 13px; font-weight: 300;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      color: #fff;
+      text-transform: uppercase;
       text-shadow: 0 1px 10px rgba(0,0,0,0.4);
       transform: translateY(4px);
       transition: transform 0.3s ease;
-      letter-spacing: -0.01em;
+      letter-spacing: 0.06em;
     }
     .works-grid-item:hover .wg-title { transform: translateY(0); }
 
-    /* ══ PHOTOGRAPHY — scroll-anywhere grid (no drag) ═══════ */
+    /* ══ PHOTOGRAPHY — scroll-anywhere, mixed orientations, title below on hover ═══ */
     #photography {
       overflow: auto;
       -webkit-overflow-scrolling: touch;
@@ -310,54 +317,87 @@
       position: relative;
       min-width: 100%;
       min-height: 100%;
+      padding: 48px 0;
     }
 
-    /* canvas: absolute-positioned tile grid inside scroll wrap */
+    /* 2D grid: many columns × many rows so scroll works in any direction */
     #photoCanvas {
-      position: absolute;
-      top: 0; left: 0;
-      will-change: transform;
+      display: grid;
+      grid-template-columns: repeat(14, 320px);
+      grid-auto-rows: 360px;
+      gap: 48px;
+      padding: 0 56px 56px;
+      align-items: start;
+      justify-items: start;
+      width: max-content;
+      max-width: none;
     }
+
     .photo-cell {
-      position: absolute;
       cursor: pointer;
-      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
-    .photo-cell img,
-    .photo-cell .ph-placeholder {
+
+    /* orientation-based dimensions: original aspect preserved */
+    .photo-cell.orientation-landscape { --pw: 320px; --ph: 240px; }
+    .photo-cell.orientation-portrait  { --pw: 240px; --ph: 360px; }
+    .photo-cell.orientation-square   { --pw: 280px; --ph: 280px; }
+
+    .photo-cell .photo-img-wrap {
+      display: inline-block;
+      max-width: var(--pw);
+      max-height: var(--ph);
+      background: var(--card-bg);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .photo-cell .photo-img-wrap img {
       display: block;
-      width: 100%;
-      height: 100%;
+      max-width: var(--pw);
+      max-height: var(--ph);
+      width: auto;
+      height: auto;
       pointer-events: none;
-      user-select: none;
-      -webkit-user-drag: none;
       transition: opacity 0.3s;
     }
-    .photo-cell img { object-fit: cover; }
-    .photo-cell:hover img,
-    .photo-cell:hover .ph-placeholder { opacity: 0.8; }
-    .photo-cell .ph-label {
-      position: absolute;
-      bottom: -20px; left: 0;
-      font-size: 10px; letter-spacing: 0.07em;
-      color: var(--fg-muted); white-space: nowrap;
-      opacity: 0; transition: opacity 0.2s;
+    .photo-cell .photo-img-wrap.placeholder {
+      background: var(--card-bg);
+    }
+    .photo-cell:hover .photo-img-wrap img { opacity: 0.88; }
+
+    /* title appears just below image on hover (like reference) */
+    .photo-cell .photo-title {
+      margin-top: 12px;
+      font-size: 11px;
+      font-weight: 300;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      letter-spacing: 0.06em;
+      color: var(--fg);
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
       pointer-events: none;
     }
-    .photo-cell:hover .ph-label { opacity: 1; }
+    .photo-cell:hover .photo-title {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-    /* ── Photo detail view ──────────────────────────────── */
+    /* ── Photo detail view: top = main image row, scroll down = BTS / process / video ─── */
     .photo-detail {
-      position: absolute; inset: 0;
-      display: grid;
-      grid-template-columns: 320px 1fr 200px;
-      grid-template-rows: 1fr;
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
       opacity: 0;
       pointer-events: none;
       transform: translateY(16px);
       transition: opacity 0.45s cubic-bezier(0.16,1,0.3,1),
                   transform 0.45s cubic-bezier(0.16,1,0.3,1);
-      z-index: 10;
+      z-index: 150;
       background: var(--bg);
     }
     .photo-detail.open {
@@ -366,86 +406,124 @@
       transform: translateY(0);
     }
 
-    /* back button */
-    .photo-back {
-      position: absolute;
-      top: calc(var(--nav-h) + 20px); left: 28px;
-      font-size: 10px; letter-spacing: 0.1em;
-      color: var(--fg-muted); background: none; border: none;
-      cursor: pointer; font-family: inherit;
-      transition: color 0.2s; z-index: 20;
-      padding: 0;
-    }
-    .photo-back:hover { color: var(--fg); }
-
-    /* left panel */
-    .pd-left {
-      position: relative;
-      overflow: hidden;
-      display: flex; flex-direction: column; justify-content: flex-end;
-    }
-    .pd-bg {
-      position: absolute; inset: 0;
-      background-size: cover; background-position: center;
-      transition: background-image 0.4s;
-    }
-    .pd-overlay {
-      position: absolute; inset: 0;
-      background: rgba(0,0,0,0.58);
-    }
-    .pd-info {
-      position: relative; z-index: 2;
-      padding: calc(var(--nav-h) + 60px) 28px 32px;
-      color: #fff;
-      overflow-y: auto;
-      scrollbar-width: none;
-      max-height: 100%;
-    }
-    .pd-info::-webkit-scrollbar { display: none; }
-    .pd-title {
-      font-size: clamp(18px, 2vw, 26px);
-      font-weight: 400; letter-spacing: -0.02em;
-      line-height: 1.1; margin-bottom: 10px;
-    }
-    .pd-year { font-size: 10px; letter-spacing: 0.1em; opacity: 0.6; margin-bottom: 6px; }
-    .pd-loc  { font-size: 10px; letter-spacing: 0.08em; opacity: 0.5; margin-bottom: 18px; }
-    .pd-desc { font-size: 13px; line-height: 1.7; opacity: 0.82; margin-bottom: 12px; font-weight: 300; }
-    .pd-dets { font-size: 11px; opacity: 0.55; line-height: 1.6; margin-bottom: 24px; }
-
-    /* thumb strip */
-    .pd-thumbs {
-      display: flex; flex-wrap: wrap; gap: 6px;
-      margin-top: 4px;
-    }
-    .pd-thumb {
-      width: 52px; height: 52px;
-      object-fit: cover; cursor: pointer;
-      opacity: 0.5; transition: opacity 0.2s;
-      border: 1.5px solid transparent;
+    .pd-top {
+      min-height: 100vh;
       flex-shrink: 0;
-    }
-    .pd-thumb:hover { opacity: 0.85; }
-    .pd-thumb.active { opacity: 1; border-color: #fff; }
-
-    /* center panel — main image, no black bars */
-    .pd-center {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: calc(var(--nav-h) + 32px) 40px 48px;
+      flex-direction: column;
+    }
+
+    /* back button — fixed so it stays visible when scrolling; right side, yellow on hover */
+    .photo-back {
+      position: fixed;
+      top: calc(var(--nav-h) + 12px);
+      right: 40px;
+      left: auto;
+      font-size: 22px;
+      font-weight: 300;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      letter-spacing: 0.08em;
+      color: var(--fg-muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      z-index: 20;
+      padding: 14px 20px;
+    }
+    .photo-back:hover { color: #e6b800; }
+
+    /* photo detail: full-width carousel + caption only */
+    .pd-center {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
       background: var(--bg);
       overflow: hidden;
     }
-    .pd-main-img {
-      max-width: 100%;
-      max-height: 100%;
+    .pd-scroll {
+      flex: 1;
+      display: flex;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: calc(var(--nav-h) + 24px) 56px 64px;
+      gap: 0;
+    }
+    .pd-scroll::-webkit-scrollbar { display: none; }
+    .pd-scroll-item {
+      flex: 0 0 70%;
+      width: 70%;
+      scroll-snap-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 12px;
+      min-height: 200px;
+    }
+    .pd-scroll-item img {
+      max-width: 58%;
+      max-height: 58vh;
       width: auto;
       height: auto;
       object-fit: contain;
       display: block;
-      transition: opacity 0.3s;
     }
-    .pd-main-img.switching { opacity: 0; }
+    .pd-carousel-prev,
+    .pd-carousel-next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      color: var(--fg-muted);
+      background: var(--bg);
+      border: 1px solid var(--card-bg);
+      cursor: pointer;
+      z-index: 12;
+      transition: color 0.2s, background 0.2s;
+      font-family: inherit;
+    }
+    .pd-carousel-prev { left: 16px; }
+    .pd-carousel-next { right: 16px; }
+    .pd-carousel-prev:hover,
+    .pd-carousel-next:hover {
+      color: #e6b800;
+      background: var(--card-bg);
+    }
+    .pd-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 12px 24px 16px;
+      background: linear-gradient(to top, var(--bg), transparent);
+      pointer-events: none;
+    }
+    .pd-caption-title {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--fg);
+    }
+    .pd-caption-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--fg-muted);
+      max-width: 50%;
+      text-align: right;
+    }
 
     /* right panel */
     .pd-right {
@@ -482,27 +560,20 @@
       overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--fg-muted) transparent;
     }
     .case-overlay.open { opacity: 1; pointer-events: all; }
-    .case-close {
-      position: fixed; top: 22px; right: 40px;
-      font-size: 10px; letter-spacing: 0.1em; color: var(--fg-muted);
-      background: none; border: none; cursor: pointer;
-      font-family: inherit; z-index: 301; transition: color 0.2s;
-    }
-    .case-close:hover { color: var(--fg); }
     .case-inner { max-width: 1100px; margin: 0 auto; padding: 90px 60px 100px; }
     .case-hero  { width: 100%; aspect-ratio: 16/9; border-radius: 0; margin-bottom: 56px; overflow: hidden; }
     .case-hero .fill { width: 100%; height: 100%; object-fit: cover; display: block; }
     .case-header { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 72px; }
     .case-client { font-size: 10px; letter-spacing: 0.12em; color: var(--fg-muted); margin-bottom: 10px; }
-    .case-title  { font-size: clamp(28px, 4vw, 50px); font-weight: 400; letter-spacing: -0.025em; line-height: 1.0; margin-bottom: 18px; }
+    .case-title  { font-size: clamp(28px, 4vw, 50px); font-weight: 300; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; letter-spacing: -0.025em; line-height: 1.0; margin-bottom: 18px; text-transform: uppercase; }
     .case-tags   { display: flex; flex-wrap: wrap; gap: 8px; }
     .case-tag-pill { font-size: 9px; letter-spacing: 0.1em; border: 1px solid var(--fg-muted); border-radius: 20px; padding: 4px 12px; color: var(--fg-muted); }
     .case-desc   { font-size: 14px; font-weight: 300; line-height: 1.75; opacity: 0.8; padding-top: 6px; }
     .case-desc p + p { margin-top: 14px; }
     .case-section-label { font-size: 9px; letter-spacing: 0.14em; color: var(--fg-muted); padding-top: 56px; margin-bottom: 24px; border-top: 1px solid var(--card-bg); }
     .case-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-    .case-grid-img { border-radius: 0; overflow: hidden; background: var(--card-bg); }
-    .case-grid-img img { width: 100%; display: block; object-fit: cover; }
+    .case-grid-img { border-radius: 0; overflow: hidden; }
+    .case-grid-img img { max-width: 100%; width: auto; height: auto; display: block; }
     .case-grid-img .fill { width: 100%; object-fit: cover; display: block; min-height: 200px; }
     .case-grid-img.tall .fill { min-height: 280px; }
     .case-grid-img.wide { grid-column: span 2; }
@@ -551,17 +622,17 @@
           <span class="card-tag">design</span>
           <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">branding, identity</div></div>
         </div>
-        <div class="card tall pos-lower" onclick="openCase(1)">
-          <div class="card-img ph2" style="height:100%;"></div>
-          <div class="card-hover-overlay"></div>
-          <span class="card-tag">photography</span>
-          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">editorial</div></div>
-        </div>
-        <div class="card landscape pos-upper" onclick="openCase(2)">
-          <div class="card-img ph3" style="height:100%;"></div>
+        <div class="card tall pos-lower" onclick="openCase(4)">
+          <div class="card-img" style="height:100%;"><img src="25breadly_proj5.jpg" alt="Breadly" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
           <div class="card-hover-overlay"></div>
           <span class="card-tag">design</span>
-          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">packaging</div></div>
+          <div class="card-label"><div class="card-title">breadly</div><div class="card-cat">branding, art direction</div></div>
+        </div>
+        <div class="card landscape pos-upper" onclick="openPhotoDetail(5)">
+          <div class="card-img" style="height:100%;"><img src="1birdinmonaco.JPG.jpg" alt="Bird in Monaco" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+          <div class="card-hover-overlay"></div>
+          <span class="card-tag">photography</span>
+          <div class="card-label"><div class="card-title">bird in monaco</div><div class="card-cat">travel</div></div>
         </div>
         <div class="card small pos-bottom" onclick="openCase(3)">
           <div class="card-img ph4" style="height:100%;"></div>
@@ -569,11 +640,11 @@
           <span class="card-tag">photography</span>
           <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">portrait</div></div>
         </div>
-        <div class="card portrait pos-mid" onclick="openCase(4)">
-          <div class="card-img ph5" style="height:100%;"></div>
+        <div class="card portrait pos-mid" onclick="openPhotoDetail(6)">
+          <div class="card-img" style="height:100%;"><img src="1sunrise_proj11.jpg" alt="Sunrise" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
           <div class="card-hover-overlay"></div>
-          <span class="card-tag">design</span>
-          <div class="card-label"><div class="card-title">Project Title</div><div class="card-cat">art direction</div></div>
+          <span class="card-tag">photography</span>
+          <div class="card-label"><div class="card-title">sunrise</div><div class="card-cat">landscape</div></div>
         </div>
         <div class="card wide pos-top" onclick="openCase(5)">
           <div class="card-img ph6" style="height:100%;"></div>
@@ -621,10 +692,15 @@
           <img src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" />
           <div class="wg-overlay"><span class="wg-title">garbage magazine</span></div>
         </div>
-        <!-- proj5: breadly — thumbnail: image 24 -->
+        <!-- proj5: breadly — thumbnail: image 25 -->
         <div class="works-grid-item" data-proj="4" onclick="openCase(4)">
-          <img src="24breadly_proj5.jpg" alt="Breadly" />
+          <img src="25breadly_proj5.jpg" alt="Breadly" />
           <div class="wg-overlay"><span class="wg-title">breadly</span></div>
+        </div>
+        <!-- proj6: gotem -->
+        <div class="works-grid-item" data-proj="6" onclick="openCase(6)">
+          <img src="1gotem_proj14.jpg" alt="Gotem" />
+          <div class="wg-overlay"><span class="wg-title">gotem</span></div>
         </div>
       </div>
     </div>
@@ -635,27 +711,20 @@
     <div id="photoScrollWrap">
       <div id="photoCanvas"></div>
     </div>
-    <!-- Photo detail view -->
-    <div id="photoDetail" class="photo-detail">
-      <button class="photo-back" onclick="closePhotoDetail()">← back</button>
-      <div class="pd-left">
-        <div class="pd-bg" id="pdBgLeft"></div>
-        <div class="pd-overlay"></div>
-        <div class="pd-info">
-          <h2 class="pd-title" id="pdTitle"></h2>
-          <p  class="pd-year"  id="pdYear"></p>
-          <p  class="pd-loc"   id="pdLoc"></p>
-          <p  class="pd-desc"  id="pdDesc"></p>
-          <p  class="pd-dets"  id="pdDets"></p>
-          <div class="pd-thumbs" id="pdThumbs"></div>
-        </div>
-      </div>
+  </div>
+
+  <!-- Photo detail: outside section so it can open from home -->
+  <div id="photoDetail" class="photo-detail">
+    <button class="photo-back" onclick="closePhotoDetail()">← back</button>
+    <div class="pd-top">
       <div class="pd-center">
-        <img class="pd-main-img" id="pdMainImg" src="" alt="" />
-      </div>
-      <div class="pd-right">
-        <div class="pd-bg" id="pdBgRight"></div>
-        <div class="pd-overlay"></div>
+        <button type="button" class="pd-carousel-prev" id="pdCarouselPrev" aria-label="Previous image">←</button>
+        <div class="pd-scroll" id="pdScroll"></div>
+        <button type="button" class="pd-carousel-next" id="pdCarouselNext" aria-label="Next image">→</button>
+        <div class="pd-caption">
+          <span class="pd-caption-title" id="pdCaptionTitle"></span>
+          <span class="pd-caption-desc" id="pdCaptionDesc"></span>
+        </div>
       </div>
     </div>
   </div>
@@ -672,9 +741,9 @@
         <p class="about-bio">as a graphic design bfa and photography student at scad, i use design and image-making as tools for exploration. i experiment boldly, collaborate intentionally, and embrace creative risk. my work is fueled by movement, curiosity, and the constant pursuit of expanding what's visually possible.</p>
         <div class="about-links">
           <a class="about-link" href="/cdn-cgi/l/email-protection#4e2f222b362f362d2f3c2321202f0e29232f2722602d2123"><span class="__cf_email__" data-cfemail="7819141d0019001b190a15171619381f15191114561b1715">[email&#160;protected]</span></a>
-          <a class="about-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank">instagram</a>
-          <a class="about-link" href="https://www.linkedin.com/in/alexacarmona" target="_blank">linkedin</a>
-          <a class="about-link" href="AlexaCarmona_Resume.pdf" target="_blank">resume</a>
+          <a class="about-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank" rel="noopener noreferrer">instagram</a>
+          <a class="about-link" href="https://www.linkedin.com/in/alexacarmona" target="_blank" rel="noopener noreferrer">linkedin</a>
+          <a class="about-link" href="AlexaCarmona_Resume.pdf" target="_blank" rel="noopener noreferrer">resume</a>
         </div>
       </div>
     </div>
@@ -696,9 +765,9 @@
       <a class="footer-link" href="/cdn-cgi/l/email-protection#82e3eee7fae3fae1e3f0efedece3c2e5efe3ebeeace1edef"><span class="__cf_email__" data-cfemail="e1808d849980998280938c8e8f80a1868c80888dcf828e8c">[email&#160;protected]</span></a>
     </span>
     <div class="footer-center">
-      <a class="footer-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank">instagram</a>
+      <a class="footer-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank" rel="noopener noreferrer">instagram</a>
       <span class="footer-sep">/</span>
-      <a class="footer-link" href="https://www.linkedin.com/in/alexacarmona" target="_blank">linkedin</a>
+      <a class="footer-link" href="https://www.linkedin.com/in/alexacarmona" target="_blank" rel="noopener noreferrer">linkedin</a>
     </div>
     <span class="footer-right">© alexacarmona 2026</span>
   </footer>
@@ -710,7 +779,7 @@
 
   <!-- Case study overlay — still uses JS since it's above everything -->
   <div class="case-overlay" id="caseOverlay">
-    <button class="case-close" onclick="closeCase()">close ×</button>
+    <button type="button" class="photo-back" onclick="closeCase()">← back</button>
     <div class="case-inner">
       <div class="case-hero">
         <div class="fill ph1" id="caseHeroImg" style="height:100%;min-height:300px;"></div>
@@ -746,97 +815,247 @@
     }
 
     /* ══ PHOTOGRAPHY SECTION ══════════════════════════════════
-       Scroll anywhere (wheel/trackpad) to explore; click a cell to open detail.
-       No click-and-drag — native scroll only.
+       Flex grid: mixed orientations (landscape/portrait/square), large spacing.
+       Title appears just below image on hover. Click opens detail (location, time, description).
     ═══════════════════════════════════════════════════════════ */
     (function() {
-      const COL_W = 280;
-      const GAP   = 24;
-      const CELL_H = 280;
-      const N_COLS = 5;
-      const N_ROWS = 4;
-      const COPIES = 3;
-
       const photoSection = document.getElementById('photography');
       const scrollWrap   = document.getElementById('photoScrollWrap');
       const canvas      = document.getElementById('photoCanvas');
 
-      const TILE_W = N_COLS * (COL_W + GAP);
-      const TILE_H = N_ROWS * (CELL_H + GAP);
-      const totalW = COPIES * TILE_W;
-      const totalH = COPIES * TILE_H;
+      const BLOCKS_X = 8;
+      const BLOCKS_Y = 8;
 
       function buildGrid() {
         const projs = window.photoProjects || [];
         if (projs.length === 0) return;
 
         canvas.innerHTML = '';
-        canvas.style.width  = totalW + 'px';
-        canvas.style.height = totalH + 'px';
-        scrollWrap.style.width  = totalW + 'px';
-        scrollWrap.style.height = totalH + 'px';
+        scrollWrap.style.width = '';
+        scrollWrap.style.height = '';
+        var copyCountByPid = {};
+        var numProjs = projs.length;
+        var numCells = BLOCKS_X * BLOCKS_Y * numProjs;
+        var numCols = 14;
 
-        for (let tr = 0; tr < COPIES; tr++) {
-          for (let tc = 0; tc < COPIES; tc++) {
-            for (let i = 0; i < N_COLS * N_ROWS; i++) {
-              const proj = projs[i % projs.length];
-              const col = i % N_COLS;
-              const row = Math.floor(i / N_COLS);
-              const x = tc * TILE_W + col * (COL_W + GAP);
-              const y = tr * TILE_H + row * (CELL_H + GAP);
+        for (var i = 0; i < numCells; i++) {
+          var row = Math.floor(i / numCols);
+          var col = i % numCols;
+          var projIdx = (row + col) % numProjs;
+          var proj = projs[projIdx];
 
-              const el = document.createElement('div');
-              el.className = 'photo-cell';
-              el.style.cssText = `left:${x}px;top:${y}px;width:${COL_W}px;height:${CELL_H}px;`;
-              el.dataset.pid = proj.id;
-
-              const img = document.createElement('img');
-              img.src = proj.thumbnail;
-              img.alt = proj.title || '';
-              el.appendChild(img);
-
-              el.addEventListener('click', function(e) {
-                e.preventDefault();
-                openPhotoDetail(parseInt(this.dataset.pid));
-              });
-              canvas.appendChild(el);
-            }
+          var imgs = proj.images || [];
+          var useN = imgs.length ? Math.min(6, imgs.length) : 0;
+          var copyIdx = copyCountByPid[proj.id] || 0;
+          copyCountByPid[proj.id] = copyIdx + 1;
+          var idx = useN ? (copyIdx % useN) : 0;
+          var thumbSrc = '';
+          var or = proj.orientation || 'square';
+          if (imgs.length && imgs[0] && typeof imgs[0] === 'object' && imgs[0].src) {
+            var pick = imgs[idx];
+            thumbSrc = pick.src;
+            or = pick.orientation || or;
+          } else if (proj.thumbnail) {
+            thumbSrc = proj.thumbnail;
           }
+
+          const el = document.createElement('div');
+          el.className = 'photo-cell orientation-' + or;
+          el.dataset.pid = proj.id;
+
+          const imgWrap = document.createElement('div');
+          imgWrap.className = 'photo-img-wrap' + (thumbSrc ? '' : ' placeholder');
+
+          if (thumbSrc) {
+            const img = document.createElement('img');
+            img.src = thumbSrc;
+            img.alt = proj.title || '';
+            imgWrap.appendChild(img);
+          }
+
+          const titleEl = document.createElement('div');
+          titleEl.className = 'photo-title';
+          titleEl.textContent = (proj.title || '').toUpperCase();
+
+          el.appendChild(imgWrap);
+          el.appendChild(titleEl);
+
+          el.addEventListener('click', function(e) {
+            e.preventDefault();
+            openPhotoDetail(parseInt(this.dataset.pid));
+          });
+          canvas.appendChild(el);
         }
+
+        scrollWrap.style.width  = canvas.offsetWidth + 'px';
+        scrollWrap.style.height = canvas.offsetHeight + 'px';
       }
 
       function centerScroll() {
-        photoSection.scrollLeft = Math.max(0, (totalW - photoSection.clientWidth) / 2);
-        photoSection.scrollTop  = Math.max(0, (totalH - photoSection.clientHeight) / 2);
+        photoSection.scrollLeft = 0;
+        photoSection.scrollTop  = 0;
       }
 
       function initPhotoGrid() {
         buildGrid();
-        if (location.hash === '#photography') centerScroll();
+        if (location.hash === '#photography') setTimeout(centerScroll, 0);
       }
       window.initPhotoGrid = initPhotoGrid;
 
       const _orig = window.toggleTheme;
       window.toggleTheme = function() { _orig(); buildGrid(); };
 
-      window.addEventListener('hashchange', () => { if (location.hash==='#photography') centerScroll(); });
+      window.addEventListener('hashchange', () => {
+        closePhotoDetail();
+        if (typeof closeCase === 'function') closeCase();
+        if (location.hash==='#photography') setTimeout(centerScroll, 0);
+      });
       window.addEventListener('resize',     () => { if (location.hash==='#photography') centerScroll(); });
     })();
 
-    /* ══ PHOTO PROJECTS — photography section data ══════════ */
+    /* ══ PHOTO PROJECTS — photography section data ══════════
+       images: array of { src, orientation } (orientation per image for grid).
+       Grid uses at most 2 different thumbnails per project (alternating).
+    ═══════════════════════════════════════════════════════════ */
     const photoProjects = [
       {
         id: 0,
         title: 'mariana robledo fashion collection',
         year: '2025',
-        location: '',
+        time: 'afternoon, studio',
+        location: 'savannah, ga',
         description: 'Studio fashion photography showcasing avant-garde wearable art and sculptural silhouettes.',
         details: 'fashion photography\ndesigner: mariana robledo',
-        thumbnail: '1marianafashiondesign_proj9.jpg',
+        thumbnail: '3marianafashiondesign_proj9.jpg',
         images: [
-          '1marianafashiondesign_proj9.jpg',
-          '2marianafashiondesign_proj9.jpg',
-          '3marianafashiondesign_proj9.jpg',
+          { src: '1marianafashiondesign_proj9.jpg', orientation: 'portrait' },
+          { src: '2marianafashiondesign_proj9.jpg', orientation: 'landscape' },
+          { src: '3marianafashiondesign_proj9.jpg', orientation: 'portrait' },
+          { src: '4marianafashiondesign_proj9.jpg', orientation: 'landscape' },
+          { src: '5marianafashiondesign_proj9.jpg', orientation: 'landscape' },
+          { src: '6marianafashiondesign_proj9.jpg', orientation: 'portrait' },
+          { src: '7marianafashiondesign_proj9.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 1,
+        title: 'portraits',
+        year: '2025',
+        time: '',
+        location: '',
+        description: 'Portrait series.',
+        details: '',
+        orientation: 'landscape',
+        thumbnail: '',
+        images: []
+      },
+      {
+        id: 2,
+        title: 'cut the code',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        orientation: 'portrait',
+        thumbnail: '',
+        images: []
+      },
+      {
+        id: 3,
+        title: 'custom made jeans',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        orientation: 'square',
+        thumbnail: '',
+        images: []
+      },
+      {
+        id: 4,
+        title: 'space above',
+        year: '2025',
+        time: '',
+        location: '',
+        description: 'Rustic villages, stone architecture, and natural textures.',
+        details: '',
+        thumbnail: '1spaceabove_proj10.png',
+        images: [
+          { src: '1spaceabove_proj10.png', orientation: 'landscape' },
+          { src: '2spaceabove_proj10.png', orientation: 'landscape' },
+          { src: '3spaceabove_proj10.png', orientation: 'portrait' },
+          { src: '4spaceabove_proj10.png', orientation: 'portrait' },
+          { src: '5spaceabove_proj10.png', orientation: 'portrait' },
+          { src: '6spaceabove_proj10.png', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 5,
+        title: 'bird in monaco',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: '1birdinmonaco.JPG.jpg',
+        images: [
+          { src: '1birdinmonaco.JPG.jpg', orientation: 'landscape' },
+          { src: '2birdinmonaco.JPG', orientation: 'landscape' },
+          { src: '3birdinmonaco.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 6,
+        title: 'sunrise',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: '1sunrise_proj11.jpg',
+        images: [
+          { src: '1sunrise_proj11.jpg', orientation: 'landscape' },
+          { src: '2sunrise_proj11.jpg', orientation: 'landscape' },
+          { src: '3sunrise_proj11.jpg', orientation: 'landscape' },
+          { src: '4sunrise_proj11.jpg', orientation: 'landscape' },
+          { src: '5sunrise_proj11.jpg', orientation: 'landscape' },
+          { src: '6sunrise_proj11.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 7,
+        title: 'praise',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: '1praise_proj12.jpg',
+        images: [
+          { src: '1praise_proj12.jpg', orientation: 'landscape' },
+          { src: '2praise_proj12.jpg', orientation: 'landscape' },
+          { src: '3praise_proj12.jpg', orientation: 'landscape' },
+          { src: '4praise_proj12.jpg', orientation: 'landscape' },
+          { src: '5praise_proj12.jpg', orientation: 'landscape' },
+          { src: '6praise_proj12.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 8,
+        title: 'old skate',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: '1oldskate_proj13.jpg',
+        images: [
+          { src: '1oldskate_proj13.jpg', orientation: 'landscape' },
+          { src: '2oldskate_proj13.jpg', orientation: 'landscape' },
+          { src: '3oldskate_proj13.jpg', orientation: 'landscape' },
+          { src: '4oldskate_proj13.jpg', orientation: 'landscape' }
         ]
       },
     ];
@@ -845,65 +1064,66 @@
     if (location.hash === '#photography') window.dispatchEvent(new Event('hashchange'));
 
     function openPhotoDetail(pid) {
-      const proj = photoProjects.find(p => p.id === pid);
+      var proj = photoProjects.find(p => p.id === pid);
       if (!proj) return;
 
-      const imgs  = proj.images;
-      let mainIdx = 0;
+      var rawImgs = proj.images || [];
+      var srcList = rawImgs.map(function(item) {
+        return typeof item === 'object' && item && item.src ? item.src : item;
+      });
+      if (srcList.length === 0 && proj.thumbnail) srcList = [proj.thumbnail];
 
-      function setMainImage(idx) {
-        mainIdx = idx;
-        const mainImg = document.getElementById('pdMainImg');
-        mainImg.classList.add('switching');
-        setTimeout(() => {
-          mainImg.src = imgs[idx];
-          mainImg.alt = proj.title;
-          mainImg.classList.remove('switching');
-        }, 150);
-
-        // update bg panels
-        const prevSrc = imgs[Math.max(0, idx - 1)];
-        const nextSrc = imgs[Math.min(imgs.length - 1, idx + 1)];
-        document.getElementById('pdBgLeft').style.backgroundImage  = `url('${prevSrc}')`;
-        document.getElementById('pdBgRight').style.backgroundImage = `url('${nextSrc}')`;
-
-        // update active thumb
-        document.querySelectorAll('.pd-thumb').forEach((t, i) => {
-          t.classList.toggle('active', i === idx);
+      var scrollEl = document.getElementById('pdScroll');
+      scrollEl.innerHTML = '';
+      if (srcList.length) {
+        srcList.forEach(function(src) {
+          var item = document.createElement('div');
+          item.className = 'pd-scroll-item';
+          var img = document.createElement('img');
+          img.src = src;
+          img.alt = proj.title || '';
+          item.appendChild(img);
+          scrollEl.appendChild(item);
         });
       }
+      document.getElementById('pdCaptionTitle').textContent = proj.title || '';
+      document.getElementById('pdCaptionDesc').textContent = proj.description || '';
 
-      // Populate left panel text
-      document.getElementById('pdTitle').textContent = proj.title;
-      document.getElementById('pdYear').textContent  = proj.year || '';
-      const locEl = document.getElementById('pdLoc');
-      locEl.textContent = proj.location || '';
-      locEl.style.display = proj.location ? '' : 'none';
-      document.getElementById('pdDesc').textContent = proj.description || '';
-      document.getElementById('pdDets').innerHTML   = (proj.details || '').replace(/\n/g, '<br>');
+      scrollEl.scrollLeft = 0;
 
-      // Build thumb strip
-      const thumbsEl = document.getElementById('pdThumbs');
-      thumbsEl.innerHTML = '';
-      imgs.forEach((src, i) => {
-        const t = document.createElement('img');
-        t.src = src; t.className = 'pd-thumb';
-        t.addEventListener('click', () => setMainImage(i));
-        thumbsEl.appendChild(t);
-      });
+      function carouselPrev() {
+        var step = scrollEl.clientWidth;
+        scrollEl.scrollLeft = Math.max(0, scrollEl.scrollLeft - step);
+      }
+      function carouselNext() {
+        var step = scrollEl.clientWidth;
+        scrollEl.scrollLeft = Math.min(scrollEl.scrollWidth - scrollEl.clientWidth, scrollEl.scrollLeft + step);
+      }
 
-      // Set initial image
-      setMainImage(0);
+      document.getElementById('pdCarouselPrev').onclick = carouselPrev;
+      document.getElementById('pdCarouselNext').onclick = carouselNext;
 
-      // Show detail view and prevent background scroll
+      var keyHandler = function(e) {
+        if (!document.getElementById('photoDetail').classList.contains('open')) return;
+        if (e.key === 'Escape') { closePhotoDetail(); document.removeEventListener('keydown', keyHandler); return; }
+        if (e.key === 'ArrowLeft') { carouselPrev(); e.preventDefault(); }
+        if (e.key === 'ArrowRight') { carouselNext(); e.preventDefault(); }
+      };
+      document.removeEventListener('keydown', keyHandler);
+      document.addEventListener('keydown', keyHandler);
+
       document.getElementById('photoDetail').classList.add('open');
-      document.getElementById('photography').style.overflow = 'hidden';
     }
 
     function closePhotoDetail() {
       document.getElementById('photoDetail').classList.remove('open');
-      document.getElementById('photography').style.overflow = 'auto';
     }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && document.getElementById('photoDetail').classList.contains('open')) {
+        closePhotoDetail();
+      }
+    });
 
     /* CASE STUDY */
     const projects = [
@@ -939,8 +1159,8 @@
         client: 'breadly',
         title: 'Breadly',
         tags: ['branding', 'packaging', 'art direction'],
-        hero: '22breadly_proj5.jpg',
-        images: ['1breadly_proj5.jpeg','3breadly_proj5.jpeg','5breadly_proj5.jpeg','10breadly_proj5.jpg','14breadly_proj5.jpg','15breadly_proj5.jpg','23breadly_proj5.jpg','25breadly_proj5.jpg','26breadly_proj5.jpg']
+        hero: '25breadly_proj5.jpg',
+        images: ['1breadly_proj5.jpeg','3breadly_proj5.jpeg','5breadly_proj5.jpeg','10breadly_proj5.jpg','14breadly_proj5.jpg','15breadly_proj5.jpg','22breadly_proj5.jpg','23breadly_proj5.jpg','26breadly_proj5.jpg']
       },
       {
         client: 'mariana fashion design',
@@ -948,6 +1168,13 @@
         tags: ['photography', 'fashion', 'editorial'],
         hero: '2marianafashiondesign_proj9.jpg',
         images: ['1marianafashiondesign_proj9.jpg','3marianafashiondesign_proj9.jpg']
+      },
+      {
+        client: 'personal project',
+        title: 'Gotem',
+        tags: ['graphic design'],
+        hero: '1gotem_proj14.jpg',
+        images: ['1gotem_proj14.jpg','2gotem_proj14.jpg','3gotem_proj14.jpg']
       },
     ];
 
@@ -957,7 +1184,7 @@
       // Hero image
       const heroWrap = document.querySelector('.case-hero');
       if (p.hero) {
-        heroWrap.innerHTML = `<img src="${p.hero}" alt="${p.title}" style="width:100%;height:100%;object-fit:cover;display:block;" />`;
+        heroWrap.innerHTML = `<img src="${p.hero}" alt="${p.title}" style="width:100%;height:100%;object-fit:contain;display:block;" />`;
       } else {
         heroWrap.innerHTML = `<div class="fill ${p.ph}" style="height:100%;min-height:300px;"></div>`;
       }
@@ -972,7 +1199,7 @@
       if (p.images && p.images.length) {
         grid.innerHTML = p.images.map((src, idx) =>
           `<div class="case-grid-img${idx % 3 === 1 ? ' tall' : ''}">
-            <img src="${src}" alt="${p.title}" style="width:100%;display:block;object-fit:cover;" />
+            <img src="${src}" alt="${p.title}" style="max-width:100%;width:auto;height:auto;display:block;" />
           </div>`
         ).join('');
       } else {
@@ -985,7 +1212,9 @@
 
       document.getElementById('caseOverlay').scrollTop = 0;
       document.getElementById('caseOverlay').classList.add('open');
-    }    function closeCase() { document.getElementById('caseOverlay').classList.remove('open'); }
+    }    function closeCase() {
+      document.getElementById('caseOverlay').classList.remove('open');
+    }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCase(); });
   </script>
 </body>
