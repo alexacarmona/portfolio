@@ -610,6 +610,21 @@
     .case-desc p + p { margin-top: 14px; }
     .case-section-label { font-size: 9px; letter-spacing: 0.14em; color: var(--fg-muted); padding-top: 56px; margin-bottom: 24px; border-top: 1px solid var(--card-bg); }
     .case-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    /* content blocks: interleaved text + images with scroll-triggered motion */
+    .case-content { display: flex; flex-direction: column; gap: 48px; }
+    .case-content-block {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1);
+    }
+    .case-content-block.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .case-text-block { font-size: 15px; font-weight: 300; line-height: 1.8; max-width: 560px; color: var(--fg); }
+    .case-text-block p + p { margin-top: 16px; }
+    .case-img-block { width: 100%; }
+    .case-img-block img { display: block; max-width: 100%; width: auto; height: auto; }
     .case-grid-img { border-radius: 0; overflow: hidden; }
     .case-grid-img img { max-width: 100%; width: auto; height: auto; display: block; }
     .case-grid-img .fill { width: 100%; object-fit: cover; display: block; min-height: 200px; }
@@ -967,8 +982,10 @@
       }
 
       function centerScroll() {
-        photoSection.scrollLeft = 0;
-        photoSection.scrollTop  = 0;
+        const maxX = photoSection.scrollWidth  - photoSection.clientWidth;
+        const maxY = photoSection.scrollHeight - photoSection.clientHeight;
+        photoSection.scrollLeft = maxX > 0 ? maxX / 2 : 0;
+        photoSection.scrollTop  = maxY > 0 ? maxY / 2 : 0;
       }
 
       function initPhotoGrid() {
@@ -1154,6 +1171,136 @@
           { src: '9quintinwilliamsshoedesign_proj17.jpg', orientation: 'landscape' }
         ]
       },
+      {
+        id: 10,
+        title: 'kris lee',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: 'krislee_proj18.jpg',
+        images: [
+          { src: 'krislee_proj18.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 11,
+        title: 'atl pro bikes',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: '3atlprobikes_proj19.jpeg',
+        images: [
+          { src: '1atlprobikes_proj19.jpg', orientation: 'landscape' },
+          { src: '2atlprobikes_proj19.jpg', orientation: 'landscape' },
+          { src: '3atlprobikes_proj19.jpeg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 12,
+        title: 'dance sister',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: '4dancesister_proj20.jpg',
+        images: [
+          { src: '1dancesister_proj20.jpg', orientation: 'landscape' },
+          { src: '2dancesister_proj20.jpg', orientation: 'landscape' },
+          { src: '3dancesister_proj20.jpg', orientation: 'landscape' },
+          { src: '4dancesister_proj20.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 13,
+        title: 'ruth in atl',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: '3ruthinatl_proj20.jpg',
+        images: [
+          { src: '1ruthinatl_proj20.jpg', orientation: 'landscape' },
+          { src: '2ruthinatl_proj20.jpg', orientation: 'landscape' },
+          { src: '3ruthinatl_proj20.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 14,
+        title: 'jayden hibbert',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: '7jaydenhibbert_proj22.jpg',
+        images: [
+          { src: '1jaydenhibbert_proj22.jpg', orientation: 'landscape' },
+          { src: '2jaydenhibbert_proj22.jpg', orientation: 'landscape' },
+          { src: '3jaydenhibbert_proj22.jpg', orientation: 'landscape' },
+          { src: '4jaydenhibbert_proj22.jpg', orientation: 'landscape' },
+          { src: '5jaydenhibbert_proj22.jpg', orientation: 'landscape' },
+          { src: '6jaydenhibbert_proj22.jpg', orientation: 'landscape' },
+          { src: '7jaydenhibbert_proj22.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 15,
+        title: 'shirley zhang at atlanta hawks',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: '5shirleyzhangatlantahawks_proj23.jpg',
+        images: [
+          { src: '1shirleyzhangatlantahawks_proj23.jpg', orientation: 'landscape' },
+          { src: '2shirleyzhangatlantahawks_proj23.jpg', orientation: 'landscape' },
+          { src: '3shirleyzhangatlantahawks_proj23.jpg', orientation: 'landscape' },
+          { src: '4shirleyzhangatlantahawks_proj23.jpg', orientation: 'landscape' },
+          { src: '5shirleyzhangatlantahawks_proj23.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 16,
+        title: 'jazmine editorial',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: '4jazmineeditorial.jpg',
+        images: [
+          { src: '1jazmineeditorial.jpg', orientation: 'landscape' },
+          { src: '2jazmineeditorial.jpg', orientation: 'landscape' },
+          { src: '3jazmineeditorial.jpg', orientation: 'landscape' },
+          { src: '4jazmineeditorial.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 17,
+        title: 'stella braune editorial',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: '7stellabrauneeditorial.jpg',
+        images: [
+          { src: '1stellabrauneeditorial.jpg', orientation: 'landscape' },
+          { src: '2stellabrauneeditorial.jpg', orientation: 'landscape' },
+          { src: '3stellabrauneeditorial.jpg', orientation: 'landscape' },
+          { src: '4stellabrauneeditorial.jpg', orientation: 'landscape' },
+          { src: '5stellabrauneeditorial.jpg', orientation: 'landscape' },
+          { src: '6stellabrauneeditorial.jpg', orientation: 'landscape' },
+          { src: '7stellabrauneeditorial.jpg', orientation: 'landscape' }
+        ]
+      },
     ];
     window.photoProjects = photoProjects;
     if (window.initPhotoGrid) window.initPhotoGrid();
@@ -1228,7 +1375,18 @@
         title: 'Secret Life of Walter',
         tags: ['graphic design', 'packaging', 'editorial'],
         hero: '1secretlifeofwalter_proj1.jpg',
-        images: ['3secretlifeofwalter_proj1.jpg','4secretlifeofwalter_proj1.jpg','5secretlifeofwalter_proj1.jpg','6secretlifeofwalter_proj1.jpg','7secretlifeofwalter_proj1.jpg']
+        images: ['3secretlifeofwalter_proj1.jpg','4secretlifeofwalter_proj1.jpg','5secretlifeofwalter_proj1.jpg','6secretlifeofwalter_proj1.jpg','7secretlifeofwalter_proj1.jpg'],
+        content: [
+          { type: 'text', html: '<p>The Secret Life of Walter Mitty follows a daydreamer who manages photo negatives at Life magazine—until the final cover image goes missing. Walter leaves his desk to find the photographer, discovering that life happens when you step into it.</p>' },
+          { type: 'image', src: '3secretlifeofwalter_proj1.jpg' },
+          { type: 'text', html: '<p>I was inspired by the film and Walter’s role at Life—the idea of photography as a bridge between imagination and reality. I wanted to tell that story through this book.</p>' },
+          { type: 'image', src: '4secretlifeofwalter_proj1.jpg' },
+          { type: 'text', html: '<p>The book centers on three shifting scenes from the film. Typography and layout mirror the way Walter’s inner world collides with the real one.</p>' },
+          { type: 'image', src: '5secretlifeofwalter_proj1.jpg' },
+          { type: 'text', html: '<p>The result is a book that feels like a journey—from the quiet of negatives to the rush of adventure.</p>' },
+          { type: 'image', src: '6secretlifeofwalter_proj1.jpg' },
+          { type: 'image', src: '7secretlifeofwalter_proj1.jpg' }
+        ]
       },
       {
         client: 'personal project',
@@ -1296,6 +1454,23 @@
       document.getElementById('caseTitle').textContent  = p.title;
       document.getElementById('caseTags').innerHTML = p.tags.map(t =>
         `<span class="case-tag-pill">${t}</span>`).join('');
+
+      const descEl = document.getElementById('caseDesc');
+      if (p.title === 'Secret Life of Walter') {
+        descEl.innerHTML = [
+          '<p>The Secret Life of Walter Mitty follows a quiet photo editor at Life magazine who spends his days archiving other people&apos;s adventures until the final cover negative goes missing and he has to leave his desk to find the photographer.</p>',
+          '<p>As Walter chases that single image around the world, his daydreams start to blur into real experience, and he learns that meaning is not in the fantasy of a life you might live someday, but in being fully present for the one you&apos;re in.</p>',
+          '<p>This book focuses on three shifting scenes from the film. I used photography and typography to echo the way Walter&apos;s inner world collides with the real one, treating each spread like a frame pulled from the Life archive.</p>'
+        ].join('');
+      } else if (p.title === 'Red and Blue Chair') {
+        descEl.innerHTML = [
+          '<p>This project started with the De Stijl red and blue chair and its creator. I was interested in how something that iconic can still feel playful and experimental.</p>',
+          '<p>I recreated the chair as a small scale object in balsa wood, and laser cut the box that holds it. The box works like a little stage for the object, so the color blocks and planes feel almost like a tiny set.</p>',
+          '<p>Once it was built, I photographed the model to focus on light, shadow, and how the parts line up in space. The goal was to make the chair feel fresh and graphic again, while still honoring the original design.</p>'
+        ].join('');
+      } else {
+        descEl.innerHTML = '<p>placeholder — project description goes here.</p><p>placeholder — your approach and outcome.</p>';
+      }
 
       // Process grid
       const grid = document.getElementById('caseGrid');
