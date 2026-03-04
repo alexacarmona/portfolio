@@ -46,9 +46,9 @@
       font-size: 22px; font-weight: 500; letter-spacing: -0.01em;
       color: var(--fg); cursor: pointer; user-select: none;
       text-decoration: none;
-      transition: opacity 0.2s;
+      transition: color 0.2s;
     }
-    .name:hover { opacity: 0.5; }
+    .name:hover { color: #e6b800; }
     .nav-right {
       display: flex; align-items: center; gap: 32px;
     }
@@ -58,14 +58,14 @@
       color: var(--fg-muted); text-decoration: none;
       transition: color 0.2s; cursor: pointer; user-select: none;
     }
-    .nav-link:hover { color: var(--fg); }
+    .nav-link:hover { color: #e6b800; }
     .theme-btn {
       font-size: 11px; font-weight: 400; letter-spacing: 0.06em;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: var(--fg-muted); background: none; border: none;
       cursor: pointer; transition: color 0.2s; padding: 0;
     }
-    .theme-btn:hover { color: var(--fg); }
+    .theme-btn:hover { color: #e6b800; }
 
     /* ══ SECTIONS — CSS :target based switching ══════════
        Default: #home is shown. Clicking nav links changes
@@ -282,7 +282,166 @@
       padding-bottom: var(--footer-h);
     }
     .section-inner { max-width: 1200px; margin: 0 auto; padding: calc(var(--nav-h) + 44px) 60px 60px; }
+    #design .section-inner { padding: calc(var(--nav-h) + 44px) 24px 60px; }
     .section-title { font-size: clamp(34px, 5vw, 60px); font-weight: 400; letter-spacing: -0.025em; margin-bottom: 44px; }
+
+    .design-hero {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      gap: 48px;
+      /* extra space before the grid starts */
+      margin-bottom: 520px;
+    }
+    .design-hero-copy {
+      flex: 1 1 0;
+      position: relative;
+      z-index: 2;
+      padding-top: 0;
+    }
+    .design-hero-kicker {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 10px;
+    }
+    .design-hero-title {
+      font-size: clamp(42px, 6vw, 78px);
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+      font-weight: 400;
+      margin: 0 0 18px 0;
+    }
+    .design-hero-title span { display: block; }
+    .design-hero-title .cycle-line {
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    .design-hero-title .cycle-line.cycling {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    .design-hero-title .accent {
+      color: #e6b800;
+      text-align: right;
+      padding-right: 0;
+    }
+    .design-hero-title .accent:first-of-type {
+      /* drop the yellow block lower, keep people/experience tight together */
+      margin-top: 72px;
+    }
+    .design-hero-sub {
+      font-size: 14px;
+      font-weight: 300;
+      max-width: 420px;
+      line-height: 1.7;
+      color: var(--fg-muted);
+    }
+
+    .design-list {
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+      margin-top: 4px;
+    }
+    .design-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 28px;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1),
+                  transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .design-row.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .design-row--large .design-row-media {
+      flex: 0 0 70%;
+    }
+    .design-row--small {
+      align-items: center;
+      gap: 24px;
+    }
+    .design-row--small .design-row-media {
+      flex: 0 0 36%;
+    }
+
+    .design-row-pair {
+      display: flex;
+      gap: 32px;
+    }
+    .design-row-pair .design-row {
+      flex: 1 1 0;
+    }
+
+    .design-row-media {
+      overflow: hidden;
+      border-radius: 0;
+    }
+    .design-row-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    .design-row:hover .design-row-media img {
+      transform: scale(1.03);
+    }
+    .design-row-copy {
+      flex: 1 1 0;
+      padding-bottom: 6px;
+    }
+    .design-row-title {
+      font-size: clamp(20px, 2.4vw, 26px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 0;
+    }
+
+    .design-hero-images {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+    .design-hero-img {
+      position: absolute;
+      border: none;
+      padding: 0;
+      background: none;
+      cursor: pointer;
+      overflow: hidden;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease, opacity 0.3s ease;
+    }
+    .design-hero-img-primary {
+      width: 210px;
+      height: 145px;
+      bottom: -200px;
+      right: 8%;
+    }
+    .design-hero-img-secondary {
+      width: 520px;
+      height: 340px;
+      bottom: -220px;
+      left: 2%;
+      transform: translateY(0);
+    }
+    .design-hero-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .design-hero-img:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.16);
+    }
+
     .works-grid { columns: 3; column-gap: 14px; }
     .works-grid-item {
       break-inside: avoid; margin-bottom: 14px;
@@ -446,6 +605,20 @@
       padding: 14px 20px;
     }
     .photo-back:hover { color: #e6b800; }
+
+    .photo-detail-title {
+      position: fixed;
+      top: calc(var(--nav-h) + 54px);
+      left: 40px;
+      font-size: 16px;
+      font-weight: 300;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      z-index: 20;
+      pointer-events: none;
+    }
 
     /* photo detail: full-width carousel + caption only */
     .pd-center {
@@ -656,6 +829,45 @@
       .works-grid { columns: 2; }
       .section-inner { padding: calc(var(--nav-h) + 24px) 24px 60px; }
       .site-footer { padding: 0 20px; }
+
+      .design-hero {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 28px;
+        margin-bottom: 120px;
+      }
+      .design-hero-images {
+        flex: 0 0 auto;
+        width: 100%;
+        padding-bottom: 0;
+        min-height: 0;
+      }
+      .design-hero-img-primary,
+      .design-hero-img-secondary {
+        position: static;
+        width: 100%;
+        height: auto;
+        margin-bottom: 18px;
+        transform: none;
+      }
+      .design-hero-img:hover {
+        transform: translateY(-4px);
+      }
+
+      .design-list {
+        gap: 40px;
+      }
+      .design-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .design-row-media {
+        width: 100%;
+      }
+      .design-row-pair {
+        flex-direction: column;
+        gap: 32px;
+      }
     }
 
     /* phones: make photography projects bigger */
@@ -738,7 +950,25 @@
 
   <div id="design" class="section">
     <div class="section-inner">
-      <h2 class="section-title">design</h2>
+      <div class="design-hero">
+        <div class="design-hero-images">
+          <div class="design-hero-img design-hero-img-secondary">
+            <img src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine spread" />
+          </div>
+          <div class="design-hero-img design-hero-img-primary">
+            <img src="25breadly_proj5.jpg" alt="Breadly branding" />
+          </div>
+        </div>
+        <div class="design-hero-copy">
+          <h3 class="design-hero-title">
+            <span id="designHeroLine1" class="cycle-line">designing</span>
+            <span id="designHeroLine2" class="cycle-line">brands</span>
+            <span class="accent">people</span>
+            <span class="accent">experience.</span>
+          </h3>
+          <p class="design-hero-sub"></p>
+        </div>
+      </div>
       <div class="works-grid">
         <!-- proj1: secret life of walter — thumbnail: image 2 -->
         <div class="works-grid-item" data-proj="0" onclick="openCase(0)">
@@ -789,6 +1019,7 @@
   <!-- Photo detail: outside section so it can open from home -->
   <div id="photoDetail" class="photo-detail">
     <button class="photo-back" onclick="closePhotoDetail()">← back</button>
+    <div class="photo-detail-title" id="photoDetailTitle"></div>
     <div class="pd-top">
       <div class="pd-center">
         <button type="button" class="pd-carousel-prev" id="pdCarouselPrev" aria-label="Previous image">←</button>
@@ -896,6 +1127,60 @@
       });
     })();
 
+    /* DESIGN HERO — cycle first two lines */
+    (function() {
+      var line1 = document.getElementById('designHeroLine1');
+      var line2 = document.getElementById('designHeroLine2');
+      if (!line1 || !line2) return;
+
+      var phrases = [
+        { l1: 'vibe-coding', l2: 'brands' },
+        { l1: 'ui / ux', l2: 'systems' },
+        { l1: 'creative', l2: 'direction' },
+        { l1: 'advertising &', l2: 'marketing' },
+        { l1: 'editorial', l2: 'layouts' },
+        { l1: 'designing', l2: 'brands' }
+      ];
+      var index = 0;
+
+      function cycle() {
+        index = (index + 1) % phrases.length;
+        line1.classList.add('cycling');
+        line2.classList.add('cycling');
+
+        setTimeout(function() {
+          line1.textContent = phrases[index].l1;
+          line2.textContent = phrases[index].l2;
+        }, 120);
+
+        setTimeout(function() {
+          line1.classList.remove('cycling');
+          line2.classList.remove('cycling');
+        }, 240);
+      }
+
+      setInterval(cycle, 1400);
+    })();
+
+    /* DESIGN LIST — fade / slide rows into place on scroll */
+    (function() {
+      var designSection = document.getElementById('design');
+      if (!designSection) return;
+      var rows = designSection.querySelectorAll('.design-row');
+      if (!rows.length) return;
+
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            io.unobserve(e.target);
+          }
+        });
+      }, { root: designSection, threshold: 0.18, rootMargin: '0px 0px -10% 0px' });
+
+      rows.forEach(function(row) { io.observe(row); });
+    })();
+
     /* THEME */
     let currentTheme = 'light';
     function toggleTheme() {
@@ -987,6 +1272,46 @@
         photoSection.scrollLeft = maxX > 0 ? maxX / 2 : 0;
         photoSection.scrollTop  = maxY > 0 ? maxY / 2 : 0;
       }
+
+      // slightly "dragged" but smoother scroll feeling in photography section
+      (function() {
+        let targetX = photoSection.scrollLeft;
+        let targetY = photoSection.scrollTop;
+        let ticking = false;
+
+        function animate() {
+          ticking = false;
+          const currentX = photoSection.scrollLeft;
+          const currentY = photoSection.scrollTop;
+
+          const dx = targetX - currentX;
+          const dy = targetY - currentY;
+
+          // stop when close enough
+          if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) return;
+
+          const ease = 0.18;
+          photoSection.scrollLeft = currentX + dx * ease;
+          photoSection.scrollTop  = currentY + dy * ease;
+
+          requestAnimationFrame(animate);
+          ticking = true;
+        }
+
+        photoSection.addEventListener('wheel', function(e) {
+          if (e.ctrlKey) return; // allow pinch zoom defaults
+          e.preventDefault();
+          const factor = 0.6;
+          targetX += e.deltaX * factor;
+          targetY += e.deltaY * factor;
+          targetX = Math.max(0, Math.min(targetX, photoSection.scrollWidth  - photoSection.clientWidth));
+          targetY = Math.max(0, Math.min(targetY, photoSection.scrollHeight - photoSection.clientHeight));
+          if (!ticking) {
+            requestAnimationFrame(animate);
+            ticking = true;
+          }
+        }, { passive: false });
+      })();
 
       function initPhotoGrid() {
         buildGrid();
@@ -1329,7 +1654,10 @@
           scrollEl.appendChild(item);
         });
       }
-      document.getElementById('pdCaptionTitle').textContent = proj.title || '';
+      var title = proj.title || '';
+      document.getElementById('pdCaptionTitle').textContent = title;
+      var detailTitleEl = document.getElementById('photoDetailTitle');
+      if (detailTitleEl) detailTitleEl.textContent = title;
       document.getElementById('pdCaptionDesc').textContent = proj.description || '';
 
       scrollEl.scrollLeft = 0;
