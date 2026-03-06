@@ -493,13 +493,14 @@
       padding: 48px 0;
     }
 
-    /* 2D grid: many columns × many rows so scroll works in any direction */
+    /* 2D grid: even, tighter spacing; thumbnails unchanged */
     #photoCanvas {
       display: grid;
       grid-template-columns: repeat(14, 320px);
       grid-auto-rows: 360px;
-      gap: 48px;
-      padding: 0 56px 56px;
+      column-gap: 72px;
+      row-gap: 72px;
+      padding: 72px;
       align-items: start;
       justify-items: start;
       width: max-content;
@@ -519,6 +520,7 @@
     .photo-cell.orientation-square   { --pw: 280px; --ph: 280px; }
 
     .photo-cell .photo-img-wrap {
+      position: relative;
       display: inline-block;
       max-width: var(--pw);
       max-height: var(--ph);
@@ -540,7 +542,7 @@
     }
     .photo-cell:hover .photo-img-wrap img { opacity: 0.88; }
 
-    /* title appears just below image on hover (like reference) */
+    /* title always below image */
     .photo-cell .photo-title {
       margin-top: 12px;
       font-size: 11px;
@@ -548,12 +550,28 @@
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       letter-spacing: 0.06em;
       color: var(--fg);
+    }
+
+    /* hover label over image */
+    .photo-cell .photo-hover {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      padding: 10px 10px 12px;
+      font-size: 10px;
+      font-weight: 300;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #fff;
+      background: linear-gradient(transparent, rgba(0,0,0,0.65));
       opacity: 0;
-      transform: translateY(4px);
+      transform: translateY(6px);
       transition: opacity 0.25s ease, transform 0.25s ease;
       pointer-events: none;
     }
-    .photo-cell:hover .photo-title {
+    .photo-cell:hover .photo-hover {
       opacity: 1;
       transform: translateY(0);
     }
@@ -830,26 +848,51 @@
       .section-inner { padding: calc(var(--nav-h) + 24px) 24px 60px; }
       .site-footer { padding: 0 20px; }
 
+      #design .section-inner { padding: calc(var(--nav-h) + 32px) 28px 60px; }
+
       .design-hero {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 28px;
-        margin-bottom: 120px;
+        align-items: stretch;
+        gap: 40px;
+        margin-bottom: 80px;
+      }
+      .design-hero-copy {
+        min-width: 0;
+        padding-right: 0;
+      }
+      .design-hero-title {
+        font-size: clamp(28px, 8vw, 44px);
+        margin-bottom: 12px;
+      }
+      .design-hero-title .accent:first-of-type {
+        margin-top: 36px;
       }
       .design-hero-images {
+        position: relative;
         flex: 0 0 auto;
         width: 100%;
         padding-bottom: 0;
         min-height: 0;
+        inset: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
       }
       .design-hero-img-primary,
       .design-hero-img-secondary {
         position: static;
         width: 100%;
+        max-width: 320px;
         height: auto;
-        margin-bottom: 18px;
+        min-height: 180px;
+        margin-bottom: 0;
         transform: none;
+        bottom: auto;
+        right: auto;
+        left: auto;
       }
+      .design-hero-img-primary { align-self: flex-end; }
+      .design-hero-img-secondary { align-self: flex-start; }
       .design-hero-img:hover {
         transform: translateY(-4px);
       }
@@ -875,13 +918,14 @@
       #photoCanvas {
         grid-template-columns: repeat(14, 360px);
         grid-auto-rows: 420px;
-        gap: 32px;
-        padding: 0 28px 40px;
+        column-gap: 48px;
+        row-gap: 48px;
+        padding: 48px;
       }
 
       .photo-cell.orientation-landscape { --pw: 360px; --ph: 270px; }
       .photo-cell.orientation-portrait  { --pw: 270px; --ph: 420px; }
-      .photo-cell.orientation-square    { --pw: 320px; --ph: 320px; }
+      .photo-cell.orientation-square   { --pw: 320px; --ph: 320px; }
     }
   </style>
 </head>
@@ -1201,6 +1245,16 @@
       const BLOCKS_X = 8;
       const BLOCKS_Y = 8;
 
+      function shuffleOrder(n, length) {
+        var arr = [];
+        for (var k = 0; k < length; k++) arr.push(k % n);
+        for (var i = arr.length - 1; i > 0; i--) {
+          var j = (i * 17 + 31) % (i + 1);
+          var t = arr[i]; arr[i] = arr[j]; arr[j] = t;
+        }
+        return arr;
+      }
+
       function buildGrid() {
         const projs = window.photoProjects || [];
         if (projs.length === 0) return;
@@ -1212,11 +1266,12 @@
         var numProjs = projs.length;
         var numCells = BLOCKS_X * BLOCKS_Y * numProjs;
         var numCols = 14;
+        var order = shuffleOrder(numProjs, numCells);
 
         for (var i = 0; i < numCells; i++) {
           var row = Math.floor(i / numCols);
           var col = i % numCols;
-          var projIdx = (row + col) % numProjs;
+          var projIdx = order[i];
           var proj = projs[projIdx];
 
           var imgs = proj.images || [];
@@ -1246,6 +1301,11 @@
             img.src = thumbSrc;
             img.alt = proj.title || '';
             imgWrap.appendChild(img);
+
+            const hover = document.createElement('div');
+            hover.className = 'photo-hover';
+            hover.textContent = 'view more';
+            imgWrap.appendChild(hover);
           }
 
           const titleEl = document.createElement('div');
@@ -1264,6 +1324,7 @@
 
         scrollWrap.style.width  = canvas.offsetWidth + 'px';
         scrollWrap.style.height = canvas.offsetHeight + 'px';
+        centerScroll();
       }
 
       function centerScroll() {
@@ -1275,8 +1336,8 @@
 
       // slightly "dragged" but smoother scroll feeling in photography section
       (function() {
-        let targetX = photoSection.scrollLeft;
-        let targetY = photoSection.scrollTop;
+        let targetX = 0;
+        let targetY = 0;
         let ticking = false;
 
         function animate() {
@@ -1287,10 +1348,9 @@
           const dx = targetX - currentX;
           const dy = targetY - currentY;
 
-          // stop when close enough
           if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) return;
 
-          const ease = 0.18;
+          const ease = 0.32;
           photoSection.scrollLeft = currentX + dx * ease;
           photoSection.scrollTop  = currentY + dy * ease;
 
@@ -1299,9 +1359,12 @@
         }
 
         photoSection.addEventListener('wheel', function(e) {
-          if (e.ctrlKey) return; // allow pinch zoom defaults
+          if (e.ctrlKey) return;
           e.preventDefault();
-          const factor = 0.6;
+          // Sync target to current scroll so we don't jump from stale (0,0) after centerScroll()
+          targetX = photoSection.scrollLeft;
+          targetY = photoSection.scrollTop;
+          const factor = 1.1;
           targetX += e.deltaX * factor;
           targetY += e.deltaY * factor;
           targetX = Math.max(0, Math.min(targetX, photoSection.scrollWidth  - photoSection.clientWidth));
@@ -1315,7 +1378,7 @@
 
       function initPhotoGrid() {
         buildGrid();
-        if (location.hash === '#photography') setTimeout(centerScroll, 0);
+        if (location.hash === '#photography') centerScroll();
       }
       window.initPhotoGrid = initPhotoGrid;
 
@@ -1325,9 +1388,9 @@
       window.addEventListener('hashchange', () => {
         closePhotoDetail();
         if (typeof closeCase === 'function') closeCase();
-        if (location.hash==='#photography') setTimeout(centerScroll, 0);
+        if (location.hash==='#photography') centerScroll();
       });
-      window.addEventListener('resize',     () => { if (location.hash==='#photography') centerScroll(); });
+      window.addEventListener('resize', () => { if (location.hash==='#photography') centerScroll(); });
     })();
 
     /* ══ PHOTO PROJECTS — photography section data ══════════
