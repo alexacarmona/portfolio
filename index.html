@@ -669,6 +669,7 @@
       justify-content: center;
       padding: 0 12px;
       min-height: 200px;
+      cursor: pointer;
     }
     .pd-scroll-item img {
       max-width: 58%;
@@ -677,6 +678,11 @@
       height: auto;
       object-fit: contain;
       display: block;
+      transition: max-width 0.3s ease, max-height 0.3s ease;
+    }
+    .pd-scroll-item.focused img {
+      max-width: 92%;
+      max-height: 82vh;
     }
     .pd-carousel-prev,
     .pd-carousel-next {
@@ -926,6 +932,32 @@
       .photo-cell.orientation-landscape { --pw: 360px; --ph: 270px; }
       .photo-cell.orientation-portrait  { --pw: 270px; --ph: 420px; }
       .photo-cell.orientation-square   { --pw: 320px; --ph: 320px; }
+
+      /* photo detail: larger images on mobile */
+      .pd-scroll {
+        padding: calc(var(--nav-h) + 16px) 20px 48px;
+      }
+      .pd-scroll-item {
+        flex: 0 0 92%;
+        width: 92%;
+        min-height: 280px;
+        padding: 0 8px;
+      }
+      .pd-scroll-item img {
+        max-width: 100%;
+        max-height: 70vh;
+      }
+      .pd-scroll-item.focused img {
+        max-width: 100%;
+        max-height: 82vh;
+      }
+      .pd-carousel-prev, .pd-carousel-next {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+      }
+      .pd-carousel-prev { left: 8px; }
+      .pd-carousel-next { right: 8px; }
     }
   </style>
 </head>
@@ -1419,42 +1451,6 @@
       },
       {
         id: 1,
-        title: 'portraits',
-        year: '2025',
-        time: '',
-        location: '',
-        description: 'Portrait series.',
-        details: '',
-        orientation: 'landscape',
-        thumbnail: '',
-        images: []
-      },
-      {
-        id: 2,
-        title: 'cut the code',
-        year: '2025',
-        time: '',
-        location: '',
-        description: '',
-        details: '',
-        orientation: 'portrait',
-        thumbnail: '',
-        images: []
-      },
-      {
-        id: 3,
-        title: 'custom made jeans',
-        year: '2025',
-        time: '',
-        location: '',
-        description: '',
-        details: '',
-        orientation: 'square',
-        thumbnail: '',
-        images: []
-      },
-      {
-        id: 4,
         title: 'space above',
         year: '2025',
         time: '',
@@ -1706,6 +1702,10 @@
 
       var scrollEl = document.getElementById('pdScroll');
       scrollEl.innerHTML = '';
+      function clearFocused() {
+        var items = scrollEl.querySelectorAll('.pd-scroll-item');
+        items.forEach(function(el) { el.classList.remove('focused'); });
+      }
       if (srcList.length) {
         srcList.forEach(function(src) {
           var item = document.createElement('div');
@@ -1714,6 +1714,11 @@
           img.src = src;
           img.alt = proj.title || '';
           item.appendChild(img);
+          item.addEventListener('click', function() {
+            clearFocused();
+            item.classList.add('focused');
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+          });
           scrollEl.appendChild(item);
         });
       }
