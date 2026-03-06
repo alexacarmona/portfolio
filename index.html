@@ -114,16 +114,16 @@
       color: var(--fg);
     }
 
-    /* footer visibility */
+    /* footer visibility — no box, just email / links / copyright */
     .site-footer {
       position: fixed; bottom: 0; left: 0; right: 0;
       z-index: 340; height: var(--footer-h);
       display: flex; align-items: center;
       justify-content: space-between;
       padding: 0 40px;
-      border-top: 1px solid var(--card-bg);
-      background: var(--bg);
-      transition: background var(--tr), opacity 0.35s;
+      border-top: none;
+      background: transparent;
+      transition: opacity 0.35s;
       opacity: 0; pointer-events: none;
     }
     #design:target       ~ .site-footer,
@@ -139,19 +139,24 @@
       font-size: 11px; color: var(--fg-muted);
     }
     .footer-link { color: var(--fg-muted); text-decoration: none; transition: color 0.2s; }
-    .footer-link:hover { color: var(--fg); }
+    .footer-link:hover { color: #e6b800; }
     .footer-sep { opacity: 0.5; }
 
-    /* scroll hint */
+    /* scroll hint (main page + photo detail reuses it) */
     .scroll-hint {
       position: fixed; bottom: 26px; left: 60px;
       display: flex; align-items: center; gap: 10px;
       font-size: 10px; letter-spacing: 0.1em; color: var(--fg-muted);
-      pointer-events: none; z-index: 100; transition: opacity 0.5s;
+      pointer-events: none; z-index: 200; transition: opacity 0.5s, bottom 0.3s;
     }
     #design:target    ~ .scroll-hint,
     #photography:target ~ .scroll-hint,
     #about:target     ~ .scroll-hint { opacity: 0; }
+    /* stronger than :target hide so hint shows when a photo project is open */
+    body.photo-detail-open #photography:target ~ .scroll-hint {
+      opacity: 1;
+      bottom: calc(var(--footer-h) + 20px);
+    }
 
     .scroll-hint-line { width: 36px; height: 1px; background: var(--fg-muted); position: relative; overflow: hidden; }
     .scroll-hint-line::after {
@@ -183,7 +188,28 @@
       font-size: clamp(36px, 5vw, 62px);
       font-weight: 400; line-height: 1.06; letter-spacing: -0.025em;
       margin-bottom: 18px;
-      animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+      animation: none;
+    }
+    /* land-in motion for home headline lines */
+    .home-hero-line { display: block; will-change: transform, opacity; }
+    .intro-title:not(.landed) .home-hero-line {
+      opacity: 0;
+      transform: translateY(44px);
+    }
+    .intro-title.landed .home-hero-line {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .intro-title.landed #homeHeroLine1 {
+      animation: homeLand 880ms cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .intro-title.landed #homeHeroLine2 {
+      animation: homeLand 880ms cubic-bezier(0.22,1,0.36,1) both;
+      animation-delay: 140ms;
+    }
+    @keyframes homeLand {
+      0%   { opacity: 0; transform: translateY(60px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
     .intro-sub {
       font-size: 11px; font-weight: 400; letter-spacing: 0.1em;
@@ -298,6 +324,35 @@
       position: relative;
       z-index: 2;
       padding-top: 0;
+    }
+    /* land-in motion for design hero headline lines */
+    .design-hero-line { will-change: transform, opacity; }
+    .design-hero-copy:not(.landed) .design-hero-line {
+      opacity: 0;
+      transform: translateY(44px);
+    }
+    .design-hero-copy.landed .design-hero-line {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .design-hero-copy.landed #designHeroLine1 {
+      animation: designLand 880ms cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .design-hero-copy.landed #designHeroLine2 {
+      animation: designLand 880ms cubic-bezier(0.22,1,0.36,1) both;
+      animation-delay: 120ms;
+    }
+    .design-hero-copy.landed #designHeroLine3 {
+      animation: designLand 880ms cubic-bezier(0.22,1,0.36,1) both;
+      animation-delay: 240ms;
+    }
+    .design-hero-copy.landed #designHeroLine4 {
+      animation: designLand 880ms cubic-bezier(0.22,1,0.36,1) both;
+      animation-delay: 360ms;
+    }
+    @keyframes designLand {
+      0%   { opacity: 0; transform: translateY(60px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
     .design-hero-kicker {
       font-size: 11px;
@@ -694,13 +749,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 24px;
       color: var(--fg-muted);
-      background: var(--bg);
-      border: 1px solid var(--card-bg);
+      background: none;
+      border: none;
       cursor: pointer;
       z-index: 12;
-      transition: color 0.2s, background 0.2s;
+      transition: color 0.2s;
       font-family: inherit;
     }
     .pd-carousel-prev { left: 16px; }
@@ -708,7 +763,6 @@
     .pd-carousel-prev:hover,
     .pd-carousel-next:hover {
       color: #e6b800;
-      background: var(--card-bg);
     }
     .pd-caption {
       position: absolute;
@@ -959,6 +1013,8 @@
       .pd-carousel-prev { left: 8px; }
       .pd-carousel-next { right: 8px; }
     }
+
+    /* scroll hint for photo detail — outside panel so it’s always visible when open */
   </style>
 </head>
 <body data-theme="light">
@@ -968,7 +1024,10 @@
   <div id="home" class="section">
     <div class="scroll-track">
       <div class="intro-panel">
-        <h1 class="intro-title">graphic design<br>&amp; photography</h1>
+        <h1 class="intro-title" id="homeIntroTitle">
+          <span id="homeHeroLine1" class="home-hero-line">graphic design</span>
+          <span id="homeHeroLine2" class="home-hero-line">&amp; photography</span>
+        </h1>
         <p class="intro-sub">art is in all</p>
       </div>
       <div class="cards-row">
@@ -1037,10 +1096,10 @@
         </div>
         <div class="design-hero-copy">
           <h3 class="design-hero-title">
-            <span id="designHeroLine1" class="cycle-line">designing</span>
-            <span id="designHeroLine2" class="cycle-line">brands</span>
-            <span class="accent">people</span>
-            <span class="accent">experience.</span>
+            <span id="designHeroLine1" class="cycle-line design-hero-line">designing</span>
+            <span id="designHeroLine2" class="cycle-line design-hero-line">brands</span>
+            <span id="designHeroLine3" class="accent design-hero-line">people</span>
+            <span id="designHeroLine4" class="accent design-hero-line">experience.</span>
           </h3>
           <p class="design-hero-sub"></p>
         </div>
@@ -1102,7 +1161,6 @@
         <div class="pd-scroll" id="pdScroll"></div>
         <button type="button" class="pd-carousel-next" id="pdCarouselNext" aria-label="Next image">→</button>
         <div class="pd-caption">
-          <span class="pd-caption-title" id="pdCaptionTitle"></span>
           <span class="pd-caption-desc" id="pdCaptionDesc"></span>
         </div>
       </div>
@@ -1122,7 +1180,7 @@
         <h2 class="about-heading">about</h2>
         <p class="about-bio">as a graphic design bfa and photography student at scad, i use design and image-making as tools for exploration. i experiment boldly, collaborate intentionally, and embrace creative risk. my work is fueled by movement, curiosity, and the constant pursuit of expanding what's visually possible.</p>
         <div class="about-links">
-          <a class="about-link" href="/cdn-cgi/l/email-protection#4e2f222b362f362d2f3c2321202f0e29232f2722602d2123"><span class="__cf_email__" data-cfemail="7819141d0019001b190a15171619381f15191114561b1715">[email&#160;protected]</span></a>
+          <a class="about-link" href="mailto:alexaxcarmona@gmail.com">alexaxcarmona@gmail.com</a>
           <a class="about-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank" rel="noopener noreferrer">instagram</a>
           <a class="about-link" href="https://www.linkedin.com/in/alexacarmona" target="_blank" rel="noopener noreferrer">linkedin</a>
           <a class="about-link" href="AlexaCarmona_Resume.pdf" target="_blank" rel="noopener noreferrer">resume</a>
@@ -1144,14 +1202,14 @@
 
   <footer class="site-footer">
     <span class="footer-left">
-      <a class="footer-link" href="/cdn-cgi/l/email-protection#82e3eee7fae3fae1e3f0efedece3c2e5efe3ebeeace1edef"><span class="__cf_email__" data-cfemail="e1808d849980998280938c8e8f80a1868c80888dcf828e8c">[email&#160;protected]</span></a>
+      <a class="footer-link" href="mailto:alexaxcarmona@gmail.com">alexaxcarmona@gmail.com</a>
     </span>
     <div class="footer-center">
       <a class="footer-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank" rel="noopener noreferrer">instagram</a>
       <span class="footer-sep">/</span>
       <a class="footer-link" href="https://www.linkedin.com/in/alexacarmona" target="_blank" rel="noopener noreferrer">linkedin</a>
     </div>
-    <span class="footer-right">© alexacarmona 2026</span>
+    <span class="footer-right">© alexacarmona</span>
   </footer>
 
   <div class="scroll-hint" id="scrollHint">
@@ -1238,6 +1296,82 @@
       setInterval(cycle, 1400);
     })();
 
+    /* DESIGN HERO — both headline lines land; repeats on scroll + nav click */
+    (function() {
+      var designSection = document.getElementById('design');
+      var heroCopy = designSection && designSection.querySelector('.design-hero-copy');
+      if (!heroCopy) return;
+
+      function triggerLand(force) {
+        if (!force && heroCopy.classList.contains('landed')) return;
+        heroCopy.classList.remove('landed');
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() {
+            heroCopy.classList.add('landed');
+          });
+        });
+      }
+
+      window.addEventListener('hashchange', function() {
+        if (location.hash === '#design') {
+          triggerLand(true);
+        } else {
+          heroCopy.classList.remove('landed');
+        }
+      });
+      if (location.hash === '#design') triggerLand(true);
+
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (e.isIntersecting) {
+            triggerLand(false);
+          } else {
+            heroCopy.classList.remove('landed');
+          }
+        });
+      }, { root: designSection, threshold: 0.35, rootMargin: '0px 0px -20% 0px' });
+
+      io.observe(heroCopy);
+    })();
+
+    /* HOME HERO — headline lands; repeats on scroll + nav click */
+    (function() {
+      var homeSection = document.getElementById('home');
+      if (!homeSection) return;
+      var track = homeSection.querySelector('.scroll-track');
+      var title = homeSection.querySelector('.intro-title');
+      if (!track || !title) return;
+
+      function isHome() {
+        return location.hash === '' || location.hash === '#home';
+      }
+      function triggerLand(force) {
+        if (!isHome()) return;
+        if (!force && title.classList.contains('landed')) return;
+        title.classList.remove('landed');
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() {
+            title.classList.add('landed');
+          });
+        });
+      }
+
+      window.addEventListener('hashchange', function() {
+        if (isHome()) triggerLand(true);
+        else title.classList.remove('landed');
+      });
+      if (isHome()) triggerLand(true);
+
+      var io = new IntersectionObserver(function(entries) {
+        entries.forEach(function(e) {
+          if (!isHome()) return;
+          if (e.isIntersecting) triggerLand(false);
+          else title.classList.remove('landed');
+        });
+      }, { root: track, threshold: 0.65 });
+      io.observe(title);
+    })();
+
     /* DESIGN LIST — fade / slide rows into place on scroll */
     (function() {
       var designSection = document.getElementById('design');
@@ -1249,7 +1383,8 @@
         entries.forEach(function(e) {
           if (e.isIntersecting) {
             e.target.classList.add('visible');
-            io.unobserve(e.target);
+          } else {
+            e.target.classList.remove('visible');
           }
         });
       }, { root: designSection, threshold: 0.18, rootMargin: '0px 0px -10% 0px' });
@@ -1723,7 +1858,6 @@
         });
       }
       var title = proj.title || '';
-      document.getElementById('pdCaptionTitle').textContent = title;
       var detailTitleEl = document.getElementById('photoDetailTitle');
       if (detailTitleEl) detailTitleEl.textContent = title;
       document.getElementById('pdCaptionDesc').textContent = proj.description || '';
@@ -1752,10 +1886,12 @@
       document.addEventListener('keydown', keyHandler);
 
       document.getElementById('photoDetail').classList.add('open');
+      document.body.classList.add('photo-detail-open');
     }
 
     function closePhotoDetail() {
       document.getElementById('photoDetail').classList.remove('open');
+      document.body.classList.remove('photo-detail-open');
     }
 
     document.addEventListener('keydown', function(e) {
@@ -1890,6 +2026,20 @@
       document.getElementById('caseOverlay').classList.remove('open');
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCase(); });
+
+    /* Nav: always navigate when clicking name or section links; close overlays first */
+    var navEl = document.querySelector('nav');
+    if (navEl) {
+      navEl.addEventListener('click', function(e) {
+        var a = e.target.closest('a[href^="#"]');
+        if (!a) return;
+        e.preventDefault();
+        if (typeof closeCase === 'function') closeCase();
+        if (typeof closePhotoDetail === 'function') closePhotoDetail();
+        var hash = (a.getAttribute('href') || '').slice(1);
+        window.location.hash = hash || 'home';
+      });
+    }
   </script>
 </body>
 </html>
