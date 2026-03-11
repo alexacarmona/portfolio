@@ -529,6 +529,7 @@
     .works-grid-item[data-proj="5"] .wg-overlay { background: rgba(255,120,50,0.36); }
     .works-grid-item[data-proj="6"] .wg-overlay { background: rgba(50,195,215,0.36); }
     .works-grid-item[data-proj="7"] .wg-overlay { background: rgba(160,230,90,0.36); }
+    .works-grid-item[data-proj="8"] .wg-overlay { background: rgba(0,0,0,0.5); }
 
     .wg-title {
       font-size: 13px; font-weight: 300;
@@ -541,6 +542,19 @@
       letter-spacing: 0.06em;
     }
     .works-grid-item:hover .wg-title { transform: translateY(0); }
+    .works-grid-item[data-proj="8"] .wg-overlay {
+      align-items: center;
+      justify-content: center;
+    }
+    .works-grid-item[data-proj="8"] .wg-title {
+      font-size: 18px;
+      letter-spacing: 0.12em;
+      transform: translateY(0);
+      text-align: center;
+    }
+    .works-grid-item--wip {
+      cursor: default;
+    }
 
     /* ══ PHOTOGRAPHY - scroll-anywhere, mixed orientations, title below on hover ═══ */
     #photography {
@@ -1231,6 +1245,11 @@
           <img src="1trademarkxchicago_proj24.jpg" alt="Trademark x Chicago" />
           <div class="wg-overlay"><span class="wg-title">trademark x chicago</span></div>
         </div>
+        <!-- proj9: chateau constantin (in progress, not clickable) -->
+        <div class="works-grid-item works-grid-item--wip" data-proj="8">
+          <img src="constantin_proj25.jpg" alt="chateau constantin" />
+          <div class="wg-overlay"><span class="wg-title">in progress</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -1293,16 +1312,9 @@
     <div class="about-afterparty">
       <div>
         <div class="about-afterparty-label">afterparty</div>
-        <h3 class="about-afterparty-title">the part of the site where things get a little weirder (on purpose).</h3>
       </div>
       <div class="about-afterparty-body">
-        this space is for experiments, in-betweens, and work that doesn&apos;t fit neatly into a case study. it&apos;s where new ideas sneak in at 2am, where half-finished concepts live next to fully realized pieces, and where the rules are more like suggestions.
-        <div class="afterparty-grid">
-          <span class="afterparty-pill">process scraps</span>
-          <span class="afterparty-pill">motion tests</span>
-          <span class="afterparty-pill">type play</span>
-          <span class="afterparty-pill">photo outtakes</span>
-        </div>
+        under construction
       </div>
     </div>
   </div>
@@ -1354,12 +1366,7 @@
         </div>
       </div>
       <p class="case-section-label">process &amp; detail</p>
-      <div class="case-grid" id="caseGrid">
-        <div class="case-grid-img"><div class="fill ph2"></div></div>
-        <div class="case-grid-img tall"><div class="fill ph3"></div></div>
-        <div class="case-grid-img tall"><div class="fill ph4"></div></div>
-        <div class="case-grid-img"><div class="fill ph5"></div></div>
-      </div>
+      <div class="case-grid" id="caseGrid"></div>
     </div>
   </div>
 
@@ -2017,7 +2024,8 @@
         title: 'Red and Blue Chair',
         tags: ['graphic design', '3d', 'installation'],
         hero: '1redbluechair_proj2.jpg',
-        images: ['2redbluechair_proj2.jpg','3redbluechair_proj2.jpg','5redbluechair_proj2.jpg','6redbluechair_proj2.jpg']
+        images: ['2redbluechair_proj2.jpg','3redbluechair_proj2.jpg','5redbluechair_proj2.jpg','6redbluechair_proj2.jpg'],
+        description: 'A small-scale reconstruction of Gerrit Rietveld’s red and blue chair, treated like a tiny set. I rebuilt the chair in balsa wood and designed a laser-cut box so the object, color blocks, and shadows feel like a De Stijl installation instead of just a model.'
       },
       {
         client: 'personal project',
@@ -2032,7 +2040,8 @@
         title: 'Garbage Magazine',
         tags: ['graphic design', 'editorial', 'photography'],
         hero: '1gargabemagazine_proj4.jpg',
-        images: ['2gargabemagazine_proj4.jpg','4gargabemagazine_proj4.jpg','5gargabemagazine_proj4.jpg']
+        images: ['2gargabemagazine_proj4.jpg','4gargabemagazine_proj4.jpg','5gargabemagazine_proj4.jpg'],
+        description: 'Garbage Magazine is a self-initiated editorial project built around photographs and design from ATL, following MARTA and the everyday infrastructure that usually gets ignored. The spreads layer typography, image, and texture to feel like a low-fi archive of construction zones, train platforms, underpasses, and street-level ephemera. I treated each story like a visual mixtape, mixing my own photos with bold type systems, high-contrast crops, and moments of quiet white space so it reads somewhere between a zine, a lookbook, and a field study of the city.'
       },
       {
         client: 'breadly',
@@ -2048,21 +2057,24 @@
         title: 'Mariana Fashion Design',
         tags: ['photography', 'fashion', 'editorial'],
         hero: '2marianafashiondesign_proj9.jpg',
-        images: ['1marianafashiondesign_proj9.jpg','3marianafashiondesign_proj9.jpg']
+        images: ['1marianafashiondesign_proj9.jpg','3marianafashiondesign_proj9.jpg'],
+        description: 'Studio fashion imagery for designer Mariana Robledo, focusing on sculptural silhouettes and metallic textures. The series pairs crisp lighting with close crops and motion to highlight how the garments move off the runway and into a more intimate, art-directed space.'
       },
       {
         client: 'personal project',
         title: 'Gotem',
         tags: ['graphic design'],
         hero: '1gotem_proj14.jpg',
-        images: ['1gotem_proj14.jpg','2gotem_proj14.jpg','3gotem_proj14.jpg']
+        images: ['1gotem_proj14.jpg','2gotem_proj14.jpg','3gotem_proj14.jpg'],
+        description: 'Gotem is a typographic experiment built around the language of wins, losses, and trash talk. I used loud wordmarks, condensed type, and layered textures to make each piece feel like a freeze-frame from a game highlight or a screenshot of a group chat after a big play.'
       },
       {
         client: 'georgia entertainment',
         title: 'Art and Athletics',
         tags: ['graphic design', 'editorial', 'layout'],
         hero: 'artandathletics_proj16.jpg',
-        images: ['artandathletics_proj16.jpg']
+        images: ['artandathletics_proj16.jpg'],
+        description: 'Editorial layout for Georgia Entertainment that pairs athlete portraits with abstract typography and graphic shapes. The spreads lean into motion, cropped limbs, overlapping type, and color fields so the story feels like a conversation between art direction and performance.'
       },
       {
         client: 'trademark x chicago',
@@ -2120,10 +2132,16 @@
           '<p>I rebuilt the chair in balsa wood at a reduced scale, paying attention to how each plane, bar, and connection sits in space. From there I laser cut a box that acts like a small stage for the object, so the color blocks and structural lines feel almost like a tiny set instead of a static object.</p>',
           '<p>Once the model was finished, I photographed it to focus on light, shadow, and how the parts line up from different angles. The goal was to make the chair feel fresh and graphic again while still honoring Rietveld&apos;s original proportions and the De Stijl language of color and form.</p>'
         ].join('');
+      } else if (p.title === 'Garbage Magazine') {
+        descEl.innerHTML = [
+          '<p>Garbage Magazine is a self-initiated editorial project built around photographs and design from ATL, following MARTA and the everyday infrastructure that usually gets ignored.</p>',
+          '<p>The spreads layer typography, image, and texture to feel like a low-fi archive of construction zones, train platforms, underpasses, and street-level ephemera.</p>',
+          '<p>I treated each story like a visual mixtape, mixing my own photos with bold type systems, high-contrast crops, and pockets of quiet white space so it lives somewhere between a zine, a lookbook, and a field study of the city.</p>'
+        ].join('');
       } else if (p.description) {
         descEl.innerHTML = `<p>${p.description}</p>`;
       } else {
-        descEl.innerHTML = '<p>placeholder - project description goes here.</p><p>placeholder - your approach and outcome.</p>';
+        descEl.innerHTML = '';
       }
 
       // Process grid
@@ -2135,11 +2153,7 @@
           </div>`
         ).join('');
       } else {
-        grid.innerHTML = `
-          <div class="case-grid-img"><div class="fill ph2" style="min-height:200px;"></div></div>
-          <div class="case-grid-img tall"><div class="fill ph3" style="min-height:280px;"></div></div>
-          <div class="case-grid-img tall"><div class="fill ph4" style="min-height:280px;"></div></div>
-          <div class="case-grid-img"><div class="fill ph5" style="min-height:200px;"></div></div>`;
+        grid.innerHTML = '';
       }
 
       document.getElementById('caseOverlay').scrollTop = 0;
