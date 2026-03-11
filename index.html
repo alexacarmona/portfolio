@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>alexa carmona</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -43,7 +44,7 @@
       transition: background var(--tr);
     }
     .name {
-      font-size: 22px; font-weight: 500; letter-spacing: -0.01em;
+      font-size: 22px; font-weight: 400; letter-spacing: -0.01em;
       color: var(--fg); cursor: pointer; user-select: none;
       text-decoration: none;
       transition: color 0.2s;
@@ -53,21 +54,34 @@
       display: flex; align-items: center; gap: 32px;
     }
     .nav-link {
-      font-size: 11px; font-weight: 400; letter-spacing: 0.06em;
+      font-size: 14px; font-weight: 300; letter-spacing: 0.08em;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: var(--fg-muted); text-decoration: none;
       transition: color 0.2s; cursor: pointer; user-select: none;
     }
     .nav-link:hover { color: #e6b800; }
+    #aboutNavLink {
+      position: relative;
+      display: inline-block;
+      transform-origin: center;
+    }
+    #aboutNavLink:hover {
+      animation: navPop 0.22s cubic-bezier(0.22,1,0.36,1);
+    }
+    @keyframes navPop {
+      0%   { transform: scale(1); }
+      55%  { transform: scale(1.18); }
+      100% { transform: scale(1); }
+    }
     .theme-btn {
-      font-size: 11px; font-weight: 400; letter-spacing: 0.06em;
+      font-size: 14px; font-weight: 300; letter-spacing: 0.08em;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: var(--fg-muted); background: none; border: none;
       cursor: pointer; transition: color 0.2s; padding: 0;
     }
     .theme-btn:hover { color: #e6b800; }
 
-    /* ══ SECTIONS — CSS :target based switching ══════════
+    /* ══ SECTIONS - CSS :target based switching ==========
        Default: #home is shown. Clicking nav links changes
        the hash, CSS :target handles visibility instantly.
        Works 100% from local filesystem, no server needed.
@@ -114,7 +128,7 @@
       color: var(--fg);
     }
 
-    /* footer visibility — no box, just email / links / copyright */
+    /* footer visibility - no box, just email / links / copyright */
     .site-footer {
       position: fixed; bottom: 0; left: 0; right: 0;
       z-index: 340; height: var(--footer-h);
@@ -190,26 +204,10 @@
       margin-bottom: 18px;
       animation: none;
     }
-    /* land-in motion for home headline lines */
-    .home-hero-line { display: block; will-change: transform, opacity; }
-    .intro-title:not(.landed) .home-hero-line {
-      opacity: 0;
-      transform: translateY(44px);
-    }
-    .intro-title.landed .home-hero-line {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .intro-title.landed #homeHeroLine1 {
-      animation: homeLand 880ms cubic-bezier(0.22,1,0.36,1) both;
-    }
-    .intro-title.landed #homeHeroLine2 {
-      animation: homeLand 880ms cubic-bezier(0.22,1,0.36,1) both;
-      animation-delay: 140ms;
-    }
-    @keyframes homeLand {
-      0%   { opacity: 0; transform: translateY(60px); }
-      100% { opacity: 1; transform: translateY(0); }
+    /* HOME HERO - headline stays in place, no fades; just character motion */
+    .home-hero-line {
+      display: inline-block;
+      white-space: nowrap;
     }
     .intro-sub {
       font-size: 11px; font-weight: 400; letter-spacing: 0.1em;
@@ -362,11 +360,14 @@
       margin-bottom: 10px;
     }
     .design-hero-title {
-      font-size: clamp(42px, 6vw, 78px);
+      font-size: clamp(110px, 10vw, 180px);
       line-height: 0.96;
       letter-spacing: -0.05em;
       font-weight: 400;
       margin: 0 0 18px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
     }
     .design-hero-title span { display: block; }
     .design-hero-title .cycle-line {
@@ -378,8 +379,13 @@
     }
     .design-hero-title .accent {
       color: #e6b800;
-      text-align: right;
-      padding-right: 0;
+    }
+    .design-hero-accent-block {
+      align-self: flex-end;      /* place yellow block on the right side */
+      text-align: left;          /* keep text left-ragged inside */
+    }
+    .design-hero-accent-block .accent {
+      display: block;
     }
     .design-hero-title .accent:first-of-type {
       /* drop the yellow block lower, keep people/experience tight together */
@@ -476,14 +482,15 @@
     .design-hero-img-primary {
       width: 210px;
       height: 145px;
-      bottom: -200px;
+      bottom: 80px; /* previous size/position */
       right: 8%;
+      z-index: 3;
     }
     .design-hero-img-secondary {
-      width: 520px;
-      height: 340px;
-      bottom: -220px;
-      left: 2%;
+      width: 350px;
+      height: 230px;
+      bottom: 20px; /* raised ~2 more inches visually */
+      left: 0;
       transform: translateY(0);
     }
     .design-hero-img img {
@@ -535,7 +542,7 @@
     }
     .works-grid-item:hover .wg-title { transform: translateY(0); }
 
-    /* ══ PHOTOGRAPHY — scroll-anywhere, mixed orientations, title below on hover ═══ */
+    /* ══ PHOTOGRAPHY - scroll-anywhere, mixed orientations, title below on hover ═══ */
     #photography {
       overflow: auto;
       -webkit-overflow-scrolling: touch;
@@ -659,7 +666,7 @@
       flex-direction: column;
     }
 
-    /* back button — fixed so it stays visible when scrolling; right side, yellow on hover */
+    /* back button - fixed so it stays visible when scrolling; right side, yellow on hover */
     .photo-back {
       position: fixed;
       top: calc(var(--nav-h) + 12px);
@@ -796,7 +803,7 @@
     }
     .pd-right .pd-overlay { background: rgba(0,0,0,0.65); }
 
-    /* ══ ABOUT ═══════════════════════════════════════════ */
+    /* ══ ABOUT / AFTERPARTY ═══════════════════════════════ */
     #about {
       overflow-y: auto;
       scrollbar-width: thin; scrollbar-color: var(--fg-muted) transparent;
@@ -841,6 +848,76 @@
     .about-link     { font-size: 14px; font-weight: 300; color: var(--fg); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; width: fit-content; transition: color 0.2s; }
     .about-link:hover { color: #e6b800; }
 
+    .afterparty-strip {
+      overflow: hidden;
+      border-top: 1px solid var(--card-bg);
+      border-bottom: 1px solid var(--card-bg);
+      background: #fddc2a; /* yellow band */
+      margin-top: 180px; /* drop band lower ~3 inches on most screens */
+    }
+    .afterparty-strip-inner {
+      display: inline-flex;
+      align-items: center;
+      gap: 40px;
+      padding: 22px 0; /* thicker band */
+      white-space: nowrap;
+      animation: afterpartyMarquee 9s linear infinite; /* a bit faster */
+    }
+    .afterparty-strip-text {
+      font-size: 56px;
+      font-weight: 400;
+      font-style: italic;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #000; /* black text */
+      font-family: "Bebas Neue", "Helvetica Neue Condensed", "Arial Narrow", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+    @keyframes afterpartyMarquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .about-afterparty {
+      border-top: 1px solid var(--card-bg);
+      padding: 72px 60px 120px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .about-afterparty-label {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+    }
+    .about-afterparty-title {
+      font-size: clamp(30px, 4vw, 42px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      max-width: 520px;
+    }
+    .about-afterparty-body {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.8;
+      max-width: 520px;
+      color: var(--fg-muted);
+    }
+    .afterparty-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 12px;
+    }
+    .afterparty-pill {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      border: 1px solid var(--card-bg);
+      padding: 6px 14px;
+    }
+
     /* ══ CASE STUDY OVERLAY ══════════════════════════════ */
     .case-overlay {
       position: fixed; inset: 0; z-index: 300;
@@ -853,7 +930,14 @@
     .case-hero  { width: 100%; aspect-ratio: 16/9; border-radius: 0; margin-bottom: 56px; overflow: hidden; }
     .case-hero .fill { width: 100%; height: 100%; object-fit: cover; display: block; }
     .case-header { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 72px; }
-    .case-client { font-size: 10px; letter-spacing: 0.12em; color: var(--fg-muted); margin-bottom: 10px; }
+    .case-client { font-size: 10px; letter-spacing: 0.12em; color: var(--fg-muted); margin-bottom: 4px; }
+    .case-collab {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      display: block;
+    }
     .case-title  { font-size: clamp(28px, 4vw, 50px); font-weight: 300; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; letter-spacing: -0.025em; line-height: 1.0; margin-bottom: 18px; text-transform: uppercase; }
     .case-tags   { display: flex; flex-wrap: wrap; gap: 8px; }
     .case-tag-pill { font-size: 9px; letter-spacing: 0.1em; border: 1px solid var(--fg-muted); border-radius: 20px; padding: 4px 12px; color: var(--fg-muted); }
@@ -1014,7 +1098,7 @@
       .pd-carousel-next { right: 8px; }
     }
 
-    /* scroll hint for photo detail — outside panel so it’s always visible when open */
+    /* scroll hint for photo detail - outside panel so it’s always visible when open */
   </style>
 </head>
 <body data-theme="light">
@@ -1098,47 +1182,54 @@
           <h3 class="design-hero-title">
             <span id="designHeroLine1" class="cycle-line design-hero-line">designing</span>
             <span id="designHeroLine2" class="cycle-line design-hero-line">brands</span>
-            <span id="designHeroLine3" class="accent design-hero-line">people</span>
-            <span id="designHeroLine4" class="accent design-hero-line">experience.</span>
+            <span class="design-hero-accent-block">
+              <span id="designHeroLine3" class="accent design-hero-line">people</span>
+              <span id="designHeroLine4" class="accent design-hero-line">experience.</span>
+            </span>
           </h3>
           <p class="design-hero-sub"></p>
         </div>
       </div>
       <div class="works-grid">
-        <!-- proj1: secret life of walter — thumbnail: image 2 -->
+        <!-- proj1: secret life of walter - thumbnail: image 2 -->
         <div class="works-grid-item" data-proj="0" onclick="openCase(0)">
           <img src="2secretlifeofwalter_proj1.jpg" alt="Secret Life of Walter" />
           <div class="wg-overlay"><span class="wg-title">secret life of walter</span></div>
         </div>
-        <!-- proj2: red blue chair — thumbnail: image 4 -->
+        <!-- proj2: red blue chair - thumbnail: image 4 -->
         <div class="works-grid-item" data-proj="1" onclick="openCase(1)">
           <img src="4redbluechair_proj2.jpg" alt="Red and Blue Chair" />
           <div class="wg-overlay"><span class="wg-title">red and blue chair</span></div>
         </div>
-        <!-- proj3: swiss design stamps — thumbnail: image 6 -->
+        <!-- proj3: swiss design stamps - thumbnail: image 6 -->
         <div class="works-grid-item" data-proj="2" onclick="openCase(2)">
           <img src="6swissdesignstamps_proj3.jpg" alt="Swiss Design Stamps" />
           <div class="wg-overlay"><span class="wg-title">swiss design stamps</span></div>
         </div>
-        <!-- proj4: garbage magazine — thumbnail: image 3 -->
+        <!-- proj4: garbage magazine - thumbnail: image 3 -->
         <div class="works-grid-item" data-proj="3" onclick="openCase(3)">
           <img src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" />
           <div class="wg-overlay"><span class="wg-title">garbage magazine</span></div>
         </div>
-        <!-- proj5: breadly — thumbnail: image 25 -->
+        <!-- proj5: breadly - thumbnail: image 25 -->
         <div class="works-grid-item" data-proj="4" onclick="openCase(4)">
           <img src="25breadly_proj5.jpg" alt="Breadly" />
           <div class="wg-overlay"><span class="wg-title">breadly</span></div>
         </div>
-        <!-- proj6: art and athletics — thumbnail: artandathletics_proj16 -->
+        <!-- proj6: art and athletics - thumbnail: artandathletics_proj16 -->
         <div class="works-grid-item" data-proj="5" onclick="openCase(7)">
           <img src="artandathletics_proj16.jpg" alt="Art and Athletics spread" />
           <div class="wg-overlay"><span class="wg-title">art and athletics</span></div>
         </div>
-        <!-- proj6: gotem -->
+        <!-- proj7: gotem -->
         <div class="works-grid-item" data-proj="6" onclick="openCase(6)">
           <img src="1gotem_proj14.jpg" alt="Gotem" />
           <div class="wg-overlay"><span class="wg-title">gotem</span></div>
+        </div>
+        <!-- proj8: trademark x chicago - thumbnail: image 1 -->
+        <div class="works-grid-item" data-proj="7" onclick="openCase(8)">
+          <img src="1trademarkxchicago_proj24.jpg" alt="Trademark x Chicago" />
+          <div class="wg-overlay"><span class="wg-title">trademark x chicago</span></div>
         </div>
       </div>
     </div>
@@ -1187,6 +1278,33 @@
         </div>
       </div>
     </div>
+    <div class="afterparty-strip">
+      <div class="afterparty-strip-inner">
+        <span class="afterparty-strip-text">afterparty</span>
+        <span class="afterparty-strip-text">afterparty</span>
+        <span class="afterparty-strip-text">afterparty</span>
+        <span class="afterparty-strip-text">afterparty</span>
+        <span class="afterparty-strip-text">afterparty</span>
+        <span class="afterparty-strip-text">afterparty</span>
+        <span class="afterparty-strip-text">afterparty</span>
+        <span class="afterparty-strip-text">afterparty</span>
+      </div>
+    </div>
+    <div class="about-afterparty">
+      <div>
+        <div class="about-afterparty-label">afterparty</div>
+        <h3 class="about-afterparty-title">the part of the site where things get a little weirder (on purpose).</h3>
+      </div>
+      <div class="about-afterparty-body">
+        this space is for experiments, in-betweens, and work that doesn&apos;t fit neatly into a case study. it&apos;s where new ideas sneak in at 2am, where half-finished concepts live next to fully realized pieces, and where the rules are more like suggestions.
+        <div class="afterparty-grid">
+          <span class="afterparty-pill">process scraps</span>
+          <span class="afterparty-pill">motion tests</span>
+          <span class="afterparty-pill">type play</span>
+          <span class="afterparty-pill">photo outtakes</span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- NAV comes after sections so :target general sibling selector (~) works -->
@@ -1195,7 +1313,7 @@
     <div class="nav-right">
       <a class="nav-link" href="#design">design</a>
       <a class="nav-link" href="#photography">photography</a>
-      <a class="nav-link" href="#about">about</a>
+      <a class="nav-link" href="#about" id="aboutNavLink">about</a>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">dark</button>
     </div>
   </nav>
@@ -1217,7 +1335,7 @@
     scroll
   </div>
 
-  <!-- Case study overlay — still uses JS since it's above everything -->
+  <!-- Case study overlay - still uses JS since it's above everything -->
   <div class="case-overlay" id="caseOverlay">
     <button type="button" class="photo-back" onclick="closeCase()">← back</button>
     <div class="case-inner">
@@ -1231,8 +1349,8 @@
           <div class="case-tags" id="caseTags"><span class="case-tag-pill">category</span></div>
         </div>
         <div class="case-desc" id="caseDesc">
-          <p>placeholder — project description goes here.</p>
-          <p>placeholder — your approach and outcome.</p>
+          <p>placeholder - project description goes here.</p>
+          <p>placeholder - your approach and outcome.</p>
         </div>
       </div>
       <p class="case-section-label">process &amp; detail</p>
@@ -1246,7 +1364,7 @@
   </div>
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-    /* ABOUT PHOTO — cycle alt images on each hover */
+    /* ABOUT PHOTO - cycle alt images on each hover */
     (function() {
       var wrap = document.getElementById('aboutPhotoWrap');
       if (!wrap) return;
@@ -1261,7 +1379,17 @@
       });
     })();
 
-    /* DESIGN HERO — cycle first two lines */
+    /* ABOUT NAV - hover label switches to "afterparty" */
+    (function() {
+      var link = document.getElementById('aboutNavLink');
+      if (!link) return;
+      var base = 'about';
+      var alt = 'afterparty';
+      link.addEventListener('mouseenter', function() { link.textContent = alt; });
+      link.addEventListener('mouseleave', function() { link.textContent = base; });
+    })();
+
+    /* DESIGN HERO - cycle first two lines */
     (function() {
       var line1 = document.getElementById('designHeroLine1');
       var line2 = document.getElementById('designHeroLine2');
@@ -1296,7 +1424,7 @@
       setInterval(cycle, 1400);
     })();
 
-    /* DESIGN HERO — both headline lines land; repeats on scroll + nav click */
+    /* DESIGN HERO - both headline lines land; repeats on scroll + nav click */
     (function() {
       var designSection = document.getElementById('design');
       var heroCopy = designSection && designSection.querySelector('.design-hero-copy');
@@ -1334,45 +1462,9 @@
       io.observe(heroCopy);
     })();
 
-    /* HOME HERO — headline lands; repeats on scroll + nav click */
-    (function() {
-      var homeSection = document.getElementById('home');
-      if (!homeSection) return;
-      var track = homeSection.querySelector('.scroll-track');
-      var title = homeSection.querySelector('.intro-title');
-      if (!track || !title) return;
+    /* HOME HERO - no scramble/animation; headline is static now */
 
-      function isHome() {
-        return location.hash === '' || location.hash === '#home';
-      }
-      function triggerLand(force) {
-        if (!isHome()) return;
-        if (!force && title.classList.contains('landed')) return;
-        title.classList.remove('landed');
-        requestAnimationFrame(function() {
-          requestAnimationFrame(function() {
-            title.classList.add('landed');
-          });
-        });
-      }
-
-      window.addEventListener('hashchange', function() {
-        if (isHome()) triggerLand(true);
-        else title.classList.remove('landed');
-      });
-      if (isHome()) triggerLand(true);
-
-      var io = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) {
-          if (!isHome()) return;
-          if (e.isIntersecting) triggerLand(false);
-          else title.classList.remove('landed');
-        });
-      }, { root: track, threshold: 0.65 });
-      io.observe(title);
-    })();
-
-    /* DESIGN LIST — fade / slide rows into place on scroll */
+    /* DESIGN LIST - fade / slide rows into place on scroll */
     (function() {
       var designSection = document.getElementById('design');
       if (!designSection) return;
@@ -1560,7 +1652,7 @@
       window.addEventListener('resize', () => { if (location.hash==='#photography') centerScroll(); });
     })();
 
-    /* ══ PHOTO PROJECTS — photography section data ══════════
+    /* ══ PHOTO PROJECTS - photography section data ════════
        images: array of { src, orientation } (orientation per image for grid).
        Grid uses at most 2 different thumbnails per project (alternating).
     ═══════════════════════════════════════════════════════════ */
@@ -1909,13 +2001,13 @@
         hero: '1secretlifeofwalter_proj1.jpg',
         images: ['3secretlifeofwalter_proj1.jpg','4secretlifeofwalter_proj1.jpg','5secretlifeofwalter_proj1.jpg','6secretlifeofwalter_proj1.jpg','7secretlifeofwalter_proj1.jpg'],
         content: [
-          { type: 'text', html: '<p>The Secret Life of Walter Mitty follows a daydreamer who manages photo negatives at Life magazine—until the final cover image goes missing. Walter leaves his desk to find the photographer, discovering that life happens when you step into it.</p>' },
+          { type: 'text', html: '<p>The Secret Life of Walter Mitty follows a daydreamer who manages photo negatives at Life magazine until the final cover image goes missing. Walter leaves his desk to find the photographer, discovering that life happens when you step into it.</p>' },
           { type: 'image', src: '3secretlifeofwalter_proj1.jpg' },
-          { type: 'text', html: '<p>I was inspired by the film and Walter’s role at Life—the idea of photography as a bridge between imagination and reality. I wanted to tell that story through this book.</p>' },
+          { type: 'text', html: '<p>I was inspired by the film and Walter’s role at Life, the idea of photography as a bridge between imagination and reality. I wanted to tell that story through this book.</p>' },
           { type: 'image', src: '4secretlifeofwalter_proj1.jpg' },
           { type: 'text', html: '<p>The book centers on three shifting scenes from the film. Typography and layout mirror the way Walter’s inner world collides with the real one.</p>' },
           { type: 'image', src: '5secretlifeofwalter_proj1.jpg' },
-          { type: 'text', html: '<p>The result is a book that feels like a journey—from the quiet of negatives to the rush of adventure.</p>' },
+          { type: 'text', html: '<p>The result is a book that feels like a journey, from the quiet of negatives to the rush of adventure.</p>' },
           { type: 'image', src: '6secretlifeofwalter_proj1.jpg' },
           { type: 'image', src: '7secretlifeofwalter_proj1.jpg' }
         ]
@@ -1932,7 +2024,8 @@
         title: 'Swiss Design Stamps',
         tags: ['graphic design', 'print', 'identity'],
         hero: '1swissdesignstamps_proj3.jpg',
-        images: ['2swissdesignstamps_proj3.jpg','3swissdesignstamps_proj3.jpg','4swissdesignstamps_proj3.jpg','5swissdesignstamps_proj3.jpg','7swissdesignstamps_proj3.jpg']
+        images: ['2swissdesignstamps_proj3.jpg','3swissdesignstamps_proj3.jpg','4swissdesignstamps_proj3.jpg','5swissdesignstamps_proj3.jpg','7swissdesignstamps_proj3.jpg'],
+        description: 'A set of stamps that follows three pioneers in Swiss design. I designed and printed the full set: stamps, envelopes, and a small brochure that works as both a keepsake and a guide to the designers. The process started by breaking down their systems into grids, color, and type rules, then rebuilding them at stamp scale so each piece feels precise but still playful. The envelope and brochure extend those rules into larger surfaces, layering type and image so the set feels like a pocket-sized archive of Swiss design thinking.'
       },
       {
         client: 'personal project',
@@ -1946,7 +2039,9 @@
         title: 'Breadly',
         tags: ['branding', 'packaging', 'art direction'],
         hero: '25breadly_proj5.jpg',
-        images: ['1breadly_proj5.jpeg','3breadly_proj5.jpeg','5breadly_proj5.jpeg','10breadly_proj5.jpg','14breadly_proj5.jpg','15breadly_proj5.jpg','22breadly_proj5.jpg','23breadly_proj5.jpg','26breadly_proj5.jpg']
+        images: ['1breadly_proj5.jpeg','3breadly_proj5.jpeg','5breadly_proj5.jpeg','10breadly_proj5.jpg','14breadly_proj5.jpg','15breadly_proj5.jpg','22breadly_proj5.jpg','23breadly_proj5.jpg','26breadly_proj5.jpg'],
+        collaborators: 'Rose Davis and Bradley Looney',
+        description: 'I photographed the packaging and led art direction. We built a brand about bread: packaging, tone, and a playful social accessory identity built around bread and the baguette. The process started with naming and positioning, then moved into testing different bread silhouettes, crust textures, and crumb shots to find a visual language that felt both everyday and a little iconic. From there, we prototyped labels and bags, refining color, type hierarchy, and how the logo wraps around each loaf. Finally, we built out a small system of social assets and motion sketches that treat baguettes and slices as props, so the brand can live in photos, stories, and playful behind-the-scenes content.'
       },
       {
         client: 'mariana fashion design',
@@ -1969,6 +2064,23 @@
         hero: 'artandathletics_proj16.jpg',
         images: ['artandathletics_proj16.jpg']
       },
+      {
+        client: 'trademark x chicago',
+        title: 'Trademark x Chicago',
+        tags: ['graphic design', 'branding', 'identity'],
+        hero: '1trademarkxchicago_proj24.jpg',
+        images: [
+          '1trademarkxchicago_proj24.jpg',
+          '2trademarkxchicago_proj24.jpg',
+          '3trademarkxchicago_proj24.jpg',
+          '4trademarkxchicago_proj24.png',
+          '5trademarkxchicago_proj24.jpg',
+          '6trademarkxchicago_proj24.png',
+          '7trademarkxchicago_proj24.png'
+        ],
+        collaborators: 'Kaki Kwan, Bella Ahn, and Ahana',
+        description: 'A collaboration with FTOP (For The One Percent) focused on highlighting the work artists are doing in Chicago and building community around them. We created a visual language that feels sharp and aspirational, then applied it to a series of posters, motion tests, and social assets that function as a pop-up moment for artists to interact, share work, and be seen.'
+      },
     ];
 
     function openCase(i) {
@@ -1982,7 +2094,15 @@
         heroWrap.innerHTML = `<div class="fill ${p.ph}" style="height:100%;min-height:300px;"></div>`;
       }
 
-      document.getElementById('caseClient').textContent = p.client;
+      const clientEl = document.getElementById('caseClient');
+      // Do NOT repeat the title/client above collaborators for any project.
+      clientEl.textContent = '';
+      if (p.collaborators) {
+        const collabEl = document.createElement('span');
+        collabEl.className = 'case-collab';
+        collabEl.textContent = `Collaborators: ${p.collaborators}`;
+        clientEl.appendChild(collabEl);
+      }
       document.getElementById('caseTitle').textContent  = p.title;
       document.getElementById('caseTags').innerHTML = p.tags.map(t =>
         `<span class="case-tag-pill">${t}</span>`).join('');
@@ -1991,17 +2111,19 @@
       if (p.title === 'Secret Life of Walter') {
         descEl.innerHTML = [
           '<p>The Secret Life of Walter Mitty follows a quiet photo editor at Life magazine who spends his days archiving other people&apos;s adventures until the final cover negative goes missing and he has to leave his desk to find the photographer.</p>',
-          '<p>As Walter chases that single image around the world, his daydreams start to blur into real experience, and he learns that meaning is not in the fantasy of a life you might live someday, but in being fully present for the one you&apos;re in.</p>',
-          '<p>This book focuses on three shifting scenes from the film. I used photography and typography to echo the way Walter&apos;s inner world collides with the real one, treating each spread like a frame pulled from the Life archive.</p>'
+          '<p>My starting point was the roll of film at the center of the story, the fact that one negative is missing and it is both fragile and vital. I treated the project like a sequence of frames pulled from that strip, so the pacing and cropping feel like you are moving along the film, not just flipping pages.</p>',
+          '<p>This book focuses on three main scenes where Walter continuously chooses to step out of his comfort zone. Each spread pairs photography, typography, and scale shifts to echo the way his inner world collides with the real one, so the spreads feel like a loose contact sheet of the moments that change him.</p>'
         ].join('');
       } else if (p.title === 'Red and Blue Chair') {
         descEl.innerHTML = [
-          '<p>This project started with the De Stijl red and blue chair and its creator. I was interested in how something that iconic can still feel playful and experimental.</p>',
-          '<p>I recreated the chair as a small scale object in balsa wood, and laser cut the box that holds it. The box works like a little stage for the object, so the color blocks and planes feel almost like a tiny set.</p>',
-          '<p>Once it was built, I photographed the model to focus on light, shadow, and how the parts line up in space. The goal was to make the chair feel fresh and graphic again, while still honoring the original design.</p>'
+          '<p>This project started with Gerrit Rietveld&apos;s red and blue chair from the De Stijl era. I was interested in how something that iconic can still feel playful and experimental when you take it off the page and into a small, physical model.</p>',
+          '<p>I rebuilt the chair in balsa wood at a reduced scale, paying attention to how each plane, bar, and connection sits in space. From there I laser cut a box that acts like a small stage for the object, so the color blocks and structural lines feel almost like a tiny set instead of a static object.</p>',
+          '<p>Once the model was finished, I photographed it to focus on light, shadow, and how the parts line up from different angles. The goal was to make the chair feel fresh and graphic again while still honoring Rietveld&apos;s original proportions and the De Stijl language of color and form.</p>'
         ].join('');
+      } else if (p.description) {
+        descEl.innerHTML = `<p>${p.description}</p>`;
       } else {
-        descEl.innerHTML = '<p>placeholder — project description goes here.</p><p>placeholder — your approach and outcome.</p>';
+        descEl.innerHTML = '<p>placeholder - project description goes here.</p><p>placeholder - your approach and outcome.</p>';
       }
 
       // Process grid
