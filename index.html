@@ -40,16 +40,31 @@
       display: flex; align-items: center;
       justify-content: space-between;
       padding: 0 40px;
-      background: var(--bg);
-      transition: background var(--tr);
+      background: transparent;
+      transition: color var(--tr);
     }
     .name {
-      font-size: 22px; font-weight: 400; letter-spacing: -0.01em;
-      color: var(--fg); cursor: pointer; user-select: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--fg);
+      cursor: pointer;
+      user-select: none;
       text-decoration: none;
       transition: color 0.2s;
     }
     .name:hover { color: #e6b800; }
+    .name-logo-img {
+      display: block;
+      height: 78px;
+      width: auto;
+      max-width: 580px;
+      transition: filter 0.18s ease;
+    }
+    /* Exact yellow hover: swap to a true #e6b800 asset */
+    .name-logo-img--yellow { display: none; }
+    .name:hover .name-logo-img--yellow { display: block; }
+    .name:hover .name-logo-img--default { display: none; }
     .nav-right {
       display: flex; align-items: center; gap: 32px;
     }
@@ -160,7 +175,9 @@
     .scroll-hint {
       position: fixed; bottom: 26px; left: 60px;
       display: flex; align-items: center; gap: 10px;
-      font-size: 10px; letter-spacing: 0.1em; color: var(--fg-muted);
+      font-size: 16px; letter-spacing: 0.14em; color: var(--fg-muted);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      font-weight: 300;
       pointer-events: none; z-index: 200; transition: opacity 0.5s, bottom 0.3s;
     }
     #design:target    ~ .scroll-hint,
@@ -172,10 +189,10 @@
       bottom: calc(var(--footer-h) + 20px);
     }
 
-    .scroll-hint-line { width: 36px; height: 1px; background: var(--fg-muted); position: relative; overflow: hidden; }
+    .scroll-hint-line { width: 54px; height: 1px; background: var(--fg-muted); position: relative; overflow: hidden; }
     .scroll-hint-line::after {
       content: ''; position: absolute; top: 0; left: -100%;
-      width: 100%; height: 100%; background: var(--fg);
+      width: 100%; height: 100%; background: #e6b800;
       animation: slideline 1.8s ease-in-out infinite;
     }
     @keyframes slideline { 0%{left:-100%} 50%{left:100%} 100%{left:100%} }
@@ -209,6 +226,21 @@
       display: inline-block;
       white-space: nowrap;
     }
+    /* Rotating role text: fades without layout shift */
+    .home-hero-rotator {
+      display: inline-block;
+      white-space: nowrap;
+      min-width: 24ch; /* prevents layout shift across phrases */
+      min-height: 2.2em; /* reserve space for the 2-line phrase */
+    }
+    .home-hero-rotator-text {
+      display: inline-block;
+      transition: opacity 420ms ease;
+      opacity: 1;
+    }
+    .home-hero-rotator-text.is-fading { opacity: 0; }
+    .home-hero-rotator-text.two-line { white-space: normal; }
+    .home-hero-rotator-line { display: block; }
     .intro-sub {
       font-size: 11px; font-weight: 400; letter-spacing: 0.1em;
       color: var(--fg-muted); text-transform: lowercase;
@@ -306,97 +338,189 @@
       padding-bottom: var(--footer-h);
     }
     .section-inner { max-width: 1200px; margin: 0 auto; padding: calc(var(--nav-h) + 44px) 60px 60px; }
-    #design .section-inner { padding: calc(var(--nav-h) + 44px) 24px 60px; }
-    .section-title { font-size: clamp(34px, 5vw, 60px); font-weight: 400; letter-spacing: -0.025em; margin-bottom: 44px; }
+    /* Let the intro media bleed under the fixed nav */
+    #design .section-inner { max-width: none; padding: 0 0.5in 60px; }
+    .section-title { font-size: clamp(34px, 5vw, 60px); font-weight: 400; letter-spacing: -0.025em; margin-bottom: 44px; padding: 0; }
 
-    .design-hero {
+    /* design hero removed to make room for stacked project cards */
+
+    /* Body of Water-inspired design index */
+    .design-works-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      align-items: start;
+    }
+
+    .design-intro-stage {
       position: relative;
-      display: flex;
-      align-items: flex-end;
-      gap: 48px;
-      /* extra space before the grid starts */
-      margin-bottom: 520px;
-    }
-    .design-hero-copy {
-      flex: 1 1 0;
-      position: relative;
-      z-index: 2;
-      padding-top: 0;
-    }
-    /* land-in motion for design hero headline lines */
-    .design-hero-line { will-change: transform, opacity; }
-    .design-hero-copy:not(.landed) .design-hero-line {
-      opacity: 0;
-      transform: translateY(44px);
-    }
-    .design-hero-copy.landed .design-hero-line {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .design-hero-copy.landed #designHeroLine1 {
-      animation: designLand 880ms cubic-bezier(0.22,1,0.36,1) both;
-    }
-    .design-hero-copy.landed #designHeroLine2 {
-      animation: designLand 880ms cubic-bezier(0.22,1,0.36,1) both;
-      animation-delay: 120ms;
-    }
-    .design-hero-copy.landed #designHeroLine3 {
-      animation: designLand 880ms cubic-bezier(0.22,1,0.36,1) both;
-      animation-delay: 240ms;
-    }
-    .design-hero-copy.landed #designHeroLine4 {
-      animation: designLand 880ms cubic-bezier(0.22,1,0.36,1) both;
-      animation-delay: 360ms;
-    }
-    @keyframes designLand {
-      0%   { opacity: 0; transform: translateY(60px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    .design-hero-kicker {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--fg-muted);
-      margin-bottom: 10px;
-    }
-    .design-hero-title {
-      font-size: clamp(110px, 10vw, 180px);
-      line-height: 0.96;
-      letter-spacing: -0.05em;
-      font-weight: 400;
-      margin: 0 0 18px 0;
+      min-height: 100vh;
+      max-height: 1100px;
       display: flex;
       flex-direction: column;
-      align-items: flex-start;
+      justify-content: flex-end;
+      padding-top: var(--nav-h);
+      /* push the intro copy higher on the video */
+      padding-bottom: 2in;
+      /* full-bleed under the nav */
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      margin-bottom: 4in;
     }
-    .design-hero-title span { display: block; }
-    .design-hero-title .cycle-line {
-      transition: opacity 0.22s ease, transform 0.22s ease;
+    .design-intro-media {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: var(--card-bg);
     }
-    .design-hero-title .cycle-line.cycling {
-      opacity: 0;
-      transform: translateY(12px);
+    /* darken video so text + nav stay readable */
+    .design-intro-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.66) 0%,
+        rgba(0,0,0,0.34) 45%,
+        rgba(0,0,0,0.10) 100%
+      );
+      pointer-events: none;
+      z-index: 1;
     }
-    .design-hero-title .accent {
+    .design-intro-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.96;
+    }
+    .design-intro-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: 0.96;
+    }
+    .design-intro-stage .design-intro {
+      position: relative;
+      z-index: 2;
+      margin: 0;
+      padding-left: 0.5in;
+      padding-right: 0.5in;
+    }
+
+    .design-intro {
+      display: grid;
+      grid-template-columns: minmax(240px, 360px) 1fr;
+      gap: 44px;
+      margin: 6px 0 44px;
+      max-width: none;
+      min-height: 0;
+      /* align the headline and body text on a shared baseline */
+      align-items: baseline;
+    }
+    .design-intro-left { padding-top: 0; position: relative; }
+    .design-intro-kicker {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.78);
+      font-weight: 300;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      /* keep kicker from affecting baseline alignment */
+      position: absolute;
+      top: -18px;
+      left: 0;
+    }
+    .design-intro-title {
+      font-size: clamp(30px, 4.3vw, 52px);
+      font-weight: 400;
+      letter-spacing: -0.025em;
+      line-height: 1.02;
+      margin-top: 10px;
+      white-space: nowrap;
+      color: #fff;
+      text-shadow: 0 2px 16px rgba(0,0,0,0.55);
+    }
+    .design-intro-right {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
+      gap: 52px;
+      padding-top: 0;
+      align-items: start;
+    }
+    .design-intro-p {
+      margin: 0;
+      font-size: 12px;
+      line-height: 1.65;
+      font-weight: 300;
+      color: rgba(255,255,255,0.88);
+      opacity: 0.88;
+      max-width: 34ch;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.55);
+    }
+
+    /* Nav contrast mode (white) for dark media behind it */
+    nav.nav-contrast-light .nav-link,
+    nav.nav-contrast-light .theme-btn {
+      color: rgba(255,255,255,0.92);
+    }
+    nav.nav-contrast-light .nav-link:hover,
+    nav.nav-contrast-light .theme-btn:hover {
       color: #e6b800;
     }
-    .design-hero-accent-block {
-      align-self: flex-end;      /* place yellow block on the right side */
-      text-align: left;          /* keep text left-ragged inside */
+    nav.nav-contrast-light .name { color: rgba(255,255,255,0.92); }
+    nav.nav-contrast-light .name-logo-img--default { filter: invert(1); }
+    nav.nav-contrast-light .name-logo-img--yellow { filter: none; }
+
+
+    .design-works-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 56px;
     }
-    .design-hero-accent-block .accent {
-      display: block;
+    .design-works-row {
+      display: grid;
+      gap: 44px;
     }
-    .design-hero-title .accent:first-of-type {
-      /* drop the yellow block lower, keep people/experience tight together */
-      margin-top: 72px;
+    .design-works-row--two {
+      gap: 32px;
     }
-    .design-hero-sub {
-      font-size: 14px;
-      font-weight: 300;
-      max-width: 420px;
-      line-height: 1.7;
-      color: var(--fg-muted);
+    /* Two-up rows reserve a "missing 3rd tile" column width on the right */
+    .design-works-row--two {
+      grid-template-columns: repeat(3, minmax(0, 408px));
+      justify-content: start;
+      justify-items: start;
+    }
+    .design-works-row--one { grid-template-columns: 1fr; justify-items: end; }
+
+    /* Keep vertical tiles left-aligned within their grid cell (so blank space stays on the right),
+       and make all paired vertical thumbnails share the same frame size (match garbage tile). */
+    .design-works-row--two .works-grid-item.design-tile--vertical {
+      justify-self: start;
+      width: 4.1in;
+      height: 6.1in;
+      max-width: none;
+      aspect-ratio: auto;
+    }
+
+    #design .works-grid-item { margin-bottom: 0; }
+
+    .works-grid-item.design-tile--vertical { aspect-ratio: 4 / 6; }
+    .works-grid-item.design-tile--horizontal { aspect-ratio: 16 / 9; }
+
+    /* let the tiles size naturally within the row grid */
+    .works-grid-item.design-tile--vertical {
+      /* -1.5 inches from the prior enlarged size (~-144px at 96dpi) */
+      max-width: 408px;
+      width: 100%;
+    }
+    .works-grid-item.design-tile--horizontal {
+      width: 9.5in;
+      height: 5.5in;
+      max-width: none;
+      aspect-ratio: auto;
     }
 
     .design-list {
@@ -405,6 +529,7 @@
       gap: 48px;
       margin-top: 4px;
     }
+
     .design-row {
       display: flex;
       align-items: flex-end;
@@ -463,88 +588,103 @@
       margin-bottom: 0;
     }
 
-    .design-hero-images {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
+    /* design works grid – simple masonry-style layout (back to original) */
+    .works-grid {
+      columns: 3;
+      column-gap: 14px;
     }
-    .design-hero-img {
-      position: absolute;
-      border: none;
-      padding: 0;
-      background: none;
-      cursor: pointer;
+    .works-grid-item {
+      break-inside: avoid;
+      margin-bottom: 14px;
+      border-radius: 0;
       overflow: hidden;
-      box-shadow: 0 18px 40px rgba(0,0,0,0.12);
-      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), box-shadow 0.35s ease, opacity 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      z-index: 0;
     }
-    .design-hero-img-primary {
-      width: 210px;
-      height: 145px;
-      bottom: 80px; /* previous size/position */
-      right: 8%;
-      z-index: 3;
-    }
-    .design-hero-img-secondary {
-      width: 350px;
-      height: 230px;
-      bottom: 20px; /* raised ~2 more inches visually */
-      left: 0;
-      transform: translateY(0);
-    }
-    .design-hero-img img {
+    .works-grid-item:hover { z-index: 5; }
+    .works-grid-item img {
+      display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
+      object-position: center;
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
     }
-    .design-hero-img:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 24px 60px rgba(0,0,0,0.16);
+    /* Per-thumbnail crop tuning */
+    .works-grid-item[data-proj="1"] img { object-position: center 25%; }
+    .works-grid-item:hover img {
+      transform: scale(1.04);
     }
-
-    .works-grid { columns: 3; column-gap: 14px; }
-    .works-grid-item {
-      break-inside: avoid; margin-bottom: 14px;
-      border-radius: 0; overflow: hidden; cursor: pointer;
-      position: relative;
-    }
-    .works-grid-item img { display: block; width: 100%; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1); }
-    .works-grid-item:hover img { transform: scale(1.04); }
     .works-grid-item .fill { display: block; width: 100%; }
 
-    /* colored hover overlay per project */
+    /* colored hover overlay per project (original) */
     .works-grid-item .wg-overlay {
-      position: absolute; inset: 0; opacity: 0;
-      transition: opacity 0.35s ease; pointer-events: none; z-index: 1;
-      display: flex; align-items: flex-end; padding: 20px;
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: auto;
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      pointer-events: none;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 18px 18px 16px;
     }
-    .works-grid-item:hover .wg-overlay { opacity: 1; }
-    .works-grid-item[data-proj="0"] .wg-overlay { background: rgba(255,90,70,0.38); }
-    .works-grid-item[data-proj="1"] .wg-overlay { background: rgba(70,150,255,0.36); }
-    .works-grid-item[data-proj="2"] .wg-overlay { background: rgba(80,210,150,0.36); }
-    .works-grid-item[data-proj="3"] .wg-overlay { background: rgba(200,90,240,0.36); }
-    .works-grid-item[data-proj="4"] .wg-overlay { background: rgba(255,195,50,0.38); }
-    .works-grid-item[data-proj="5"] .wg-overlay { background: rgba(255,120,50,0.36); }
-    .works-grid-item[data-proj="6"] .wg-overlay { background: rgba(50,195,215,0.36); }
-    .works-grid-item[data-proj="7"] .wg-overlay { background: rgba(160,230,90,0.36); }
-    .works-grid-item[data-proj="8"] .wg-overlay { background: rgba(0,0,0,0.5); }
+    .works-grid-item:hover .wg-overlay { opacity: 1; transform: translateY(0); }
+    /* updated hover colors to match projects */
+    .works-grid-item[data-proj="0"] .wg-overlay { background: rgba(230, 184, 0, 0.62); }   /* Walter Mitty: yellow */
+    .works-grid-item[data-proj="1"] .wg-overlay { background: rgba(32, 98, 210, 0.58); }   /* Red & Blue Chair: blue */
+    .works-grid-item[data-proj="2"] .wg-overlay { background: rgba(18, 18, 18, 0.58); }    /* Swiss: near-black */
+    .works-grid-item[data-proj="3"] .wg-overlay { background: rgba(230, 90, 0, 0.60); }    /* Garbage: orange */
+    .works-grid-item[data-proj="4"] .wg-overlay { background: rgba(255, 168, 196, 0.70); } /* Breadly: pink */
+    .works-grid-item[data-proj="5"] .wg-overlay { background: rgba(255, 255, 255, 0.78); } /* Art & Athletics: white */
+    .works-grid-item[data-proj="6"] .wg-overlay { background: rgba(230, 90, 0, 0.60); }    /* Got em: orange */
+    .works-grid-item[data-proj="7"] .wg-overlay { background: rgba(0, 0, 0, 0.62); }       /* Trademark: black */
+    .works-grid-item[data-proj="8"] .wg-overlay { background: rgba(0,0,0,0.62); }
+
+    /* Light overlays: switch hover text to dark for contrast */
+    .works-grid-item[data-proj="0"] .wg-title,
+    .works-grid-item[data-proj="0"] .wg-desc,
+    .works-grid-item[data-proj="4"] .wg-title,
+    .works-grid-item[data-proj="4"] .wg-desc,
+    .works-grid-item[data-proj="5"] .wg-title,
+    .works-grid-item[data-proj="5"] .wg-desc {
+      color: rgba(17,17,17,0.9);
+      text-shadow: none;
+    }
 
     .wg-title {
-      font-size: 13px; font-weight: 300;
+      font-size: 16px; font-weight: 300;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: #fff;
       text-transform: uppercase;
       text-shadow: 0 1px 10px rgba(0,0,0,0.4);
-      transform: translateY(4px);
       transition: transform 0.3s ease;
       letter-spacing: 0.06em;
     }
     .works-grid-item:hover .wg-title { transform: translateY(0); }
+
+    .wg-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: rgba(255,255,255,0.85);
+      letter-spacing: 0.01em;
+      line-height: 1.65;
+      max-width: 520px;
+      text-align: left;
+      text-transform: lowercase;
+    }
+    .works-grid-item[data-proj="8"] .wg-desc { display: none; }
     .works-grid-item[data-proj="8"] .wg-overlay {
       align-items: center;
       justify-content: center;
+      text-align: center;
     }
     .works-grid-item[data-proj="8"] .wg-title {
       font-size: 18px;
@@ -588,6 +728,7 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      gap: 12px;
     }
 
     /* orientation-based dimensions: original aspect preserved */
@@ -680,23 +821,25 @@
       flex-direction: column;
     }
 
-    /* back button - fixed so it stays visible when scrolling; right side, yellow on hover */
+    /* back button - X icon; black, yellow on hover */
     .photo-back {
       position: fixed;
-      top: calc(var(--nav-h) + 12px);
-      right: 40px;
+      top: calc(var(--nav-h) + 44px);
+      right: calc(40px + 2in);
       left: auto;
-      font-size: 22px;
+      font-size: 38px;
+      line-height: 1;
       font-weight: 300;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      letter-spacing: 0.08em;
-      color: var(--fg-muted);
+      letter-spacing: 0;
+      text-transform: none;
+      color: #000;
       background: none;
       border: none;
       cursor: pointer;
       transition: color 0.2s;
       z-index: 20;
-      padding: 14px 20px;
+      padding: 0;
     }
     .photo-back:hover { color: #e6b800; }
 
@@ -937,12 +1080,48 @@
       position: fixed; inset: 0; z-index: 300;
       background: var(--overlay-bg); opacity: 0; pointer-events: none;
       transition: opacity 0.5s cubic-bezier(0.16,1,0.3,1);
-      overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--fg-muted) transparent;
+      overflow-y: auto; overflow-x: hidden;
+      scrollbar-width: thin; scrollbar-color: var(--fg-muted) transparent;
     }
     .case-overlay.open { opacity: 1; pointer-events: all; }
-    .case-inner { max-width: 1100px; margin: 0 auto; padding: 90px 60px 100px; }
-    .case-hero  { width: 100%; aspect-ratio: 16/9; border-radius: 0; margin-bottom: 56px; overflow: hidden; }
-    .case-hero .fill { width: 100%; height: 100%; object-fit: cover; display: block; }
+    /* Keep close button above the full-bleed hero (hero is a later sibling) */
+    #caseOverlay .photo-back { z-index: 310; }
+    .case-inner { max-width: 1100px; margin: 0 auto; padding: 56px 60px 100px; }
+    /* Full-bleed hook image (matches design intro video stage) */
+    .case-hero {
+      position: relative;
+      width: 100vw;
+      max-width: 100vw;
+      margin-left: calc(50% - 50vw);
+      margin-right: calc(50% - 50vw);
+      min-height: 100vh;
+      max-height: 1100px;
+      margin-bottom: 56px;
+      overflow: hidden;
+      border-radius: 0;
+      background: var(--card-bg);
+    }
+    .case-hero .case-hero-media {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+    .case-hero .case-hero-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      opacity: 0.96;
+    }
+    .case-hero .fill {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
     .case-header { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 72px; }
     .case-client { font-size: 10px; letter-spacing: 0.12em; color: var(--fg-muted); margin-bottom: 4px; }
     .case-collab {
@@ -988,6 +1167,7 @@
     @media (max-width: 800px) {
       nav { padding: 0 20px; }
       .name { font-size: 18px; }
+      .name-logo-img { height: 68px; max-width: 520px; }
       .intro-panel { width: 88vw; padding: 0 30px 50px; }
       .cards-row { padding: 0 40px 0 0; }
       .card { margin: 0 30px; }
@@ -997,16 +1177,63 @@
       .card.wide { width: 360px; height: 240px; }
       .card.small { width: 180px; height: 240px; }
       .card.auto-thumb { height: 240px; }
-      .case-inner { padding: 80px 24px 60px; }
+      .case-inner { padding: 40px 24px 60px; }
+      .case-hero { min-height: min(92vh, 900px); max-height: 900px; margin-bottom: 40px; }
       .case-header { grid-template-columns: 1fr; gap: 28px; }
       .about-layout { grid-template-columns: 1fr; }
       .about-photo-col { padding: 60px 32px 20px; }
       .about-text-col { padding: 20px 32px 60px; }
-      .works-grid { columns: 2; }
+      .design-deck-viewport {
+        perspective: none;
+      }
+      .works-grid {
+        height: auto;
+        transform: none !important;
+      }
+      #designDeckStack .works-grid-item {
+        position: relative;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+        margin-left: 0;
+        transform: none !important;
+        box-shadow: none;
+        margin-bottom: 18px;
+      }
       .section-inner { padding: calc(var(--nav-h) + 24px) 24px 60px; }
       .site-footer { padding: 0 20px; }
 
       #design .section-inner { padding: calc(var(--nav-h) + 32px) 28px 60px; }
+      #design .section-inner { padding-top: 0; }
+
+    /* mobile: stack the design works rows */
+      .design-works-layout { grid-template-columns: 1fr; gap: 24px; }
+      .design-works-row { gap: 24px; }
+      .design-works-row--two { grid-template-columns: 1fr; }
+      .works-grid-item.design-tile--vertical { aspect-ratio: 4 / 5; }
+      .works-grid-item.design-tile--horizontal { aspect-ratio: 16 / 9; width: 100%; height: auto; max-width: 100%; }
+
+      .design-intro-stage { margin-bottom: 1.25in; padding-bottom: 1.1in; }
+      .design-intro-stage .design-intro { padding-left: 28px; padding-right: 28px; }
+
+      .design-intro {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        margin: 6px 0 32px;
+      }
+      .design-intro-title { white-space: normal; }
+      .design-intro-right { grid-template-columns: 1fr; gap: 14px; padding-top: 0; }
+      .design-intro-p { max-width: 60ch; }
+
+      /* mobile: stack Body-of-Water cycles */
+      .design-bow-stack { gap: 24px; }
+      .design-bow-cycle { grid-template-columns: 1fr; grid-template-rows: auto auto auto; column-gap: 0; row-gap: 24px; }
+      .design-bow-cycle .design-tile--leftTop { grid-column: 1; grid-row: 1; }
+      .design-bow-cycle .design-tile--leftBottom { grid-column: 1; grid-row: 2; }
+      .design-bow-cycle .design-tile--rightSpan { grid-column: 1; grid-row: 3; justify-self: end; }
+      .works-grid-item.design-tile--vertical,
+      .works-grid-item.design-tile--horizontal { max-width: 100%; }
 
       .design-hero {
         flex-direction: column;
@@ -1080,7 +1307,6 @@
         row-gap: 48px;
         padding: 48px;
       }
-
       .photo-cell.orientation-landscape { --pw: 360px; --ph: 270px; }
       .photo-cell.orientation-portrait  { --pw: 270px; --ph: 420px; }
       .photo-cell.orientation-square   { --pw: 320px; --ph: 320px; }
@@ -1110,6 +1336,9 @@
       }
       .pd-carousel-prev { left: 8px; }
       .pd-carousel-next { right: 8px; }
+
+      .photo-back { right: calc(28px + 2in); top: calc(var(--nav-h) + 32px); font-size: 34px; }
+      .photo-detail-title { left: 28px; top: calc(var(--nav-h) + 44px); font-size: 14px; }
     }
 
     /* scroll hint for photo detail - outside panel so it’s always visible when open */
@@ -1123,10 +1352,10 @@
     <div class="scroll-track">
       <div class="intro-panel">
         <h1 class="intro-title" id="homeIntroTitle">
-          <span id="homeHeroLine1" class="home-hero-line">graphic design</span>
-          <span id="homeHeroLine2" class="home-hero-line">&amp; photography</span>
+          <span class="home-hero-line">
+            <span id="homeHeroRotator" class="home-hero-rotator" aria-live="polite"></span>
+          </span>
         </h1>
-        <p class="intro-sub">art is in all</p>
       </div>
       <div class="cards-row">
         <div class="card portrait pos-top" onclick="openPhotoDetail(9)">
@@ -1135,7 +1364,7 @@
           <span class="card-tag">photography</span>
           <div class="card-label"><div class="card-title">quintin williams shoe design</div><div class="card-cat">product, fashion</div></div>
         </div>
-        <div class="card tall pos-lower" onclick="openCase(4)">
+        <div class="card landscape pos-lower" onclick="openCase(4)">
           <div class="card-img" style="height:100%;"><img src="25breadly_proj5.jpg" alt="Breadly" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
           <div class="card-hover-overlay"></div>
           <span class="card-tag">design</span>
@@ -1183,72 +1412,108 @@
 
   <div id="design" class="section">
     <div class="section-inner">
-      <div class="design-hero">
-        <div class="design-hero-images">
-          <div class="design-hero-img design-hero-img-secondary">
-            <img src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine spread" />
-          </div>
-          <div class="design-hero-img design-hero-img-primary">
-            <img src="25breadly_proj5.jpg" alt="Breadly branding" />
-          </div>
+      <div class="design-intro-stage">
+        <div class="design-intro-media" aria-hidden="true">
+          <video class="design-intro-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
+            <source src="IMG_2336.MP4" type="video/mp4" />
+            <source src="new.mov" type="video/quicktime" />
+          </video>
         </div>
-        <div class="design-hero-copy">
-          <h3 class="design-hero-title">
-            <span id="designHeroLine1" class="cycle-line design-hero-line">designing</span>
-            <span id="designHeroLine2" class="cycle-line design-hero-line">brands</span>
-            <span class="design-hero-accent-block">
-              <span id="designHeroLine3" class="accent design-hero-line">people</span>
-              <span id="designHeroLine4" class="accent design-hero-line">experience.</span>
-            </span>
-          </h3>
-          <p class="design-hero-sub"></p>
+
+        <div class="design-intro">
+          <div class="design-intro-left">
+            <div class="design-intro-kicker"></div>
+            <div class="design-intro-title">designing for all.</div>
+          </div>
         </div>
       </div>
-      <div class="works-grid">
-        <!-- proj1: secret life of walter - thumbnail: image 2 -->
-        <div class="works-grid-item" data-proj="0" onclick="openCase(0)">
-          <img src="2secretlifeofwalter_proj1.jpg" alt="Secret Life of Walter" />
-          <div class="wg-overlay"><span class="wg-title">secret life of walter</span></div>
-        </div>
-        <!-- proj2: red blue chair - thumbnail: image 4 -->
-        <div class="works-grid-item" data-proj="1" onclick="openCase(1)">
-          <img src="4redbluechair_proj2.jpg" alt="Red and Blue Chair" />
-          <div class="wg-overlay"><span class="wg-title">red and blue chair</span></div>
-        </div>
-        <!-- proj3: swiss design stamps - thumbnail: image 6 -->
-        <div class="works-grid-item" data-proj="2" onclick="openCase(2)">
-          <img src="6swissdesignstamps_proj3.jpg" alt="Swiss Design Stamps" />
-          <div class="wg-overlay"><span class="wg-title">swiss design stamps</span></div>
-        </div>
-        <!-- proj4: garbage magazine - thumbnail: image 3 -->
-        <div class="works-grid-item" data-proj="3" onclick="openCase(3)">
-          <img src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" />
-          <div class="wg-overlay"><span class="wg-title">garbage magazine</span></div>
-        </div>
-        <!-- proj5: breadly - thumbnail: image 25 -->
-        <div class="works-grid-item" data-proj="4" onclick="openCase(4)">
-          <img src="25breadly_proj5.jpg" alt="Breadly" />
-          <div class="wg-overlay"><span class="wg-title">breadly</span></div>
-        </div>
-        <!-- proj6: art and athletics - thumbnail: artandathletics_proj16 -->
-        <div class="works-grid-item" data-proj="5" onclick="openCase(7)">
-          <img src="artandathletics_proj16.jpg" alt="Art and Athletics spread" />
-          <div class="wg-overlay"><span class="wg-title">art and athletics</span></div>
-        </div>
-        <!-- proj7: gotem -->
-        <div class="works-grid-item" data-proj="6" onclick="openCase(6)">
-          <img src="1gotem_proj14.jpg" alt="Gotem" />
-          <div class="wg-overlay"><span class="wg-title">gotem</span></div>
-        </div>
-        <!-- proj8: trademark x chicago - thumbnail: image 1 -->
-        <div class="works-grid-item" data-proj="7" onclick="openCase(8)">
-          <img src="1trademarkxchicago_proj24.jpg" alt="Trademark x Chicago" />
-          <div class="wg-overlay"><span class="wg-title">trademark x chicago</span></div>
-        </div>
-        <!-- proj9: chateau constantin (in progress, not clickable) -->
-        <div class="works-grid-item works-grid-item--wip" data-proj="8">
-          <img src="constantin_proj25.jpg" alt="chateau constantin" />
-          <div class="wg-overlay"><span class="wg-title">in progress</span></div>
+      <div class="design-works-layout">
+        <div class="design-works-rows">
+          <!-- two -->
+          <div class="design-works-row design-works-row--two">
+            <div class="works-grid-item design-tile--vertical" data-proj="0" data-case-index="0" onclick="openCase(0)">
+              <img src="2secretlifeofwalter_proj1.jpg" alt="Secret Life of Walter" />
+              <div class="wg-overlay">
+                <div class="wg-title">secret life of walter</div>
+                <div class="wg-desc"></div>
+              </div>
+            </div>
+            <div class="works-grid-item design-tile--vertical" data-proj="7" data-case-index="8" onclick="openCase(8)">
+              <img src="7trademarkxchicago_proj24.png" alt="Trademark x Chicago" />
+              <div class="wg-overlay">
+                <div class="wg-title">trademark x chicago</div>
+                <div class="wg-desc"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- one -->
+          <div class="design-works-row design-works-row--one">
+            <div class="works-grid-item design-tile--horizontal" data-proj="4" data-case-index="4" onclick="openCase(4)">
+              <img src="25breadly_proj5.jpg" alt="Breadly" />
+              <div class="wg-overlay">
+                <div class="wg-title">breadly</div>
+                <div class="wg-desc"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- two -->
+          <div class="design-works-row design-works-row--two">
+            <div class="works-grid-item design-tile--vertical" data-proj="3" data-case-index="3" onclick="openCase(3)">
+              <img src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" />
+              <div class="wg-overlay">
+                <div class="wg-title">garbage magazine</div>
+                <div class="wg-desc"></div>
+              </div>
+            </div>
+            <div class="works-grid-item design-tile--vertical" data-proj="2" data-case-index="2" onclick="openCase(2)">
+              <img src="1swissdesignstamps_proj3.jpg" alt="Swiss Design Stamps" />
+              <div class="wg-overlay">
+                <div class="wg-title">swiss design stamps</div>
+                <div class="wg-desc"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- one -->
+          <div class="design-works-row design-works-row--one">
+            <div class="works-grid-item design-tile--horizontal" data-proj="5" data-case-index="7" onclick="openCase(7)">
+              <img src="artandathletics_proj16.jpg" alt="Art and Athletics spread" />
+              <div class="wg-overlay">
+                <div class="wg-title">art and athletics</div>
+                <div class="wg-desc"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- two -->
+          <div class="design-works-row design-works-row--two">
+            <div class="works-grid-item works-grid-item--wip design-tile--vertical" data-proj="8">
+              <img src="constantin_proj25.jpg" alt="chateau constantin" />
+              <div class="wg-overlay">
+                <div class="wg-title">in progress</div>
+              </div>
+            </div>
+            <div class="works-grid-item design-tile--vertical" data-proj="1" data-case-index="1" onclick="openCase(1)">
+              <img src="3redbluechair_proj2.jpg" alt="Red and Blue Chair" />
+              <div class="wg-overlay">
+                <div class="wg-title">red and blue chair</div>
+                <div class="wg-desc"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- one (in progress) -->
+          <div class="design-works-row design-works-row--one">
+            <div class="works-grid-item design-tile--horizontal" data-proj="6" data-case-index="6" onclick="openCase(6)">
+              <img src="1gotem_proj14.jpg" alt="Gotem" />
+              <div class="wg-overlay">
+                <div class="wg-title">gotem</div>
+                <div class="wg-desc"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1263,7 +1528,7 @@
 
   <!-- Photo detail: outside section so it can open from home -->
   <div id="photoDetail" class="photo-detail">
-    <button class="photo-back" onclick="closePhotoDetail()">← back</button>
+    <button class="photo-back" onclick="closePhotoDetail()" aria-label="Close">×</button>
     <div class="photo-detail-title" id="photoDetailTitle"></div>
     <div class="pd-top">
       <div class="pd-center">
@@ -1322,7 +1587,10 @@
 
   <!-- NAV comes after sections so :target general sibling selector (~) works -->
   <nav>
-    <a class="name" href="#home">alexa</a>
+    <a class="name" href="#home" aria-label="Home">
+      <img class="name-logo-img name-logo-img--default" src="alexa-logo.png" alt="Alexa" />
+      <img class="name-logo-img name-logo-img--yellow" src="alexa-logo-yellow.png" alt="" aria-hidden="true" />
+    </a>
     <div class="nav-right">
       <a class="nav-link" href="#design">design</a>
       <a class="nav-link" href="#photography">photography</a>
@@ -1350,11 +1618,13 @@
 
   <!-- Case study overlay - still uses JS since it's above everything -->
   <div class="case-overlay" id="caseOverlay">
-    <button type="button" class="photo-back" onclick="closeCase()">← back</button>
-    <div class="case-inner">
-      <div class="case-hero">
-        <div class="fill ph1" id="caseHeroImg" style="height:100%;min-height:300px;"></div>
+    <button type="button" class="photo-back" onclick="closeCase()" aria-label="Close">×</button>
+    <div class="case-hero" id="caseHeroWrap">
+      <div class="case-hero-media" id="caseHeroMedia">
+        <div class="fill ph1" style="height:100%;min-height:300px;"></div>
       </div>
+    </div>
+    <div class="case-inner">
       <div class="case-header">
         <div>
           <p class="case-client" id="caseClient">client name</p>
@@ -1371,6 +1641,8 @@
     </div>
   </div>
 
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     /* ABOUT PHOTO - cycle alt images on each hover */
     (function() {
@@ -1471,26 +1743,60 @@
     })();
 
     /* HOME HERO - no scramble/animation; headline is static now */
-
-    /* DESIGN LIST - fade / slide rows into place on scroll */
     (function() {
-      var designSection = document.getElementById('design');
-      if (!designSection) return;
-      var rows = designSection.querySelectorAll('.design-row');
-      if (!rows.length) return;
+      var mount = document.getElementById('homeHeroRotator');
+      if (!mount || !window.React || !window.ReactDOM) return;
 
-      var io = new IntersectionObserver(function(entries) {
-        entries.forEach(function(e) {
-          if (e.isIntersecting) {
-            e.target.classList.add('visible');
-          } else {
-            e.target.classList.remove('visible');
-          }
-        });
-      }, { root: designSection, threshold: 0.18, rootMargin: '0px 0px -10% 0px' });
+      var roles = [
+        'graphic design',
+        'marketing & advertising',
+        'photography',
+        'branding',
+        'ui/ux',
+        'vibecoding'
+      ];
 
-      rows.forEach(function(row) { io.observe(row); });
+      function Rotator() {
+        var useState = React.useState;
+        var useEffect = React.useEffect;
+
+        var _a = useState(0), idx = _a[0], setIdx = _a[1];
+        var _b = useState(false), fading = _b[0], setFading = _b[1];
+
+        useEffect(function() {
+          var fadeMs = 420;
+          var holdMs = 1150;
+          var interval = setInterval(function() {
+            setFading(true);
+            setTimeout(function() {
+              setIdx(function(prev) { return (prev + 1) % roles.length; });
+              setFading(false);
+            }, fadeMs);
+          }, fadeMs + holdMs);
+          return function() { clearInterval(interval); };
+        }, []);
+
+        var role = roles[idx];
+        if (role === 'marketing & advertising') {
+          return React.createElement(
+            'span',
+            { className: 'home-hero-rotator-text two-line' + (fading ? ' is-fading' : '') },
+            React.createElement('span', { className: 'home-hero-rotator-line' }, 'marketing'),
+            React.createElement('span', { className: 'home-hero-rotator-line' }, '& advertising')
+          );
+        }
+
+        return React.createElement(
+          'span',
+          { className: 'home-hero-rotator-text' + (fading ? ' is-fading' : '') },
+          role
+        );
+      }
+
+      ReactDOM.createRoot(mount).render(React.createElement(Rotator));
     })();
+
+    /* DESIGN HORIZONTAL GALLERY – removed, reverted to static collage grid */
 
     /* THEME */
     let currentTheme = 'light';
@@ -1536,8 +1842,6 @@
         var order = shuffleOrder(numProjs, numCells);
 
         for (var i = 0; i < numCells; i++) {
-          var row = Math.floor(i / numCols);
-          var col = i % numCols;
           var projIdx = order[i];
           var proj = projs[projIdx];
 
@@ -2096,15 +2400,68 @@
       },
     ];
 
+    /* DESIGN GRID OVERLAY TEXT
+       Fill the hover band description from the case study data. */
+    (function() {
+      var tiles = document.querySelectorAll('#design .works-grid-item[data-case-index] .wg-desc');
+      if (!tiles || !tiles.length) return;
+
+      function stripHtml(s) {
+        return (s || '').replace(/<[^>]*>/g, '');
+      }
+
+      function shortText(s, maxLen) {
+        s = stripHtml(s || '').trim();
+        if (!s) return '';
+        if (s.length <= maxLen) return s;
+        return s.slice(0, maxLen).replace(/\s+\S*$/, '') + '…';
+      }
+
+      tiles.forEach(function(descEl) {
+        var tile = descEl.closest('.works-grid-item');
+        if (!tile) return;
+        var idx = parseInt(tile.getAttribute('data-case-index'), 10);
+        if (isNaN(idx)) return;
+        var p = projects[idx];
+        if (!p) return;
+
+        var text = '';
+        if (p.description) text = p.description;
+        else if (p.tags && p.tags.length) text = p.tags.join(', ');
+        else text = 'view project';
+
+        descEl.textContent = shortText(text, 95);
+      });
+    })();
+
+    // Track where a case study was opened from (design grid vs elsewhere)
+    (function() {
+      window.__caseSource = 'other';
+      document.addEventListener('click', function(e) {
+        var trigger = e.target && e.target.closest && e.target.closest('[onclick*="openCase("]');
+        if (!trigger) return;
+        window.__caseSource = (trigger.closest && trigger.closest('#design')) ? 'design' : 'other';
+      }, true);
+    })();
+
     function openCase(i) {
       const p = projects[i];
 
-      // Hero image
-      const heroWrap = document.querySelector('.case-hero');
-      if (p.hero) {
-        heroWrap.innerHTML = `<img src="${p.hero}" alt="${p.title}" style="width:100%;height:100%;object-fit:contain;display:block;" />`;
-      } else {
-        heroWrap.innerHTML = `<div class="fill ${p.ph}" style="height:100%;min-height:300px;"></div>`;
+      // Hero image — full-bleed stage (cover), same spirit as #design intro media
+      const heroMedia = document.getElementById('caseHeroMedia');
+      if (heroMedia) {
+        if (p.hero) {
+          heroMedia.innerHTML = `<img src="${p.hero}" alt="${p.title.replace(/"/g, '&quot;')}" class="case-hero-img" />`;
+        } else {
+          heroMedia.innerHTML = `<div class="fill ${p.ph || 'ph1'}" style="height:100%;min-height:300px;"></div>`;
+        }
+      }
+
+      // Hide the close X when opening a project from the Design section.
+      // (You can still close via Esc or by navigating elsewhere in the nav.)
+      const closeBtn = document.querySelector('#caseOverlay .photo-back');
+      if (closeBtn) {
+        closeBtn.style.display = (window.__caseSource === 'design') ? 'none' : '';
       }
 
       const clientEl = document.getElementById('caseClient');
@@ -2161,6 +2518,8 @@
       document.getElementById('caseOverlay').classList.add('open');
     }    function closeCase() {
       document.getElementById('caseOverlay').classList.remove('open');
+      const closeBtn = document.querySelector('#caseOverlay .photo-back');
+      if (closeBtn) closeBtn.style.display = '';
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCase(); });
 
@@ -2177,6 +2536,57 @@
         window.location.hash = hash || 'home';
       });
     }
+
+    // Ensure the design intro video starts (some browsers require an explicit play()).
+    (function() {
+      function tryPlay() {
+        var v = document.querySelector('#design .design-intro-video');
+        if (!v) return;
+        v.muted = true;
+        var p = v.play && v.play();
+        if (p && typeof p.catch === 'function') p.catch(function() {});
+      }
+      document.addEventListener('DOMContentLoaded', tryPlay);
+      window.addEventListener('load', tryPlay);
+      document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) tryPlay();
+      });
+    })();
+
+    // Nav turns white only while the design intro (video) is visible.
+    (function() {
+      var nav = document.querySelector('nav');
+      var design = document.getElementById('design');
+      var intro = design && design.querySelector('.design-intro-stage');
+      if (!nav || !design || !intro || !('IntersectionObserver' in window)) return;
+
+      function setContrast(on) {
+        nav.classList.toggle('nav-contrast-light', !!on);
+      }
+
+      var io = new IntersectionObserver(function(entries) {
+        // Only apply this behavior while we're in the Design section.
+        if (window.location.hash !== '#design') {
+          setContrast(false);
+          return;
+        }
+        var e = entries && entries[0];
+        setContrast(!!(e && e.isIntersecting && e.intersectionRatio > 0.12));
+      }, {
+        root: design,
+        threshold: [0, 0.12, 0.25, 0.5, 1]
+      });
+
+      io.observe(intro);
+      function onEnterDesign() {
+        // Start white immediately when entering #design (before any scrolling),
+        // then the observer will flip it off once the intro is no longer visible.
+        if (window.location.hash === '#design') setContrast(true);
+        else setContrast(false);
+      }
+      window.addEventListener('hashchange', onEnterDesign);
+      onEnterDesign();
+    })();
   </script>
 </body>
 </html>
