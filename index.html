@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>alexa carmona</title>
+  <link rel="icon" type="image/svg+xml" href="alexalogoA1.svg" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
   <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
@@ -60,10 +62,17 @@
     .name:hover { color: #e6b800; }
     .name-logo-img {
       display: block;
-      height: 78px;
+      height: 96px;
       width: auto;
-      max-width: 580px;
+      max-width: min(640px, 78vw);
       transition: filter 0.18s ease;
+    }
+    /* Dark mode: black logo asset reads as light on dark backgrounds */
+    [data-theme="dark"] .name-logo-img--default {
+      filter: invert(1);
+    }
+    [data-theme="dark"] .name-logo-img--yellow {
+      filter: none;
     }
     /* Exact yellow hover: swap to a true #e6b800 asset */
     .name-logo-img--yellow { display: none; }
@@ -622,49 +631,36 @@
     }
     .works-grid-item .fill { display: block; width: 100%; }
 
-    /* colored hover overlay per project (original) */
+    /* Design thumbnails: full-bleed hover color (same idea as home .card-hover-overlay) */
     .works-grid-item .wg-overlay {
       position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      top: auto;
+      inset: 0;
       opacity: 0;
-      transform: translateY(14px);
-      transition: opacity 0.35s ease, transform 0.35s ease;
+      transition: opacity 0.35s ease;
       pointer-events: none;
       z-index: 1;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+      justify-content: flex-end;
       gap: 8px;
       padding: 18px 18px 16px;
     }
-    .works-grid-item:hover .wg-overlay { opacity: 1; transform: translateY(0); }
+    .works-grid-item:hover .wg-overlay { opacity: 1; }
     /* updated hover colors to match projects */
     .works-grid-item[data-proj="0"] .wg-overlay { background: rgba(230, 184, 0, 0.62); }   /* Walter Mitty: yellow */
-    .works-grid-item[data-proj="1"] .wg-overlay { background: rgba(32, 98, 210, 0.58); }   /* Red & Blue Chair: blue */
+    .works-grid-item[data-proj="1"] .wg-overlay { background: rgba(0, 0, 0, 0.62); }   /* WIP: grey (match Chateau Constantin) */
     .works-grid-item[data-proj="2"] .wg-overlay { background: rgba(18, 18, 18, 0.58); }    /* Swiss: near-black */
     .works-grid-item[data-proj="3"] .wg-overlay { background: rgba(230, 90, 0, 0.60); }    /* Garbage: orange */
     .works-grid-item[data-proj="4"] .wg-overlay { background: rgba(255, 168, 196, 0.70); } /* Breadly: pink */
-    .works-grid-item[data-proj="5"] .wg-overlay { background: rgba(255, 255, 255, 0.78); } /* Art & Athletics: white */
+    .works-grid-item[data-proj="5"] .wg-overlay { background: rgba(12, 52, 32, 0.72); } /* Georgia Entertainment Magazine: dark green */
     .works-grid-item[data-proj="6"] .wg-overlay { background: rgba(230, 90, 0, 0.60); }    /* Got em: orange */
     .works-grid-item[data-proj="7"] .wg-overlay { background: rgba(0, 0, 0, 0.62); }       /* Trademark: black */
     .works-grid-item[data-proj="8"] .wg-overlay { background: rgba(0,0,0,0.62); }
 
-    /* Light overlays: switch hover text to dark for contrast */
-    .works-grid-item[data-proj="0"] .wg-title,
-    .works-grid-item[data-proj="0"] .wg-desc,
-    .works-grid-item[data-proj="4"] .wg-title,
-    .works-grid-item[data-proj="4"] .wg-desc,
-    .works-grid-item[data-proj="5"] .wg-title,
-    .works-grid-item[data-proj="5"] .wg-desc {
-      color: rgba(17,17,17,0.9);
-      text-shadow: none;
-    }
-
     .wg-title {
-      font-size: 16px; font-weight: 300;
+      font-size: clamp(17px, 1.35vw, 22px);
+      font-weight: 500;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: #fff;
       text-transform: uppercase;
@@ -683,18 +679,52 @@
       max-width: 520px;
       text-align: left;
       text-transform: lowercase;
+      background: none;
+      border: none;
+      outline: none;
+      box-shadow: none;
+      padding: 0;
     }
-    .works-grid-item[data-proj="8"] .wg-desc { display: none; }
-    .works-grid-item[data-proj="8"] .wg-overlay {
+    .works-grid-item[data-proj="8"] .wg-desc,
+    .works-grid-item[data-proj="1"] .wg-desc { display: none; }
+    .works-grid-item[data-proj="8"] .wg-overlay,
+    .works-grid-item[data-proj="1"] .wg-overlay {
       align-items: center;
       justify-content: center;
       text-align: center;
     }
-    .works-grid-item[data-proj="8"] .wg-title {
-      font-size: 18px;
-      letter-spacing: 0.12em;
-      transform: translateY(0);
-      text-align: center;
+    .works-grid-item--wip .wg-wip-title-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45em;
+      max-width: 100%;
+      padding: 0 10px;
+    }
+    .works-grid-item--wip .wg-wip-label {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: clamp(13px, 1.25vw, 17px);
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.95);
+      text-shadow: 0 1px 10px rgba(0, 0, 0, 0.35);
+      line-height: 1.2;
+    }
+    .works-grid-item--wip .wg-wip-project {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: clamp(10px, 0.95vw, 13px);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
     }
     .works-grid-item--wip {
       cursor: default;
@@ -1074,7 +1104,7 @@
       font-size: 11px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      border-radius: 999px;
+      border-radius: 0;
       border: 1px solid var(--card-bg);
       padding: 6px 14px;
     }
@@ -1136,8 +1166,21 @@
       display: block;
     }
     .case-title  { font-size: clamp(28px, 4vw, 50px); font-weight: 300; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; letter-spacing: -0.025em; line-height: 1.0; margin-bottom: 18px; text-transform: uppercase; }
-    .case-tags   { display: flex; flex-wrap: wrap; gap: 8px; }
-    .case-tag-pill { font-size: 9px; letter-spacing: 0.1em; border: 1px solid var(--fg-muted); border-radius: 20px; padding: 4px 12px; color: var(--fg-muted); }
+    .case-tags { display: block; }
+    /* Single line of role tags — no pills, borders, or capsules */
+    .case-tags-plain {
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--fg-muted);
+      border: none;
+      outline: none;
+      background: transparent;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+      display: block;
+      line-height: 1.5;
+    }
     .case-desc   { font-size: 14px; font-weight: 300; line-height: 1.75; opacity: 0.8; padding-top: 6px; }
     .case-desc p + p { margin-top: 14px; }
     .case-section-label { font-size: 9px; letter-spacing: 0.14em; color: var(--fg-muted); padding-top: 56px; margin-bottom: 24px; border-top: 1px solid var(--card-bg); }
@@ -1163,6 +1206,116 @@
     .case-grid-img.tall .fill { min-height: 280px; }
     .case-grid-img.wide { grid-column: span 2; }
 
+    /* Georgia Entertainment — FlipHTML5-style book (pdf.js + StPageFlip) */
+    .case-flipbook-section { max-width: 1000px; margin: 0 auto; padding-bottom: 48px; }
+    .case-flipbook-section[hidden] { display: none !important; }
+    .case-pdf-viewer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(6px, 2vw, 20px);
+      width: 100%;
+      padding: 12px 0 24px;
+    }
+    .case-pdf-arrow {
+      flex: 0 0 auto;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: clamp(26px, 4.5vw, 40px);
+      font-weight: 300;
+      line-height: 1;
+      padding: 8px 10px;
+      margin: 0;
+      border: none;
+      background: transparent;
+      color: var(--fg);
+      cursor: pointer;
+      opacity: 0.5;
+      transition: opacity 0.2s ease;
+      outline: none;
+      box-shadow: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .case-pdf-arrow::-moz-focus-inner {
+      border: 0;
+      padding: 0;
+    }
+    .case-pdf-arrow:focus,
+    .case-pdf-arrow:focus-visible,
+    .case-pdf-arrow:active {
+      outline: none;
+      box-shadow: none;
+    }
+    .case-pdf-arrow:hover:not(:disabled) { opacity: 1; }
+    .case-pdf-arrow:disabled {
+      opacity: 0.1;
+      cursor: default;
+    }
+    .case-pdf-page-wrap {
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: 100%;
+      min-height: min(52vh, 520px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      outline: none;
+      background: transparent;
+    }
+    .case-pdf-page-wrap .stf__parent {
+      margin: 0 auto;
+      filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.2));
+    }
+    .case-pdf-meta {
+      text-align: center;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--fg-muted);
+      margin-top: 8px;
+    }
+    .case-flipbook-hint {
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--fg-muted);
+      margin-top: 10px;
+      opacity: 0.85;
+    }
+    .case-flipbook-loading, .case-flipbook-error {
+      text-align: center; font-size: 14px; font-weight: 300; color: var(--fg-muted); padding: 32px 16px;
+    }
+    .case-flipbook-error code {
+      font-size: 12px;
+      padding: 2px 6px;
+      background: var(--card-bg);
+      font-weight: 400;
+    }
+    .case-flipbook-section--embed .case-pdf-viewer {
+      padding: 8px 0 16px;
+    }
+    .case-flipbook-section--embed .case-pdf-arrow,
+    .case-flipbook-section--embed .case-pdf-meta {
+      display: none !important;
+    }
+    .case-flipbook-section--embed .case-pdf-page-wrap {
+      min-height: min(72vh, 780px);
+      width: 100%;
+    }
+    iframe.case-flipbook-embed {
+      width: 100%;
+      height: min(72vh, 780px);
+      min-height: 420px;
+      border: 0;
+      display: block;
+      background: #1a1a1a;
+    }
+    @media (max-width: 800px) {
+      .case-pdf-viewer { gap: 2px; }
+      .case-pdf-page-wrap { min-height: 42vh; }
+      iframe.case-flipbook-embed { min-height: 360px; height: 65vh; }
+    }
+
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(18px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -1171,7 +1324,11 @@
     @media (max-width: 800px) {
       nav { padding: 0 20px; }
       .name { font-size: 18px; }
-      .name-logo-img { height: 68px; max-width: 520px; }
+      .name-logo-img { height: 84px; max-width: min(560px, 85vw); }
+      .name {
+        min-width: 0;
+        max-width: calc(100vw - 120px);
+      }
       .intro-panel { width: 88vw; padding: 0 30px 50px; }
       .cards-row { padding: 0 40px 0 0; }
       .card { margin: 0 30px; }
@@ -1368,7 +1525,7 @@
           <span class="card-tag">photography</span>
           <div class="card-label"><div class="card-title">quintin williams shoe design</div><div class="card-cat">product, fashion</div></div>
         </div>
-        <div class="card landscape pos-lower" onclick="openCase(4)">
+        <div class="card landscape pos-lower" onclick="openCase(3)">
           <div class="card-img" style="height:100%;"><img src="25breadly_proj5.jpg" alt="Breadly" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
           <div class="card-hover-overlay"></div>
           <span class="card-tag">design</span>
@@ -1380,7 +1537,7 @@
           <span class="card-tag">photography</span>
           <div class="card-label"><div class="card-title">bird in monaco</div><div class="card-cat">travel</div></div>
         </div>
-        <div class="card auto-thumb pos-bottom" onclick="openCase(3)" style="aspect-ratio: 2000 / 1333;">
+        <div class="card auto-thumb pos-bottom" onclick="openCase(2)" style="aspect-ratio: 2000 / 1333;">
           <div class="card-img"><img src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" /></div>
           <div class="card-hover-overlay"></div>
           <span class="card-tag">design</span>
@@ -1392,14 +1549,14 @@
           <span class="card-tag">photography</span>
           <div class="card-label"><div class="card-title">sunrise</div><div class="card-cat">landscape</div></div>
         </div>
-        <div class="card wide pos-top" onclick="openCase(7)">
-          <div class="card-img" style="height:100%;"><img src="artandathletics_proj16.jpg" alt="Art and Athletics spread for Georgia Entertainment" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+        <div class="card tall pos-lower" onclick="openCase(6)">
+          <div class="card-img" style="height:100%;"><img src="georgiaentertainment_proj16_cover.png" alt="Georgia Entertainment Magazine" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
           <div class="card-hover-overlay"></div>
           <span class="card-tag">design</span>
-          <div class="card-label"><div class="card-title">art and athletics</div><div class="card-cat">editorial, layout</div></div>
+          <div class="card-label"><div class="card-title">georgia entertainment magazine</div><div class="card-cat">editorial, layout</div></div>
         </div>
-        <div class="card tall pos-lower" onclick="openCase(0)">
-          <div class="card-img" style="height:100%;"><img src="6secretlifeofwalter_proj1.jpg" alt="Secret Life of Walter Mitty" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+        <div class="card wide pos-top" onclick="openCase(0)">
+          <div class="card-img" style="height:100%;"><img src="2secretlifeofwalter_proj1.png" alt="Secret Life of Walter Mitty" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
           <div class="card-hover-overlay"></div>
           <span class="card-tag">design</span>
           <div class="card-label"><div class="card-title">secret life of walter mitty</div><div class="card-cat">packaging, editorial</div></div>
@@ -1419,8 +1576,7 @@
       <div class="design-intro-stage">
         <div class="design-intro-media" aria-hidden="true">
           <video class="design-intro-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
-            <source src="IMG_2336.MP4" type="video/mp4" />
-            <source src="new.mov" type="video/quicktime" />
+            <source src="IMG_1540%203.MP4" type="video/mp4" />
           </video>
         </div>
 
@@ -1435,14 +1591,14 @@
         <div class="design-works-rows">
           <!-- two -->
           <div class="design-works-row design-works-row--two">
-            <div class="works-grid-item design-tile--vertical" data-proj="0" data-case-index="0" onclick="openCase(0)">
-              <img src="2secretlifeofwalter_proj1.jpg" alt="Secret Life of Walter" />
+            <div class="works-grid-item design-tile--vertical" data-proj="5" data-case-index="6" onclick="openCase(6)">
+              <img src="georgiaentertainment_proj16_cover.png" alt="Georgia Entertainment Magazine" />
               <div class="wg-overlay">
-                <div class="wg-title">secret life of walter</div>
+                <div class="wg-title">georgia entertainment magazine</div>
                 <div class="wg-desc"></div>
               </div>
             </div>
-            <div class="works-grid-item design-tile--vertical" data-proj="7" data-case-index="8" onclick="openCase(8)">
+            <div class="works-grid-item design-tile--vertical" data-proj="7" data-case-index="7" onclick="openCase(7)">
               <img src="7trademarkxchicago_proj24.png" alt="Trademark x Chicago" />
               <div class="wg-overlay">
                 <div class="wg-title">trademark x chicago</div>
@@ -1453,7 +1609,7 @@
 
           <!-- one -->
           <div class="design-works-row design-works-row--one">
-            <div class="works-grid-item design-tile--horizontal" data-proj="4" data-case-index="4" onclick="openCase(4)">
+            <div class="works-grid-item design-tile--horizontal" data-proj="4" data-case-index="3" onclick="openCase(3)">
               <img src="25breadly_proj5.jpg" alt="Breadly" />
               <div class="wg-overlay">
                 <div class="wg-title">breadly</div>
@@ -1464,14 +1620,14 @@
 
           <!-- two -->
           <div class="design-works-row design-works-row--two">
-            <div class="works-grid-item design-tile--vertical" data-proj="3" data-case-index="3" onclick="openCase(3)">
+            <div class="works-grid-item design-tile--vertical" data-proj="3" data-case-index="2" onclick="openCase(2)">
               <img src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" />
               <div class="wg-overlay">
                 <div class="wg-title">garbage magazine</div>
                 <div class="wg-desc"></div>
               </div>
             </div>
-            <div class="works-grid-item design-tile--vertical" data-proj="2" data-case-index="2" onclick="openCase(2)">
+            <div class="works-grid-item design-tile--vertical" data-proj="2" data-case-index="1" onclick="openCase(1)">
               <img src="1swissdesignstamps_proj3.jpg" alt="Swiss Design Stamps" />
               <div class="wg-overlay">
                 <div class="wg-title">swiss design stamps</div>
@@ -1482,10 +1638,10 @@
 
           <!-- one -->
           <div class="design-works-row design-works-row--one">
-            <div class="works-grid-item design-tile--horizontal" data-proj="5" data-case-index="7" onclick="openCase(7)">
-              <img src="artandathletics_proj16.jpg" alt="Art and Athletics spread" />
+            <div class="works-grid-item design-tile--horizontal" data-proj="0" data-case-index="0" onclick="openCase(0)">
+              <img src="2secretlifeofwalter_proj1.png" alt="Secret Life of Walter" />
               <div class="wg-overlay">
-                <div class="wg-title">art and athletics</div>
+                <div class="wg-title">secret life of walter</div>
                 <div class="wg-desc"></div>
               </div>
             </div>
@@ -1494,23 +1650,28 @@
           <!-- two -->
           <div class="design-works-row design-works-row--two">
             <div class="works-grid-item works-grid-item--wip design-tile--vertical" data-proj="8">
-              <img src="constantin_proj25.jpg" alt="chateau constantin" />
+              <img src="constantin_proj25.jpg" alt="chateau constantin in progress" />
               <div class="wg-overlay">
-                <div class="wg-title">in progress</div>
+                <div class="wg-wip-title-stack">
+                  <span class="wg-wip-label">in progress</span>
+                  <span class="wg-wip-project">chateau constantin</span>
+                </div>
               </div>
             </div>
-            <div class="works-grid-item design-tile--vertical" data-proj="1" data-case-index="1" onclick="openCase(1)">
-              <img src="3redbluechair_proj2.jpg" alt="Red and Blue Chair" />
+            <div class="works-grid-item works-grid-item--wip design-tile--vertical" data-proj="1">
+              <img src="creme_%20V_jersey4.png" alt="Vancouver Canucks rebrand in progress" />
               <div class="wg-overlay">
-                <div class="wg-title">red and blue chair</div>
-                <div class="wg-desc"></div>
+                <div class="wg-wip-title-stack">
+                  <span class="wg-wip-label">in progress</span>
+                  <span class="wg-wip-project">vancouver canucks rebrand</span>
+                </div>
               </div>
             </div>
           </div>
 
           <!-- one (in progress) -->
           <div class="design-works-row design-works-row--one">
-            <div class="works-grid-item design-tile--horizontal" data-proj="6" data-case-index="6" onclick="openCase(6)">
+            <div class="works-grid-item design-tile--horizontal" data-proj="6" data-case-index="5" onclick="openCase(5)">
               <img src="1gotem_proj14.jpg" alt="Gotem" />
               <div class="wg-overlay">
                 <div class="wg-title">gotem</div>
@@ -1596,7 +1757,7 @@
       <img class="name-logo-img name-logo-img--yellow" src="alexa-logo-yellow.png" alt="" aria-hidden="true" />
     </a>
     <div class="nav-right">
-      <a class="nav-link" href="#design">design</a>
+      <a class="nav-link" href="#design">work</a>
       <a class="nav-link" href="#photography">photography</a>
       <a class="nav-link" href="#about" id="aboutNavLink">about</a>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">dark</button>
@@ -1633,20 +1794,31 @@
         <div>
           <p class="case-client" id="caseClient">client name</p>
           <h2 class="case-title" id="caseTitle">Project Title</h2>
-          <div class="case-tags" id="caseTags"><span class="case-tag-pill">category</span></div>
+          <div class="case-tags" id="caseTags"><span class="case-tags-plain">category</span></div>
         </div>
         <div class="case-desc" id="caseDesc">
           <p>placeholder - project description goes here.</p>
           <p>placeholder - your approach and outcome.</p>
         </div>
       </div>
-      <p class="case-section-label">process &amp; detail</p>
+      <p class="case-section-label" id="caseSectionLabel">process &amp; detail</p>
       <div class="case-grid" id="caseGrid"></div>
+      <div class="case-flipbook-section" id="caseFlipbookSection" hidden>
+        <div class="case-pdf-viewer" id="casePdfViewer" aria-label="PDF pages">
+          <button type="button" class="case-pdf-arrow case-pdf-arrow--prev" id="caseFlipbookPrev" aria-label="Previous page">←</button>
+          <div class="case-pdf-page-wrap" id="caseFlipbookMount"></div>
+          <button type="button" class="case-pdf-arrow case-pdf-arrow--next" id="caseFlipbookNext" aria-label="Next page">→</button>
+        </div>
+        <div class="case-pdf-meta"><span id="caseFlipbookStatus" aria-live="polite"></span></div>
+        <p class="case-flipbook-hint">Drag a page corner or edge to turn — or use the arrows.</p>
+      </div>
     </div>
   </div>
 
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://unpkg.com/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     /* ABOUT PHOTO - cycle alt images on each hover */
     (function() {
@@ -2330,14 +2502,6 @@
       },
       {
         client: 'personal project',
-        title: 'Red and Blue Chair',
-        tags: ['graphic design', '3d', 'installation'],
-        hero: '1redbluechair_proj2.jpg',
-        images: ['2redbluechair_proj2.jpg','3redbluechair_proj2.jpg','5redbluechair_proj2.jpg','6redbluechair_proj2.jpg'],
-        description: 'A small-scale reconstruction of Gerrit Rietveld’s red and blue chair, treated like a tiny set. I rebuilt the chair in balsa wood and designed a laser-cut box so the object, color blocks, and shadows feel like a De Stijl installation instead of just a model.'
-      },
-      {
-        client: 'personal project',
         title: 'Swiss Design Stamps',
         tags: ['graphic design', 'print', 'identity'],
         hero: '1swissdesignstamps_proj3.jpg',
@@ -2379,10 +2543,11 @@
       },
       {
         client: 'georgia entertainment',
-        title: 'Art and Athletics',
+        title: 'Georgia Entertainment Magazine',
         tags: ['graphic design', 'editorial', 'layout'],
-        hero: 'artandathletics_proj16.jpg',
-        images: ['artandathletics_proj16.jpg'],
+        hero: 'alexa_shirley-10.jpg',
+        images: [],
+        flipbookEmbedUrl: 'https://online.fliphtml5.com/vzlpm/once/',
         description: 'Editorial layout for Georgia Entertainment that pairs athlete portraits with abstract typography and graphic shapes. The spreads lean into motion, cropped limbs, overlapping type, and color fields so the story feels like a conversation between art direction and performance.'
       },
       {
@@ -2448,7 +2613,207 @@
       }, true);
     })();
 
-    function openCase(i) {
+    var __georgiaFlipbook = null;
+    var __georgiaFlipbookResizeTimer = null;
+    function georgiaPdfCandidateUrls(p) {
+      var list = [];
+      function add(u) {
+        if (!u) return;
+        try {
+          var abs = new URL(u, window.location.href).href;
+          if (list.indexOf(abs) < 0) list.push(abs);
+        } catch (e) {}
+      }
+      add(p && p.flipbookPdf);
+      add('assets/georgia-entertainment-cej26.pdf');
+      add('georgia-entertainment-cej26.pdf');
+      add('213394-GEORGIA-ENTERTAINMENT-CEJ26-text-Web.pdf');
+      return list;
+    }
+    function destroyGeorgiaFlipbook() {
+      window.removeEventListener('resize', onGeorgiaFlipbookResize);
+      if (__georgiaFlipbookResizeTimer) {
+        clearTimeout(__georgiaFlipbookResizeTimer);
+        __georgiaFlipbookResizeTimer = null;
+      }
+      if (__georgiaFlipbook) {
+        try { __georgiaFlipbook.destroy(); } catch (e) {}
+        __georgiaFlipbook = null;
+      }
+      var flipSec = document.getElementById('caseFlipbookSection');
+      if (flipSec) flipSec.classList.remove('case-flipbook-section--embed');
+      var prev = document.getElementById('caseFlipbookPrev');
+      var next = document.getElementById('caseFlipbookNext');
+      if (prev) { prev.style.display = ''; prev.disabled = false; }
+      if (next) { next.style.display = ''; next.disabled = false; }
+      var mount = document.getElementById('caseFlipbookMount');
+      if (mount) mount.innerHTML = '';
+      var st = document.getElementById('caseFlipbookStatus');
+      if (st) st.textContent = '';
+      var hint = document.querySelector('#caseFlipbookSection .case-flipbook-hint');
+      if (hint) hint.textContent = 'Drag a page corner or edge to turn — or use the arrows.';
+    }
+    function onGeorgiaFlipbookResize() {
+      if (!__georgiaFlipbook || !__georgiaFlipbook.getUI) return;
+      clearTimeout(__georgiaFlipbookResizeTimer);
+      __georgiaFlipbookResizeTimer = setTimeout(function() {
+        try { __georgiaFlipbook.getUI().update(); } catch (e) {}
+      }, 120);
+    }
+    function updateGeorgiaFlipbookNav() {
+      var st = document.getElementById('caseFlipbookStatus');
+      var prev = document.getElementById('caseFlipbookPrev');
+      var next = document.getElementById('caseFlipbookNext');
+      if (!__georgiaFlipbook || !st) return;
+      var cur = __georgiaFlipbook.getCurrentPageIndex();
+      var total = __georgiaFlipbook.getPageCount();
+      st.textContent = (cur + 1) + ' / ' + total;
+      if (prev) prev.disabled = cur <= 0;
+      if (next) next.disabled = cur >= total - 1;
+    }
+    function wireGeorgiaFlipbookControls() {
+      var prev = document.getElementById('caseFlipbookPrev');
+      var next = document.getElementById('caseFlipbookNext');
+      if (prev) prev.onclick = function() { if (__georgiaFlipbook) __georgiaFlipbook.flipPrev('top'); };
+      if (next) next.onclick = function() { if (__georgiaFlipbook) __georgiaFlipbook.flipNext('top'); };
+      if (__georgiaFlipbook) {
+        __georgiaFlipbook.on('flip', function() { updateGeorgiaFlipbookNav(); });
+        __georgiaFlipbook.on('init', function() { updateGeorgiaFlipbookNav(); });
+      }
+      setTimeout(updateGeorgiaFlipbookNav, 80);
+      window.addEventListener('resize', onGeorgiaFlipbookResize);
+    }
+    async function mountGeorgiaStPageFlip(mount, urls, pageAspect) {
+      mount.innerHTML = '';
+      await new Promise(function(r) { requestAnimationFrame(function() { requestAnimationFrame(r); }); });
+      var wrap = mount.parentElement;
+      var avail = (wrap && wrap.getBoundingClientRect().width) ? wrap.getBoundingClientRect().width : 720;
+      var w = Math.max(220, Math.min(420, Math.floor((avail - 72) / 2)));
+      var h = Math.max(280, Math.round(w * pageAspect));
+      __georgiaFlipbook = new St.PageFlip(mount, {
+        width: w,
+        height: h,
+        size: 'stretch',
+        minWidth: 180,
+        maxWidth: 960,
+        minHeight: 240,
+        maxHeight: 1400,
+        maxShadowOpacity: 0.45,
+        showCover: false,
+        mobileScrollSupport: true,
+        flippingTime: 900,
+        drawShadow: true,
+        usePortrait: true
+      });
+      __georgiaFlipbook.loadFromImages(urls);
+      wireGeorgiaFlipbookControls();
+    }
+    function georgiaFlipbookEmbedSrc(raw) {
+      if (!raw || typeof raw !== 'string') return '';
+      var s = raw.trim();
+      if (!s) return '';
+      try {
+        var u = new URL(s, window.location.href);
+        if (u.protocol !== 'http:' && u.protocol !== 'https:') return '';
+        return u.href;
+      } catch (e) {
+        return '';
+      }
+    }
+    function loadGeorgiaFlipbookEmbed(p) {
+      var mount = document.getElementById('caseFlipbookMount');
+      var flipSec = document.getElementById('caseFlipbookSection');
+      var hint = document.querySelector('#caseFlipbookSection .case-flipbook-hint');
+      if (!mount) return;
+      var src = georgiaFlipbookEmbedSrc(p && p.flipbookEmbedUrl);
+      if (!src) {
+        mount.innerHTML = '<p class="case-flipbook-error">Invalid flipbook link.</p>';
+        return;
+      }
+      if (flipSec) flipSec.classList.add('case-flipbook-section--embed');
+      if (hint) hint.textContent = 'Use the controls in the reader to browse the issue.';
+      mount.innerHTML = '';
+      var iframe = document.createElement('iframe');
+      iframe.className = 'case-flipbook-embed';
+      iframe.src = src;
+      iframe.setAttribute('title', (p && p.title) ? p.title : 'Magazine flipbook');
+      iframe.loading = 'lazy';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.setAttribute('allowfullscreen', 'true');
+      mount.appendChild(iframe);
+    }
+    async function loadGeorgiaFlipbook(p) {
+      destroyGeorgiaFlipbook();
+      var mount = document.getElementById('caseFlipbookMount');
+      if (!mount) return;
+      if (p && p.flipbookEmbedUrl) {
+        loadGeorgiaFlipbookEmbed(p);
+        return;
+      }
+      if (typeof pdfjsLib === 'undefined' || typeof St === 'undefined' || !St.PageFlip) {
+        mount.innerHTML = '<p class="case-flipbook-error">Flipbook scripts did not load. Refresh the page.</p>';
+        return;
+      }
+      mount.innerHTML = '<p class="case-flipbook-loading">Preparing your magazine…</p>';
+      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+      var doc = null;
+      var candidates = georgiaPdfCandidateUrls(p);
+      for (var ci = 0; ci < candidates.length && !doc; ci++) {
+        var pdfUrl = candidates[ci];
+        try {
+          var res = await fetch(pdfUrl);
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          doc = await pdfjsLib.getDocument({ data: await res.arrayBuffer() }).promise;
+        } catch (e1) {
+          try {
+            doc = await pdfjsLib.getDocument({ url: pdfUrl }).promise;
+          } catch (e2) {}
+        }
+      }
+
+      if (!doc) {
+        mount.innerHTML = '<p class="case-flipbook-error">Could not open the PDF. Run a local server from this folder (python3 -m http.server 8080) so assets/georgia-entertainment-cej26.pdf can load.</p>';
+        var prev = document.getElementById('caseFlipbookPrev');
+        var next = document.getElementById('caseFlipbookNext');
+        if (prev && prev.blur) prev.blur();
+        if (next && next.blur) next.blur();
+        return;
+      }
+
+      var urls = [];
+      var pageAspect = 1.35;
+      try {
+        var maxPages = Math.min(doc.numPages, 48);
+        var rasterMaxW = 540;
+        for (var pi = 1; pi <= maxPages; pi++) {
+          var page = await doc.getPage(pi);
+          var v1 = page.getViewport({ scale: 1 });
+          var sc = Math.min(1.7, rasterMaxW / v1.width);
+          var vp = page.getViewport({ scale: sc });
+          pageAspect = vp.height / vp.width;
+          var canvas = document.createElement('canvas');
+          var ctx = canvas.getContext('2d', { alpha: false });
+          canvas.width = Math.floor(vp.width);
+          canvas.height = Math.floor(vp.height);
+          await page.render({ canvasContext: ctx, viewport: vp }).promise;
+          urls.push(canvas.toDataURL('image/jpeg', 0.82));
+        }
+        try {
+          if (typeof doc.destroy === 'function') doc.destroy();
+        } catch (e) {}
+        await mountGeorgiaStPageFlip(mount, urls, pageAspect);
+      } catch (err) {
+        mount.innerHTML = '<p class="case-flipbook-error">Could not build the flipbook. Check the console for details.</p>';
+        var prevE = document.getElementById('caseFlipbookPrev');
+        var nextE = document.getElementById('caseFlipbookNext');
+        if (prevE && prevE.blur) prevE.blur();
+        if (nextE && nextE.blur) nextE.blur();
+        console.error(err);
+      }
+    }
+
+    async function openCase(i) {
       const p = projects[i];
 
       // Hero image — full-bleed stage (cover), same spirit as #design intro media
@@ -2478,8 +2843,10 @@
         clientEl.appendChild(collabEl);
       }
       document.getElementById('caseTitle').textContent  = p.title;
-      document.getElementById('caseTags').innerHTML = p.tags.map(t =>
-        `<span class="case-tag-pill">${t}</span>`).join('');
+      document.getElementById('caseTags').innerHTML =
+        '<span class="case-tags-plain">' + p.tags.map(function(t) {
+          return String(t).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }).join(' · ') + '</span>';
 
       const descEl = document.getElementById('caseDesc');
       if (p.title === 'Secret Life of Walter') {
@@ -2487,12 +2854,6 @@
           '<p>The Secret Life of Walter Mitty follows a quiet photo editor at Life magazine who spends his days archiving other people&apos;s adventures until the final cover negative goes missing and he has to leave his desk to find the photographer.</p>',
           '<p>My starting point was the roll of film at the center of the story, the fact that one negative is missing and it is both fragile and vital. I treated the project like a sequence of frames pulled from that strip, so the pacing and cropping feel like you are moving along the film, not just flipping pages.</p>',
           '<p>This book focuses on three main scenes where Walter continuously chooses to step out of his comfort zone. Each spread pairs photography, typography, and scale shifts to echo the way his inner world collides with the real one, so the spreads feel like a loose contact sheet of the moments that change him.</p>'
-        ].join('');
-      } else if (p.title === 'Red and Blue Chair') {
-        descEl.innerHTML = [
-          '<p>This project started with Gerrit Rietveld&apos;s red and blue chair from the De Stijl era. I was interested in how something that iconic can still feel playful and experimental when you take it off the page and into a small, physical model.</p>',
-          '<p>I rebuilt the chair in balsa wood at a reduced scale, paying attention to how each plane, bar, and connection sits in space. From there I laser cut a box that acts like a small stage for the object, so the color blocks and structural lines feel almost like a tiny set instead of a static object.</p>',
-          '<p>Once the model was finished, I photographed it to focus on light, shadow, and how the parts line up from different angles. The goal was to make the chair feel fresh and graphic again while still honoring Rietveld&apos;s original proportions and the De Stijl language of color and form.</p>'
         ].join('');
       } else if (p.title === 'Garbage Magazine') {
         descEl.innerHTML = [
@@ -2506,21 +2867,47 @@
         descEl.innerHTML = '';
       }
 
-      // Process grid
+      // Process grid + optional PDF flipbook (Georgia Entertainment)
       const grid = document.getElementById('caseGrid');
-      if (p.images && p.images.length) {
-        grid.innerHTML = p.images.map((src, idx) =>
-          `<div class="case-grid-img${idx % 3 === 1 ? ' tall' : ''}">
-            <img src="${src}" alt="${p.title}" style="max-width:100%;width:auto;height:auto;display:block;" />
-          </div>`
-        ).join('');
-      } else {
+      const flipSec = document.getElementById('caseFlipbookSection');
+      const secLabel = document.getElementById('caseSectionLabel');
+      destroyGeorgiaFlipbook();
+      const overlay = document.getElementById('caseOverlay');
+      if (p.flipbookEmbedUrl || p.flipbookPdf) {
+        grid.hidden = true;
         grid.innerHTML = '';
+        if (flipSec) flipSec.hidden = false;
+        if (secLabel) secLabel.textContent = 'browse the issue';
+      } else {
+        grid.hidden = false;
+        if (flipSec) flipSec.hidden = true;
+        if (secLabel) secLabel.textContent = 'process & detail';
+        if (p.images && p.images.length) {
+          grid.innerHTML = p.images.map((src, idx) =>
+            `<div class="case-grid-img${idx % 3 === 1 ? ' tall' : ''}">
+              <img src="${src}" alt="${p.title}" style="max-width:100%;width:auto;height:auto;display:block;" />
+            </div>`
+          ).join('');
+        } else {
+          grid.innerHTML = '';
+        }
       }
 
-      document.getElementById('caseOverlay').scrollTop = 0;
-      document.getElementById('caseOverlay').classList.add('open');
-    }    function closeCase() {
+      overlay.scrollTop = 0;
+      overlay.classList.add('open');
+      if (p.flipbookEmbedUrl || p.flipbookPdf) {
+        await loadGeorgiaFlipbook(p);
+      }
+    }
+
+    function closeCase() {
+      destroyGeorgiaFlipbook();
+      var grid = document.getElementById('caseGrid');
+      var flipSec = document.getElementById('caseFlipbookSection');
+      var secLabel = document.getElementById('caseSectionLabel');
+      if (grid) grid.hidden = false;
+      if (flipSec) flipSec.hidden = true;
+      if (secLabel) secLabel.textContent = 'process & detail';
       document.getElementById('caseOverlay').classList.remove('open');
       const closeBtn = document.querySelector('#caseOverlay .photo-back');
       if (closeBtn) closeBtn.style.display = '';
