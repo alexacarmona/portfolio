@@ -1498,7 +1498,7 @@
       .pd-carousel-prev { left: 8px; }
       .pd-carousel-next { right: 8px; }
 
-      .photo-back { right: calc(28px + 2in); top: calc(var(--nav-h) + 32px); font-size: 34px; }
+      .photo-back { right: 18px; top: calc(var(--nav-h) + 32px); font-size: 34px; }
       .photo-detail-title { left: 28px; top: calc(var(--nav-h) + 44px); font-size: 14px; }
     }
 
@@ -2547,7 +2547,8 @@
         tags: ['graphic design', 'editorial', 'layout'],
         hero: 'alexa_shirley-10.jpg',
         images: [],
-        flipbookEmbedUrl: 'https://online.fliphtml5.com/vzlpm/once/',
+        flipbookEmbedUrl: 'https://heyzine.com/flip-book/c6c377a09d.html',
+        collaborators: 'Leo Ruiz and Kalina Richardson',
         description: 'Editorial layout for Georgia Entertainment that pairs athlete portraits with abstract typography and graphic shapes. The spreads lean into motion, cropped limbs, overlapping type, and color fields so the story feels like a conversation between art direction and performance.'
       },
       {
@@ -2923,7 +2924,33 @@
         e.preventDefault();
         if (typeof closeCase === 'function') closeCase();
         if (typeof closePhotoDetail === 'function') closePhotoDetail();
+        function resetHomeToBeginning() {
+          // Home is a horizontal scroller; reset to the intro panel.
+          var track = document.querySelector('#home .scroll-track');
+          if (track) {
+            try { track.scrollTo({ left: 0, top: 0, behavior: 'auto' }); } catch (e) { track.scrollLeft = 0; }
+          }
+          // Reset other section scroll positions so "home" always feels like a fresh start.
+          var design = document.getElementById('design');
+          var photo = document.getElementById('photography');
+          var about = document.getElementById('about');
+          if (design) design.scrollTop = 0;
+          if (photo) { photo.scrollTop = 0; photo.scrollLeft = 0; }
+          if (about) about.scrollTop = 0;
+        }
+
         var hash = (a.getAttribute('href') || '').slice(1);
+        var isHome = !hash || hash === 'home' || a.classList.contains('name');
+
+        if (isHome) {
+          // If we're already on #home, setting the same hash won't do anything — so reset explicitly.
+          resetHomeToBeginning();
+          if (window.location.hash !== '#home') window.location.hash = 'home';
+          // Run again after hash swap so layout is settled.
+          requestAnimationFrame(resetHomeToBeginning);
+          return;
+        }
+
         window.location.hash = hash || 'home';
       });
     }
