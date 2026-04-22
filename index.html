@@ -512,8 +512,8 @@
        and make all paired vertical thumbnails share the same frame size (match garbage tile). */
     .design-works-row--two .works-grid-item.design-tile--vertical {
       justify-self: start;
-      width: 4.1in;
-      height: 6.1in;
+      width: 3.5in;
+      height: 5.2in;
       max-width: none;
       aspect-ratio: auto;
     }
@@ -530,8 +530,8 @@
       width: 100%;
     }
     .works-grid-item.design-tile--horizontal {
-      width: 9.5in;
-      height: 5.5in;
+      width: 8.2in;
+      height: 4.8in;
       max-width: none;
       aspect-ratio: auto;
     }
@@ -728,6 +728,41 @@
     }
     .works-grid-item--wip {
       cursor: default;
+    }
+
+    /* Work section: persistent project names below tiles */
+    #design .works-grid-item {
+      /* keep tile sizing/hover exactly the same; just make room for the label */
+      overflow: visible;
+      margin-bottom: 46px;
+    }
+    #design .works-grid-item::after {
+      content: attr(data-title);
+      position: absolute;
+      left: 0;
+      top: calc(100% + 12px);
+      font-size: 13px;
+      font-weight: 300;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      letter-spacing: 0.06em;
+      color: var(--fg);
+      text-transform: uppercase;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+      pointer-events: none;
+    }
+
+    /* Work section: remove hover titles (keep hover color only) */
+    #design .works-grid-item .wg-title,
+    #design .works-grid-item .wg-desc {
+      display: none !important;
+    }
+
+    /* But keep the "in progress" hover stack for WIP tiles */
+    #design .works-grid-item.works-grid-item--wip .wg-wip-title-stack {
+      display: flex !important;
     }
 
     /* ══ PHOTOGRAPHY - scroll-anywhere, mixed orientations, title below on hover ═══ */
@@ -1549,8 +1584,8 @@
           <span class="card-tag">photography</span>
           <div class="card-label"><div class="card-title">sunrise</div><div class="card-cat">landscape</div></div>
         </div>
-        <div class="card tall pos-lower" onclick="openCase(6)">
-          <div class="card-img" style="height:100%;"><img src="georgiaentertainment_proj16_cover.png" alt="Georgia Entertainment Magazine" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
+        <div class="card auto-thumb pos-lower" onclick="openCase(6)" style="aspect-ratio: 1700 / 2200;">
+          <div class="card-img" style="height:100%;"><img src="213394-GEORGIA-ENTERTAINMENT-CEJ26-text-Web.pdf.png" alt="Georgia Entertainment Magazine" style="width:100%;height:100%;object-fit:contain;display:block;" /></div>
           <div class="card-hover-overlay"></div>
           <span class="card-tag">design</span>
           <div class="card-label"><div class="card-title">georgia entertainment magazine</div><div class="card-cat">editorial, layout</div></div>
@@ -1591,14 +1626,14 @@
         <div class="design-works-rows">
           <!-- two -->
           <div class="design-works-row design-works-row--two">
-            <div class="works-grid-item design-tile--vertical" data-proj="5" data-case-index="6" onclick="openCase(6)">
+            <div class="works-grid-item design-tile--vertical" data-proj="5" data-title="georgia entertainment magazine" data-case-index="6" onclick="openCase(6)">
               <img src="georgiaentertainment_proj16_cover.png" alt="Georgia Entertainment Magazine" />
               <div class="wg-overlay">
                 <div class="wg-title">georgia entertainment magazine</div>
                 <div class="wg-desc"></div>
               </div>
             </div>
-            <div class="works-grid-item design-tile--vertical" data-proj="7" data-case-index="7" onclick="openCase(7)">
+            <div class="works-grid-item design-tile--vertical" data-proj="7" data-title="trademark x chicago" data-case-index="7" onclick="openCase(7)">
               <img src="7trademarkxchicago_proj24.png" alt="Trademark x Chicago" />
               <div class="wg-overlay">
                 <div class="wg-title">trademark x chicago</div>
@@ -1609,7 +1644,7 @@
 
           <!-- one -->
           <div class="design-works-row design-works-row--one">
-            <div class="works-grid-item design-tile--horizontal" data-proj="4" data-case-index="3" onclick="openCase(3)">
+            <div class="works-grid-item design-tile--horizontal" data-proj="4" data-title="breadly" data-case-index="3" onclick="openCase(3)">
               <img src="25breadly_proj5.jpg" alt="Breadly" />
               <div class="wg-overlay">
                 <div class="wg-title">breadly</div>
@@ -1620,14 +1655,14 @@
 
           <!-- two -->
           <div class="design-works-row design-works-row--two">
-            <div class="works-grid-item design-tile--vertical" data-proj="3" data-case-index="2" onclick="openCase(2)">
+            <div class="works-grid-item design-tile--vertical" data-proj="3" data-title="garbage magazine" data-case-index="2" onclick="openCase(2)">
               <img src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" />
               <div class="wg-overlay">
                 <div class="wg-title">garbage magazine</div>
                 <div class="wg-desc"></div>
               </div>
             </div>
-            <div class="works-grid-item design-tile--vertical" data-proj="2" data-case-index="1" onclick="openCase(1)">
+            <div class="works-grid-item design-tile--vertical" data-proj="2" data-title="swiss design stamps" data-case-index="1" onclick="openCase(1)">
               <img src="1swissdesignstamps_proj3.jpg" alt="Swiss Design Stamps" />
               <div class="wg-overlay">
                 <div class="wg-title">swiss design stamps</div>
@@ -1638,7 +1673,7 @@
 
           <!-- one -->
           <div class="design-works-row design-works-row--one">
-            <div class="works-grid-item design-tile--horizontal" data-proj="0" data-case-index="0" onclick="openCase(0)">
+            <div class="works-grid-item design-tile--horizontal" data-proj="0" data-title="secret life of walter" data-case-index="0" onclick="openCase(0)">
               <img src="2secretlifeofwalter_proj1.png" alt="Secret Life of Walter" />
               <div class="wg-overlay">
                 <div class="wg-title">secret life of walter</div>
@@ -1649,7 +1684,7 @@
 
           <!-- two -->
           <div class="design-works-row design-works-row--two">
-            <div class="works-grid-item works-grid-item--wip design-tile--vertical" data-proj="8">
+            <div class="works-grid-item works-grid-item--wip design-tile--vertical" data-proj="8" data-title="chateau constantin">
               <img src="constantin_proj25.jpg" alt="chateau constantin in progress" />
               <div class="wg-overlay">
                 <div class="wg-wip-title-stack">
@@ -1658,7 +1693,7 @@
                 </div>
               </div>
             </div>
-            <div class="works-grid-item works-grid-item--wip design-tile--vertical" data-proj="1">
+            <div class="works-grid-item works-grid-item--wip design-tile--vertical" data-proj="1" data-title="vancouver canucks rebrand">
               <img src="creme_%20V_jersey4.png" alt="Vancouver Canucks rebrand in progress" />
               <div class="wg-overlay">
                 <div class="wg-wip-title-stack">
@@ -1671,7 +1706,7 @@
 
           <!-- one (in progress) -->
           <div class="design-works-row design-works-row--one">
-            <div class="works-grid-item design-tile--horizontal" data-proj="6" data-case-index="5" onclick="openCase(5)">
+            <div class="works-grid-item design-tile--horizontal" data-proj="6" data-title="gotem" data-case-index="5" onclick="openCase(5)">
               <img src="1gotem_proj14.jpg" alt="Gotem" />
               <div class="wg-overlay">
                 <div class="wg-title">gotem</div>
@@ -3005,6 +3040,7 @@
       window.addEventListener('hashchange', onEnterDesign);
       onEnterDesign();
     })();
+
   </script>
 </body>
 </html>
