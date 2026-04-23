@@ -2488,6 +2488,38 @@
           { src: 'blow orchguy.JPG.jpg.jpg', orientation: 'landscape' }
         ]
       },
+      {
+        id: 22,
+        title: 'bobbi',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: 'bobbi1.jpg',
+        images: [
+          { src: 'bobbi1.jpg', orientation: 'portrait' },
+          { src: 'bobbi2.jpg', orientation: 'portrait' },
+          { src: 'bobbi3.jpg', orientation: 'portrait' },
+          { src: 'bobbi4.jpg', orientation: 'portrait' }
+        ]
+      },
+      {
+        id: 23,
+        title: 'hem',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: 'hem1.jpg',
+        images: [
+          { src: 'hem1.jpg', orientation: 'square' },
+          { src: 'hem2.jpg', orientation: 'square' },
+          { src: 'hem4.jpg', orientation: 'square' },
+          { src: 'hem5.jpg', orientation: 'square' }
+        ]
+      },
     ];
     window.photoProjects = photoProjects;
     if (window.initPhotoGrid) window.initPhotoGrid();
@@ -2937,24 +2969,9 @@
           return String(t).replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }).join(' · ') + '</span>';
 
+      // Work section: no per-project descriptions
       const descEl = document.getElementById('caseDesc');
-      if (p.title === 'Secret Life of Walter') {
-        descEl.innerHTML = [
-          '<p>The Secret Life of Walter Mitty follows a quiet photo editor at Life magazine who spends his days archiving other people&apos;s adventures until the final cover negative goes missing and he has to leave his desk to find the photographer.</p>',
-          '<p>My starting point was the roll of film at the center of the story, the fact that one negative is missing and it is both fragile and vital. I treated the project like a sequence of frames pulled from that strip, so the pacing and cropping feel like you are moving along the film, not just flipping pages.</p>',
-          '<p>This book focuses on three main scenes where Walter continuously chooses to step out of his comfort zone. Each spread pairs photography, typography, and scale shifts to echo the way his inner world collides with the real one, so the spreads feel like a loose contact sheet of the moments that change him.</p>'
-        ].join('');
-      } else if (p.title === 'Garbage Magazine') {
-        descEl.innerHTML = [
-          '<p>Garbage Magazine is a self-initiated editorial project built around photographs and design from ATL, following MARTA and the everyday infrastructure that usually gets ignored.</p>',
-          '<p>The spreads layer typography, image, and texture to feel like a low-fi archive of construction zones, train platforms, underpasses, and street-level ephemera.</p>',
-          '<p>I treated each story like a visual mixtape, mixing my own photos with bold type systems, high-contrast crops, and pockets of quiet white space so it lives somewhere between a zine, a lookbook, and a field study of the city.</p>'
-        ].join('');
-      } else if (p.description) {
-        descEl.innerHTML = `<p>${p.description}</p>`;
-      } else {
-        descEl.innerHTML = '';
-      }
+      if (descEl) descEl.innerHTML = '';
 
       // Process grid + optional PDF flipbook (Georgia Entertainment)
       const grid = document.getElementById('caseGrid');
