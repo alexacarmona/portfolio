@@ -2402,18 +2402,19 @@
       },
       {
         id: 16,
-        title: 'jazmine editorial',
+        title: 'alexa + emma',
         year: '2025',
         time: '',
         location: '',
         description: '',
         details: '',
-        thumbnail: '4jazmineeditorial.jpg',
+        thumbnail: 'alexa_emma-3.jpg',
         images: [
-          { src: '1jazmineeditorial.jpg', orientation: 'landscape' },
-          { src: '2jazmineeditorial.jpg', orientation: 'landscape' },
-          { src: '3jazmineeditorial.jpg', orientation: 'landscape' },
-          { src: '4jazmineeditorial.jpg', orientation: 'landscape' }
+          { src: 'alexa_emma-3.jpg', orientation: 'landscape' },
+          { src: 'alexa_emma-6.jpg', orientation: 'portrait' },
+          { src: 'alexa_emma-10.jpg', orientation: 'landscape' },
+          { src: 'alexa_emma-29.jpg', orientation: 'portrait' },
+          { src: 'alexa_emma-30.jpg', orientation: 'portrait' }
         ]
       },
       {
@@ -2433,6 +2434,104 @@
           { src: '5stellabrauneeditorial.jpg', orientation: 'landscape' },
           { src: '6stellabrauneeditorial.jpg', orientation: 'landscape' },
           { src: '7stellabrauneeditorial.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 18,
+        title: 'Carmona_Alexa_MonaLisaThroughACrowd',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: 'Carmona_Alexa_MonaLisaThroughACrowd.jpg',
+        images: [
+          { src: 'Carmona_Alexa_MonaLisaThroughACrowd.jpg', orientation: 'square' }
+        ]
+      },
+      {
+        id: 19,
+        title: 'untitled-9842',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: 'untitled-9842.jpg',
+        images: [
+          { src: 'untitled-9842.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 20,
+        title: 'duck',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: 'duck.jpg',
+        images: [
+          { src: 'duck.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 21,
+        title: 'blow orchguy',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: 'blow orchguy.JPG.jpg.jpg',
+        images: [
+          { src: 'blow orchguy.JPG.jpg.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 22,
+        title: 'bobbi',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: 'bobbi1.jpg',
+        images: [
+          { src: 'bobbi1.jpg', orientation: 'portrait' },
+          { src: 'bobbi2.jpg', orientation: 'portrait' },
+          { src: 'bobbi3.jpg', orientation: 'portrait' },
+          { src: 'bobbi4.jpg', orientation: 'portrait' }
+        ]
+      },
+      {
+        id: 23,
+        title: 'hem',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: 'hem1.jpg',
+        images: [
+          { src: 'hem1.jpg', orientation: 'square' },
+          { src: 'hem2.jpg', orientation: 'square' },
+          { src: 'hem4.jpg', orientation: 'square' },
+          { src: 'hem5.jpg', orientation: 'square' }
+        ]
+      },
+      {
+        id: 24,
+        title: 'colors dancing',
+        year: '2025',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: 'colors_dancing1.jpg',
+        images: [
+          { src: 'colors_dancing1.jpg', orientation: 'landscape' },
+          { src: 'colors_dancing2.jpg', orientation: 'landscape' }
         ]
       },
     ];
@@ -2884,24 +2983,9 @@
           return String(t).replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }).join(' · ') + '</span>';
 
+      // Work section: no project descriptions
       const descEl = document.getElementById('caseDesc');
-      if (p.title === 'Secret Life of Walter') {
-        descEl.innerHTML = [
-          '<p>The Secret Life of Walter Mitty follows a quiet photo editor at Life magazine who spends his days archiving other people&apos;s adventures until the final cover negative goes missing and he has to leave his desk to find the photographer.</p>',
-          '<p>My starting point was the roll of film at the center of the story, the fact that one negative is missing and it is both fragile and vital. I treated the project like a sequence of frames pulled from that strip, so the pacing and cropping feel like you are moving along the film, not just flipping pages.</p>',
-          '<p>This book focuses on three main scenes where Walter continuously chooses to step out of his comfort zone. Each spread pairs photography, typography, and scale shifts to echo the way his inner world collides with the real one, so the spreads feel like a loose contact sheet of the moments that change him.</p>'
-        ].join('');
-      } else if (p.title === 'Garbage Magazine') {
-        descEl.innerHTML = [
-          '<p>Garbage Magazine is a self-initiated editorial project built around photographs and design from ATL, following MARTA and the everyday infrastructure that usually gets ignored.</p>',
-          '<p>The spreads layer typography, image, and texture to feel like a low-fi archive of construction zones, train platforms, underpasses, and street-level ephemera.</p>',
-          '<p>I treated each story like a visual mixtape, mixing my own photos with bold type systems, high-contrast crops, and pockets of quiet white space so it lives somewhere between a zine, a lookbook, and a field study of the city.</p>'
-        ].join('');
-      } else if (p.description) {
-        descEl.innerHTML = `<p>${p.description}</p>`;
-      } else {
-        descEl.innerHTML = '';
-      }
+      if (descEl) descEl.innerHTML = '';
 
       // Process grid + optional PDF flipbook (Georgia Entertainment)
       const grid = document.getElementById('caseGrid');
