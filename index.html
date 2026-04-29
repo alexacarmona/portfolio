@@ -20,7 +20,7 @@
       --fg-muted: #999;
       --card-bg: #e4e3e0;
       --overlay-bg: rgba(240,239,237,0.98);
-      --nav-h: 64px;
+      --nav-h: 66px;
       --footer-h: 52px;
       --tr: 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -45,7 +45,8 @@
       z-index: 350; height: var(--nav-h);
       display: flex; align-items: center;
       justify-content: space-between;
-      padding: 0 40px;
+      gap: clamp(12px, 2vw, 28px);
+      padding: 0 clamp(28px, 4vw, 56px);
       background: transparent;
       transition: color var(--tr);
     }
@@ -79,13 +80,34 @@
     .name:hover .name-logo-img--yellow { display: block; }
     .name:hover .name-logo-img--default { display: none; }
     .nav-right {
-      display: flex; align-items: center; gap: 32px;
+      display: flex;
+      align-items: center;
+      flex: 1;
+      justify-content: flex-end;
+      min-width: 0;
+      gap: 0;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex: 1;
+      max-width: min(720px, 58vw);
+      padding: 0 clamp(16px, 5vw, 64px);
+      margin-right: clamp(20px, 4vw, 48px);
+      box-sizing: border-box;
     }
     .nav-link {
-      font-size: 14px; font-weight: 300; letter-spacing: 0.08em;
+      font-size: clamp(13px, 1.12vw, 16px);
+      font-weight: 300;
+      letter-spacing: 0.1em;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      color: var(--fg-muted); text-decoration: none;
-      transition: color 0.2s; cursor: pointer; user-select: none;
+      color: var(--fg-muted);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.2s;
+      cursor: pointer;
+      user-select: none;
     }
     .nav-link:hover { color: #e6b800; }
     #aboutNavLink {
@@ -102,7 +124,9 @@
       100% { transform: scale(1); }
     }
     .theme-btn {
-      font-size: 14px; font-weight: 300; letter-spacing: 0.08em;
+      font-size: clamp(13px, 1.12vw, 16px);
+      font-weight: 300;
+      letter-spacing: 0.1em;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: var(--fg-muted); background: none; border: none;
       cursor: pointer; transition: color 0.2s; padding: 0;
@@ -272,7 +296,9 @@
     }
 
     .card {
-      flex: 0 0 auto; border-radius: 0; overflow: hidden;
+      flex: 0 0 auto;
+      border-radius: clamp(8px, 1.2vw, 14px);
+      overflow: hidden;
       position: relative; cursor: pointer; background: var(--card-bg);
       transition: opacity 0.35s ease;
       margin: 0 70px;
@@ -352,127 +378,113 @@
     }
     .section-inner { max-width: 1200px; margin: 0 auto; padding: calc(var(--nav-h) + 44px) 60px 60px; }
     /* Let the intro media bleed under the fixed nav */
-    #design .section-inner { max-width: none; padding: 0 0.5in 60px; }
+    #design .section-inner { max-width: none; padding: 0 0 60px; }
     .section-title { font-size: clamp(34px, 5vw, 60px); font-weight: 400; letter-spacing: -0.025em; margin-bottom: 44px; padding: 0; }
 
     /* design hero removed to make room for stacked project cards */
 
-    /* Body of Water-inspired design index */
-    .design-works-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 0;
-      align-items: start;
+    /* Works archive (Aries-style): simple masonry columns */
+    #design .works-archive-wrap {
+      width: 100%;
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: calc(var(--nav-h) + 36px) 3% 140px;
+      box-sizing: border-box;
     }
-
-    .design-intro-stage {
+    #design .works-archive {
+      /* Bigger thumbnails: fewer columns */
+      columns: 3;
+      column-gap: 40px;
+    }
+    #design .works-archive-item {
+      break-inside: avoid;
+      display: inline-block;
+      width: 100%;
+      margin: 0 0 110px;
+      cursor: pointer;
       position: relative;
-      min-height: 100vh;
-      max-height: 1100px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding-top: var(--nav-h);
-      /* push the intro copy higher on the video */
-      padding-bottom: 2in;
-      /* full-bleed under the nav */
-      width: 100vw;
-      margin-left: calc(50% - 50vw);
-      margin-right: calc(50% - 50vw);
-      margin-bottom: 4in;
     }
-    .design-intro-media {
-      position: absolute;
-      inset: 0;
+    #design .works-archive-item--wip { cursor: default; }
+    #design .works-archive-item--wip[data-case-index] { cursor: pointer; }
+    #design .works-archive-thumb-wrap {
+      position: relative;
+      display: block;
       overflow: hidden;
-      background: var(--card-bg);
+      border-radius: clamp(8px, 1.2vw, 14px);
     }
-    /* darken video so text + nav stay readable */
-    .design-intro-media::after {
-      content: "";
+    #design .works-archive-thumb {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: inherit;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #design .works-archive-item:hover .works-archive-thumb {
+      transform: scale(1.04);
+    }
+    #design .works-archive-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(
-        to top,
-        rgba(0,0,0,0.66) 0%,
-        rgba(0,0,0,0.34) 45%,
-        rgba(0,0,0,0.10) 100%
-      );
+      opacity: 0;
+      transition: opacity 0.2s ease;
       pointer-events: none;
-      z-index: 1;
-    }
-    .design-intro-video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      opacity: 0.96;
-    }
-    .design-intro-image {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      opacity: 0.96;
-    }
-    .design-intro-stage .design-intro {
-      position: relative;
       z-index: 2;
-      margin: 0;
-      padding-left: 0.5in;
-      padding-right: 0.5in;
+      background: rgba(220, 220, 222, 0.42);
     }
-
-    .design-intro {
-      display: grid;
-      grid-template-columns: minmax(240px, 360px) 1fr;
-      gap: 44px;
-      margin: 6px 0 44px;
-      max-width: none;
-      min-height: 0;
-      /* align the headline and body text on a shared baseline */
-      align-items: baseline;
+    [data-theme="dark"] #design .works-archive-overlay {
+      background: rgba(255, 255, 255, 0.1);
     }
-    .design-intro-left { padding-top: 0; position: relative; }
-    .design-intro-kicker {
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.78);
+    #design .works-archive-item:hover .works-archive-overlay {
+      opacity: 1;
+    }
+    #design .works-archive-title {
+      margin-top: 10px;
+      font-size: clamp(14px, 1.25vw, 17px);
       font-weight: 300;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      /* keep kicker from affecting baseline alignment */
-      position: absolute;
-      top: -18px;
-      left: 0;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg);
+      line-height: 1.35;
     }
-    .design-intro-title {
-      font-size: clamp(30px, 4.3vw, 52px);
-      font-weight: 400;
-      letter-spacing: -0.025em;
-      line-height: 1.02;
-      margin-top: 10px;
-      white-space: nowrap;
-      color: #fff;
-      text-shadow: 0 2px 16px rgba(0,0,0,0.55);
-    }
-    .design-intro-right {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(180px, 1fr));
-      gap: 52px;
-      padding-top: 0;
-      align-items: start;
-    }
-    .design-intro-p {
-      margin: 0;
-      font-size: 12px;
-      line-height: 1.65;
+    #design .works-archive-meta {
+      margin-top: 6px;
+      font-size: 10px;
       font-weight: 300;
-      color: rgba(255,255,255,0.88);
-      opacity: 0.88;
-      max-width: 34ch;
-      text-shadow: 0 2px 14px rgba(0,0,0,0.55);
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      line-height: 1.35;
     }
+    #design .works-archive-wip {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 4;
+      font-size: 11px;
+      font-weight: 500;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.92);
+      background: rgba(0,0,0,0.62);
+      padding: 12px 12px 10px;
+      line-height: 1.2;
+      pointer-events: none;
+    }
+
+    @media (max-width: 1100px) {
+      #design .works-archive { columns: 2; }
+    }
+    @media (max-width: 800px) {
+      #design .works-archive { columns: 1; }
+    }
+    @media (max-width: 520px) { /* already 1 col; keep */ }
+
 
     /* Nav contrast mode (white) for dark media behind it */
     nav.nav-contrast-light .nav-link,
@@ -659,7 +671,7 @@
     .works-grid-item[data-proj="8"] .wg-overlay { background: rgba(0,0,0,0.62); }
 
     .wg-title {
-      font-size: clamp(17px, 1.35vw, 22px);
+      font-size: clamp(19px, 1.45vw, 24px);
       font-weight: 500;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: #fff;
@@ -671,7 +683,7 @@
     .works-grid-item:hover .wg-title { transform: translateY(0); }
 
     .wg-desc {
-      font-size: 12px;
+      font-size: 14px;
       font-weight: 300;
       color: rgba(255,255,255,0.85);
       letter-spacing: 0.01em;
@@ -1191,7 +1203,42 @@
       object-fit: cover;
       display: block;
     }
-    .case-header { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 72px; }
+    .case-header { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; margin-bottom: 72px; align-items: start; }
+    .case-header-title-block { min-width: 0; }
+    .case-blurb {
+      font-size: 12px;
+      line-height: 1.32;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      color: var(--fg);
+      opacity: 0.72;
+      max-width: 34em;
+      padding-top: 28px;
+    }
+    .case-blurb p { margin: 0; }
+    .case-blurb p + p { margin-top: 0.55em; }
+    .case-blurb[hidden] { display: none !important; }
+    .case-body-stack { position: relative; }
+    .case-marginalia-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: visible;
+    }
+    .case-marginalia-note {
+      position: absolute;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+      font-size: 10px;
+      line-height: 1.22;
+      letter-spacing: 0.03em;
+      color: var(--fg);
+      opacity: 0.34;
+      max-width: min(44vw, 210px);
+      text-align: left;
+      transition: opacity 0.45s ease;
+    }
+    .case-marginalia-note.case-marginalia-note--in { opacity: 0.52; }
     .case-client { font-size: 10px; letter-spacing: 0.12em; color: var(--fg-muted); margin-bottom: 4px; }
     .case-collab {
       font-size: 10px;
@@ -1218,8 +1265,8 @@
     }
     .case-desc   { font-size: 14px; font-weight: 300; line-height: 1.75; opacity: 0.8; padding-top: 6px; }
     .case-desc p + p { margin-top: 14px; }
-    .case-section-label { font-size: 9px; letter-spacing: 0.14em; color: var(--fg-muted); padding-top: 56px; margin-bottom: 24px; border-top: 1px solid var(--card-bg); }
-    .case-grid  { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .case-section-label { position: relative; z-index: 1; font-size: 9px; letter-spacing: 0.14em; color: var(--fg-muted); padding-top: 56px; margin-bottom: 24px; border-top: 1px solid var(--card-bg); }
+    .case-grid  { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     /* content blocks: interleaved text + images with scroll-triggered motion */
     .case-content { display: flex; flex-direction: column; gap: 48px; }
     .case-content-block {
@@ -1242,7 +1289,7 @@
     .case-grid-img.wide { grid-column: span 2; }
 
     /* Georgia Entertainment — FlipHTML5-style book (pdf.js + StPageFlip) */
-    .case-flipbook-section { max-width: 1000px; margin: 0 auto; padding-bottom: 48px; }
+    .case-flipbook-section { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding-bottom: 48px; }
     .case-flipbook-section[hidden] { display: none !important; }
     .case-pdf-viewer {
       display: flex;
@@ -1357,7 +1404,19 @@
     }
 
     @media (max-width: 800px) {
-      nav { padding: 0 20px; }
+      nav { padding: 0 16px; gap: 8px; }
+      .nav-links {
+        max-width: none;
+        flex: 1;
+        padding: 0 6px 0 4px;
+        margin-right: 10px;
+        justify-content: space-between;
+      }
+      .nav-link,
+      .theme-btn {
+        font-size: clamp(12px, 2.9vw, 15px);
+        letter-spacing: 0.08em;
+      }
       .name { font-size: 18px; }
       .name-logo-img { height: 84px; max-width: min(560px, 85vw); }
       .name {
@@ -1376,6 +1435,7 @@
       .case-inner { padding: 40px 24px 60px; }
       .case-hero { min-height: min(92vh, 900px); max-height: 900px; margin-bottom: 40px; }
       .case-header { grid-template-columns: 1fr; gap: 28px; }
+      .case-blurb { padding-top: 0; max-width: none; }
       .about-layout { grid-template-columns: 1fr; }
       .about-photo-col { padding: 60px 32px 20px; }
       .about-text-col { padding: 20px 32px 60px; }
@@ -1400,27 +1460,14 @@
       .section-inner { padding: calc(var(--nav-h) + 24px) 24px 60px; }
       .site-footer { padding: 0 20px; }
 
-      #design .section-inner { padding: calc(var(--nav-h) + 32px) 28px 60px; }
-      #design .section-inner { padding-top: 0; }
+      #design .section-inner { padding: 0 0 60px; }
 
-    /* mobile: stack the design works rows */
-      .design-works-layout { grid-template-columns: 1fr; gap: 24px; }
       .design-works-row { gap: 24px; }
       .design-works-row--two { grid-template-columns: 1fr; }
       .works-grid-item.design-tile--vertical { aspect-ratio: 4 / 5; }
       .works-grid-item.design-tile--horizontal { aspect-ratio: 16 / 9; width: 100%; height: auto; max-width: 100%; }
 
-      .design-intro-stage { margin-bottom: 1.25in; padding-bottom: 1.1in; }
-      .design-intro-stage .design-intro { padding-left: 28px; padding-right: 28px; }
-
-      .design-intro {
-        grid-template-columns: 1fr;
-        gap: 16px;
-        margin: 6px 0 32px;
-      }
-      .design-intro-title { white-space: normal; }
-      .design-intro-right { grid-template-columns: 1fr; gap: 14px; padding-top: 0; }
-      .design-intro-p { max-width: 60ch; }
+      #design .works-archive { columns: 1; }
 
       /* mobile: stack Body-of-Water cycles */
       .design-bow-stack { gap: 24px; }
@@ -1608,111 +1655,80 @@
 
   <div id="design" class="section">
     <div class="section-inner">
-      <div class="design-intro-stage">
-        <div class="design-intro-media" aria-hidden="true">
-          <video class="design-intro-video" autoplay muted loop playsinline webkit-playsinline preload="auto">
-            <source src="IMG_1540%203.MP4" type="video/mp4" />
-          </video>
-        </div>
-
-        <div class="design-intro">
-          <div class="design-intro-left">
-            <div class="design-intro-kicker"></div>
-            <div class="design-intro-title">designing for all.</div>
-          </div>
-        </div>
-      </div>
-      <div class="design-works-layout">
-        <div class="design-works-rows">
-          <!-- two -->
-          <div class="design-works-row design-works-row--two">
-            <div class="works-grid-item design-tile--vertical" data-proj="5" data-title="georgia entertainment magazine" data-case-index="6" onclick="openCase(6)">
-              <img src="georgiaentertainment_proj16_cover.png" alt="Georgia Entertainment Magazine" />
-              <div class="wg-overlay">
-                <div class="wg-title">georgia entertainment magazine</div>
-                <div class="wg-desc"></div>
-              </div>
+      <div class="works-archive-wrap">
+        <div class="works-archive">
+          <div class="works-archive-item" data-case-index="3" onclick="openCase(3)">
+            <div class="works-archive-thumb-wrap">
+              <img class="works-archive-thumb" src="25breadly_proj5.jpg" alt="Breadly" />
+              <div class="works-archive-overlay" aria-hidden="true"></div>
             </div>
-            <div class="works-grid-item design-tile--vertical" data-proj="7" data-title="trademark x chicago" data-case-index="7" onclick="openCase(7)">
-              <img src="7trademarkxchicago_proj24.png" alt="Trademark x Chicago" />
-              <div class="wg-overlay">
-                <div class="wg-title">trademark x chicago</div>
-                <div class="wg-desc"></div>
-              </div>
-            </div>
+            <div class="works-archive-title">breadly</div>
           </div>
 
-          <!-- one -->
-          <div class="design-works-row design-works-row--one">
-            <div class="works-grid-item design-tile--horizontal" data-proj="4" data-title="breadly" data-case-index="3" onclick="openCase(3)">
-              <img src="25breadly_proj5.jpg" alt="Breadly" />
-              <div class="wg-overlay">
-                <div class="wg-title">breadly</div>
-                <div class="wg-desc"></div>
-              </div>
+          <div class="works-archive-item" data-case-index="7" onclick="openCase(7)">
+            <div class="works-archive-thumb-wrap">
+              <img class="works-archive-thumb" src="7trademarkxchicago_proj24.png" alt="Trademark x Chicago" />
+              <div class="works-archive-overlay" aria-hidden="true"></div>
             </div>
+            <div class="works-archive-title">trademark x chicago</div>
           </div>
 
-          <!-- two -->
-          <div class="design-works-row design-works-row--two">
-            <div class="works-grid-item design-tile--vertical" data-proj="3" data-title="garbage magazine" data-case-index="2" onclick="openCase(2)">
-              <img src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" />
-              <div class="wg-overlay">
-                <div class="wg-title">garbage magazine</div>
-                <div class="wg-desc"></div>
-              </div>
+          <div class="works-archive-item" data-case-index="1" onclick="openCase(1)">
+            <div class="works-archive-thumb-wrap">
+              <img class="works-archive-thumb" src="1swissdesignstamps_proj3.jpg" alt="Swiss Design Stamps" />
+              <div class="works-archive-overlay" aria-hidden="true"></div>
             </div>
-            <div class="works-grid-item design-tile--vertical" data-proj="2" data-title="swiss design stamps" data-case-index="1" onclick="openCase(1)">
-              <img src="1swissdesignstamps_proj3.jpg" alt="Swiss Design Stamps" />
-              <div class="wg-overlay">
-                <div class="wg-title">swiss design stamps</div>
-                <div class="wg-desc"></div>
-              </div>
-            </div>
+            <div class="works-archive-title">swiss design stamps</div>
           </div>
 
-          <!-- one -->
-          <div class="design-works-row design-works-row--one">
-            <div class="works-grid-item design-tile--horizontal" data-proj="0" data-title="secret life of walter" data-case-index="0" onclick="openCase(0)">
-              <img src="2secretlifeofwalter_proj1.png" alt="Secret Life of Walter" />
-              <div class="wg-overlay">
-                <div class="wg-title">secret life of walter</div>
-                <div class="wg-desc"></div>
-              </div>
+          <div class="works-archive-item" data-case-index="0" onclick="openCase(0)">
+            <div class="works-archive-thumb-wrap">
+              <img class="works-archive-thumb" src="2secretlifeofwalter_proj1.png" alt="Secret Life of Walter" />
+              <div class="works-archive-overlay" aria-hidden="true"></div>
             </div>
+            <div class="works-archive-title">secret life of walter</div>
           </div>
 
-          <!-- two -->
-          <div class="design-works-row design-works-row--two">
-            <div class="works-grid-item works-grid-item--wip design-tile--vertical" data-proj="8" data-title="chateau constantin">
-              <img src="constantin_proj25.jpg" alt="chateau constantin in progress" />
-              <div class="wg-overlay">
-                <div class="wg-wip-title-stack">
-                  <span class="wg-wip-label">in progress</span>
-                  <span class="wg-wip-project">chateau constantin</span>
-                </div>
-              </div>
+          <div class="works-archive-item" data-case-index="6" onclick="openCase(6)">
+            <div class="works-archive-thumb-wrap">
+              <img class="works-archive-thumb" src="georgiaentertainment_proj16_cover.png" alt="Georgia Entertainment Magazine" />
+              <div class="works-archive-overlay" aria-hidden="true"></div>
             </div>
-            <div class="works-grid-item works-grid-item--wip design-tile--vertical" data-proj="1" data-title="vancouver canucks rebrand">
-              <img src="creme_%20V_jersey4.png" alt="Vancouver Canucks rebrand in progress" />
-              <div class="wg-overlay">
-                <div class="wg-wip-title-stack">
-                  <span class="wg-wip-label">in progress</span>
-                  <span class="wg-wip-project">vancouver canucks rebrand</span>
-                </div>
-              </div>
-            </div>
+            <div class="works-archive-title">georgia entertainment magazine</div>
           </div>
 
-          <!-- one (in progress) -->
-          <div class="design-works-row design-works-row--one">
-            <div class="works-grid-item design-tile--horizontal" data-proj="6" data-title="gotem" data-case-index="5" onclick="openCase(5)">
-              <img src="1gotem_proj14.jpg" alt="Gotem" />
-              <div class="wg-overlay">
-                <div class="wg-title">gotem</div>
-                <div class="wg-desc"></div>
-              </div>
+          <div class="works-archive-item" data-case-index="2" onclick="openCase(2)">
+            <div class="works-archive-thumb-wrap">
+              <img class="works-archive-thumb" src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" />
+              <div class="works-archive-overlay" aria-hidden="true"></div>
             </div>
+            <div class="works-archive-title">garbage magazine</div>
+          </div>
+
+          <div class="works-archive-item" data-case-index="5" onclick="openCase(5)">
+            <div class="works-archive-thumb-wrap">
+              <img class="works-archive-thumb" src="1gotem_proj14.jpg" alt="Gotem" />
+              <div class="works-archive-overlay" aria-hidden="true"></div>
+            </div>
+            <div class="works-archive-title">gotem</div>
+          </div>
+
+          <div class="works-archive-item works-archive-item--wip">
+            <div class="works-archive-wip">in progress</div>
+            <div class="works-archive-thumb-wrap">
+              <img class="works-archive-thumb" src="constantin_proj25.jpg" alt="chateau constantin in progress" />
+              <div class="works-archive-overlay" aria-hidden="true"></div>
+            </div>
+            <div class="works-archive-title">chateau constantin</div>
+          </div>
+
+          <div class="works-archive-item works-archive-item--wip" data-case-index="8" onclick="openCase(8)">
+            <div class="works-archive-wip">in progress</div>
+            <div class="works-archive-thumb-wrap">
+              <img class="works-archive-thumb" src="creme_%20V_jersey4.png" alt="Vancouver Canucks rebrand in progress" />
+              <div class="works-archive-overlay" aria-hidden="true"></div>
+            </div>
+            <div class="works-archive-title">vancouver canucks rebrand</div>
           </div>
         </div>
       </div>
@@ -1792,9 +1808,11 @@
       <img class="name-logo-img name-logo-img--yellow" src="alexa-logo-yellow.png" alt="" aria-hidden="true" />
     </a>
     <div class="nav-right">
-      <a class="nav-link" href="#design">work</a>
-      <a class="nav-link" href="#photography">photography</a>
-      <a class="nav-link" href="#about" id="aboutNavLink">about</a>
+      <div class="nav-links">
+        <a class="nav-link" href="#design">work</a>
+        <a class="nav-link" href="#photography">photography</a>
+        <a class="nav-link" href="#about" id="aboutNavLink">about</a>
+      </div>
       <button class="theme-btn" id="themeBtn" onclick="toggleTheme()">dark</button>
     </div>
   </nav>
@@ -1826,19 +1844,18 @@
     </div>
     <div class="case-inner">
       <div class="case-header">
-        <div>
+        <div class="case-header-title-block">
           <p class="case-client" id="caseClient">client name</p>
           <h2 class="case-title" id="caseTitle">Project Title</h2>
           <div class="case-tags" id="caseTags"><span class="case-tags-plain">category</span></div>
         </div>
-        <div class="case-desc" id="caseDesc">
-          <p>placeholder - project description goes here.</p>
-          <p>placeholder - your approach and outcome.</p>
-        </div>
+        <div class="case-blurb" id="caseBlurb" hidden></div>
       </div>
-      <p class="case-section-label" id="caseSectionLabel">process &amp; detail</p>
-      <div class="case-grid" id="caseGrid"></div>
-      <div class="case-flipbook-section" id="caseFlipbookSection" hidden>
+      <div class="case-body-stack">
+        <p class="case-section-label" id="caseSectionLabel">process &amp; detail</p>
+        <div class="case-marginalia-layer" id="caseMarginaliaLayer" aria-hidden="true"></div>
+        <div class="case-grid" id="caseGrid"></div>
+        <div class="case-flipbook-section" id="caseFlipbookSection" hidden>
         <div class="case-pdf-viewer" id="casePdfViewer" aria-label="PDF pages">
           <button type="button" class="case-pdf-arrow case-pdf-arrow--prev" id="caseFlipbookPrev" aria-label="Previous page">←</button>
           <div class="case-pdf-page-wrap" id="caseFlipbookMount"></div>
@@ -1846,6 +1863,7 @@
         </div>
         <div class="case-pdf-meta"><span id="caseFlipbookStatus" aria-live="polite"></span></div>
         <p class="case-flipbook-hint">Drag a page corner or edge to turn — or use the arrows.</p>
+      </div>
       </div>
     </div>
   </div>
@@ -2640,7 +2658,13 @@
         tags: ['graphic design', 'print', 'identity'],
         hero: '1swissdesignstamps_proj3.jpg',
         images: ['2swissdesignstamps_proj3.jpg','3swissdesignstamps_proj3.jpg','4swissdesignstamps_proj3.jpg','5swissdesignstamps_proj3.jpg','7swissdesignstamps_proj3.jpg'],
-        description: 'A set of stamps that follows three pioneers in Swiss design. I designed and printed the full set: stamps, envelopes, and a small brochure that works as both a keepsake and a guide to the designers. The process started by breaking down their systems into grids, color, and type rules, then rebuilding them at stamp scale so each piece feels precise but still playful. The envelope and brochure extend those rules into larger surfaces, layering type and image so the set feels like a pocket-sized archive of Swiss design thinking.'
+        description: 'A set of stamps that follows three pioneers in Swiss design. I designed and printed the full set: stamps, envelopes, and a small brochure that works as both a keepsake and a guide to the designers. The process started by breaking down their systems into grids, color, and type rules, then rebuilding them at stamp scale so each piece feels precise but still playful. The envelope and brochure extend those rules into larger surfaces, layering type and image so the set feels like a pocket-sized archive of Swiss design thinking.',
+        productionBlurb: 'A set of stamps following three pioneers of Swiss design. This project was a deep dive into the production side, taking rigid design principles and translating them into a physical, perforated format.',
+        marginalia: [
+          { text: 'Production-led design', top: '11%', left: '2%', rotate: '-2.1deg' },
+          { text: 'Full print and perforation run', top: '46%', right: '3%', rotate: '1.4deg' },
+          { text: 'Geometric precision', top: '82%', left: '5%', rotate: '-0.8deg' }
+        ]
       },
       {
         client: 'personal project',
@@ -2648,7 +2672,13 @@
         tags: ['graphic design', 'editorial', 'photography'],
         hero: '1gargabemagazine_proj4.jpg',
         images: ['2gargabemagazine_proj4.jpg','4gargabemagazine_proj4.jpg','5gargabemagazine_proj4.jpg'],
-        description: 'Garbage Magazine is a self-initiated editorial project built around photographs and design from ATL, following MARTA and the everyday infrastructure that usually gets ignored. The spreads layer typography, image, and texture to feel like a low-fi archive of construction zones, train platforms, underpasses, and street-level ephemera. I treated each story like a visual mixtape, mixing my own photos with bold type systems, high-contrast crops, and moments of quiet white space so it reads somewhere between a zine, a lookbook, and a field study of the city.'
+        description: 'Garbage Magazine is a self-initiated editorial project built around photographs and design from ATL, following MARTA and the everyday infrastructure that usually gets ignored. The spreads layer typography, image, and texture to feel like a low-fi archive of construction zones, train platforms, underpasses, and street-level ephemera. I treated each story like a visual mixtape, mixing my own photos with bold type systems, high-contrast crops, and moments of quiet white space so it reads somewhere between a zine, a lookbook, and a field study of the city.',
+        productionBlurb: 'An editorial project centered on the grit of Atlanta and the MARTA system. I used digital photography and specific Lightroom workflows to translate the raw, unpolished energy of the city into a magazine format.',
+        marginalia: [
+          { text: 'Shot on Canon / Processed in Lightroom', top: '14%', left: '1%', rotate: '-1.6deg' },
+          { text: 'MARTA visual study', top: '52%', right: '2%', rotate: '2deg' },
+          { text: 'Grit over polish', top: '86%', left: '6%', rotate: '-0.9deg' }
+        ]
       },
       {
         client: 'breadly',
@@ -2657,7 +2687,13 @@
         hero: '25breadly_proj5.jpg',
         images: ['1breadly_proj5.jpeg','3breadly_proj5.jpeg','5breadly_proj5.jpeg','10breadly_proj5.jpg','14breadly_proj5.jpg','15breadly_proj5.jpg','22breadly_proj5.jpg','23breadly_proj5.jpg','26breadly_proj5.jpg'],
         collaborators: 'Rose Davis and Bradley Looney',
-        description: 'I photographed the packaging and led art direction. We built a brand about bread: packaging, tone, and a playful social accessory identity built around bread and the baguette. The process started with naming and positioning, then moved into testing different bread silhouettes, crust textures, and crumb shots to find a visual language that felt both everyday and a little iconic. From there, we prototyped labels and bags, refining color, type hierarchy, and how the logo wraps around each loaf. Finally, we built out a small system of social assets and motion sketches that treat baguettes and slices as props, so the brand can live in photos, stories, and playful behind-the-scenes content.'
+        description: 'I photographed the packaging and led art direction. We built a brand about bread: packaging, tone, and a playful social accessory identity built around bread and the baguette. The process started with naming and positioning, then moved into testing different bread silhouettes, crust textures, and crumb shots to find a visual language that felt both everyday and a little iconic. From there, we prototyped labels and bags, refining color, type hierarchy, and how the logo wraps around each loaf. Finally, we built out a small system of social assets and motion sketches that treat baguettes and slices as props, so the brand can live in photos, stories, and playful behind-the-scenes content.',
+        productionBlurb: 'We collaborated as a team to build the visual identity for Breadly, aiming for a look as tactile and authentic as the product. I focused on art direction and handled all product photography to anchor the brand\'s aesthetic.',
+        marginalia: [
+          { text: 'Bread is an accessory.', top: '11%', left: '62%', rotate: '1.9deg' },
+          { text: 'Art direction & product photography', top: '40%', left: '2%', rotate: '-2deg' },
+          { text: 'A collective build', top: '71%', right: '4%', rotate: '-1.3deg' }
+        ]
       },
       {
         client: 'mariana fashion design',
@@ -2683,7 +2719,13 @@
         images: [],
         flipbookEmbedUrl: 'https://heyzine.com/flip-book/c6c377a09d.html',
         collaborators: 'Leo Ruiz and Kalina Richardson',
-        description: 'Editorial layout for Georgia Entertainment that pairs athlete portraits with abstract typography and graphic shapes. The spreads lean into motion, cropped limbs, overlapping type, and color fields so the story feels like a conversation between art direction and performance.'
+        description: 'Editorial layout for Georgia Entertainment that pairs athlete portraits with abstract typography and graphic shapes. The spreads lean into motion, cropped limbs, overlapping type, and color fields so the story feels like a conversation between art direction and performance.',
+        productionBlurb: 'A project for real-world client Georgia Entertainment, produced in collaboration with the Atlanta Hawks. Working with Creative Director Shirley Zhang and Professor Q Williams, I handled shoe photography and captured environmental moments to define the magazine\'s visual identity.',
+        marginalia: [
+          { text: 'Collaboration with Shirley Zhang (Atlanta Hawks CD)', top: '16%', left: '0%', rotate: '-2.2deg' },
+          { text: 'Shoe photography for Quintin Williams', top: '48%', right: '2%', rotate: '1.7deg' },
+          { text: 'Capturing Atlanta\'s movement', top: '82%', left: '6%', rotate: '-1.1deg' }
+        ]
       },
       {
         client: 'trademark x chicago',
@@ -2700,9 +2742,98 @@
           '7trademarkxchicago_proj24.png'
         ],
         collaborators: 'Kaki Kwan, Bella Ahn, and Ahana',
-        description: 'A collaboration with FTOP (For The One Percent) focused on highlighting the work artists are doing in Chicago and building community around them. We created a visual language that feels sharp and aspirational, then applied it to a series of posters, motion tests, and social assets that function as a pop-up moment for artists to interact, share work, and be seen.'
+        description: 'A collaboration with FTOP (For The One Percent) focused on highlighting the work artists are doing in Chicago and building community around them. We created a visual language that feels sharp and aspirational, then applied it to a series of posters, motion tests, and social assets that function as a pop-up moment for artists to interact, share work, and be seen.',
+        productionBlurb: 'A collaboration with FTOP (For The One Percent) highlighting artists within the Chicago scene. The goal was to create a cohesive visual system that bridges diverse artistic styles while maintaining a clear brand voice.',
+        marginalia: [
+          { text: 'FTOP collaboration', top: '12%', left: '4%', rotate: '-2deg' },
+          { text: 'Chicago-based artist spotlight', top: '44%', right: '3%', rotate: '2deg' },
+          { text: 'Building a shared visual language', top: '76%', left: '6%', rotate: '-0.8deg' }
+        ]
       },
+      {
+        client: 'in progress',
+        title: 'Vancouver Canucks Rebrand',
+        tags: ['branding', 'identity', 'sports'],
+        hero: 'creme_%20V_jersey4.png',
+        images: ['creme_%20V_jersey4.png'],
+        productionBlurb: 'A visual overhaul for the Canucks that leans into heavy, utilitarian linework. I wanted to move away from typical pro-sports tropes and create something that feels more structural and grounded.',
+        marginalia: [
+          { text: 'Structural architecture of the \'V\'', top: '22%', left: '3%', rotate: '-2deg' },
+          { text: 'Utility-first aesthetic', top: '48%', right: '4%', rotate: '1.2deg' },
+          { text: 'Work in progress', top: '76%', left: '5%', rotate: '-0.5deg' }
+        ]
+      }
     ];
+
+    var __caseMarginaliaIO = null;
+    function disconnectMarginaliaObserver() {
+      if (__caseMarginaliaIO && typeof __caseMarginaliaIO.disconnect === 'function') {
+        __caseMarginaliaIO.disconnect();
+      }
+      __caseMarginaliaIO = null;
+    }
+    function renderProductionBlurb(text) {
+      var el = document.getElementById('caseBlurb');
+      if (!el) return;
+      if (!text) {
+        el.hidden = true;
+        el.innerHTML = '';
+        return;
+      }
+      el.hidden = false;
+      function esc(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      }
+      var m = String(text).match(/^(.+?\.)\s+(.+)$/);
+      if (m) {
+        el.innerHTML = '<p>' + esc(m[1]) + '</p><p>' + esc(m[2]) + '</p>';
+      } else {
+        el.innerHTML = '<p>' + esc(text) + '</p>';
+      }
+    }
+    function populateMarginaliaLayer(project) {
+      disconnectMarginaliaObserver();
+      var layer = document.getElementById('caseMarginaliaLayer');
+      if (!layer) return;
+      layer.innerHTML = '';
+      if (!project || !project.marginalia || !project.marginalia.length) return;
+
+      var nudges = [ ['-3px', '2px'], ['4px', '-4px'], ['2px', '3px'] ];
+      project.marginalia.forEach(function(note, idx) {
+        var span = document.createElement('span');
+        span.className = 'case-marginalia-note';
+        span.textContent = note.text || '';
+        var parts = [];
+        if (note.top != null) parts.push('top:' + note.top);
+        if (note.bottom != null) parts.push('bottom:' + note.bottom);
+        if (note.right != null) {
+          parts.push('right:' + note.right);
+          parts.push('left:auto');
+        } else if (note.left != null) {
+          parts.push('left:' + note.left);
+        }
+        var rot = note.rotate || '-1deg';
+        var ng = nudges[idx % nudges.length];
+        parts.push('transform:rotate(' + rot + ') translate(' + ng[0] + ',' + ng[1] + ')');
+        span.setAttribute('style', parts.join(';') + ';');
+        layer.appendChild(span);
+      });
+
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          var overlay = document.getElementById('caseOverlay');
+          if (!overlay || !window.IntersectionObserver) return;
+          var nodes = layer.querySelectorAll('.case-marginalia-note');
+          if (!nodes.length) return;
+          __caseMarginaliaIO = new IntersectionObserver(function(entries) {
+            entries.forEach(function(en) {
+              if (en.isIntersecting) en.target.classList.add('case-marginalia-note--in');
+            });
+          }, { root: overlay, threshold: 0.02, rootMargin: '40px 0px' });
+          nodes.forEach(function(n) { __caseMarginaliaIO.observe(n); });
+        });
+      });
+    }
 
     /* DESIGN GRID OVERLAY TEXT
        Fill the hover band description from the case study data. */
@@ -2983,9 +3114,7 @@
           return String(t).replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }).join(' · ') + '</span>';
 
-      // Work section: no project descriptions
-      const descEl = document.getElementById('caseDesc');
-      if (descEl) descEl.innerHTML = '';
+      renderProductionBlurb(p.productionBlurb || '');
 
       // Process grid + optional PDF flipbook (Georgia Entertainment)
       const grid = document.getElementById('caseGrid');
@@ -3018,6 +3147,7 @@
       if (p.flipbookEmbedUrl || p.flipbookPdf) {
         await loadGeorgiaFlipbook(p);
       }
+      populateMarginaliaLayer(p);
     }
 
     function closeCase() {
@@ -3031,6 +3161,14 @@
       document.getElementById('caseOverlay').classList.remove('open');
       const closeBtn = document.querySelector('#caseOverlay .photo-back');
       if (closeBtn) closeBtn.style.display = '';
+      disconnectMarginaliaObserver();
+      var margLayer = document.getElementById('caseMarginaliaLayer');
+      if (margLayer) margLayer.innerHTML = '';
+      var blurbEl = document.getElementById('caseBlurb');
+      if (blurbEl) {
+        blurbEl.hidden = true;
+        blurbEl.innerHTML = '';
+      }
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCase(); });
 
@@ -3074,55 +3212,15 @@
       });
     }
 
-    // Ensure the design intro video starts (some browsers require an explicit play()).
-    (function() {
-      function tryPlay() {
-        var v = document.querySelector('#design .design-intro-video');
-        if (!v) return;
-        v.muted = true;
-        var p = v.play && v.play();
-        if (p && typeof p.catch === 'function') p.catch(function() {});
-      }
-      document.addEventListener('DOMContentLoaded', tryPlay);
-      window.addEventListener('load', tryPlay);
-      document.addEventListener('visibilitychange', function() {
-        if (!document.hidden) tryPlay();
-      });
-    })();
-
-    // Nav turns white only while the design intro (video) is visible.
+    // Design no longer uses a full-bleed dark video intro; keep default nav contrast on #design.
     (function() {
       var nav = document.querySelector('nav');
-      var design = document.getElementById('design');
-      var intro = design && design.querySelector('.design-intro-stage');
-      if (!nav || !design || !intro || !('IntersectionObserver' in window)) return;
-
-      function setContrast(on) {
-        nav.classList.toggle('nav-contrast-light', !!on);
+      if (!nav) return;
+      function clearDesignNavContrast() {
+        if (window.location.hash === '#design') nav.classList.remove('nav-contrast-light');
       }
-
-      var io = new IntersectionObserver(function(entries) {
-        // Only apply this behavior while we're in the Design section.
-        if (window.location.hash !== '#design') {
-          setContrast(false);
-          return;
-        }
-        var e = entries && entries[0];
-        setContrast(!!(e && e.isIntersecting && e.intersectionRatio > 0.12));
-      }, {
-        root: design,
-        threshold: [0, 0.12, 0.25, 0.5, 1]
-      });
-
-      io.observe(intro);
-      function onEnterDesign() {
-        // Start white immediately when entering #design (before any scrolling),
-        // then the observer will flip it off once the intro is no longer visible.
-        if (window.location.hash === '#design') setContrast(true);
-        else setContrast(false);
-      }
-      window.addEventListener('hashchange', onEnterDesign);
-      onEnterDesign();
+      window.addEventListener('hashchange', clearDesignNavContrast);
+      clearDesignNavContrast();
     })();
 
   </script>
