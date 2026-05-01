@@ -440,6 +440,26 @@
     #design .works-archive-item:hover .works-archive-overlay {
       opacity: 1;
     }
+    #design .works-archive-item--wip .works-archive-overlay {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #design .works-archive-wip-hint {
+      font-size: clamp(13px, 1.1vw, 16px);
+      font-weight: 400;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      letter-spacing: 0.12em;
+      text-transform: lowercase;
+      color: rgba(45, 45, 45, 0.88);
+      text-align: center;
+      line-height: 1.3;
+      padding: 0 14px;
+      pointer-events: none;
+    }
+    [data-theme="dark"] #design .works-archive-wip-hint {
+      color: rgba(255, 255, 255, 0.9);
+    }
     #design .works-archive-title {
       margin-top: 10px;
       font-size: clamp(14px, 1.25vw, 17px);
@@ -460,23 +480,6 @@
       color: var(--fg-muted);
       line-height: 1.35;
     }
-    #design .works-archive-wip {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 4;
-      font-size: 11px;
-      font-weight: 500;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.92);
-      background: rgba(0,0,0,0.62);
-      padding: 12px 12px 10px;
-      line-height: 1.2;
-      pointer-events: none;
-    }
-
     @media (max-width: 1100px) {
       #design .works-archive { columns: 2; }
     }
@@ -1667,7 +1670,7 @@
 
           <div class="works-archive-item" data-case-index="7" onclick="openCase(7)">
             <div class="works-archive-thumb-wrap">
-              <img class="works-archive-thumb" src="7trademarkxchicago_proj24.png" alt="Trademark x Chicago" />
+              <img class="works-archive-thumb" src="4trademarkxchicago_proj24.png" alt="Trademark x Chicago" />
               <div class="works-archive-overlay" aria-hidden="true"></div>
             </div>
             <div class="works-archive-title">trademark x chicago</div>
@@ -1714,21 +1717,13 @@
           </div>
 
           <div class="works-archive-item works-archive-item--wip">
-            <div class="works-archive-wip">in progress</div>
             <div class="works-archive-thumb-wrap">
               <img class="works-archive-thumb" src="constantin_proj25.jpg" alt="chateau constantin in progress" />
-              <div class="works-archive-overlay" aria-hidden="true"></div>
+              <div class="works-archive-overlay" aria-hidden="true">
+                <span class="works-archive-wip-hint">cooking...</span>
+              </div>
             </div>
             <div class="works-archive-title">chateau constantin</div>
-          </div>
-
-          <div class="works-archive-item works-archive-item--wip" data-case-index="8" onclick="openCase(8)">
-            <div class="works-archive-wip">in progress</div>
-            <div class="works-archive-thumb-wrap">
-              <img class="works-archive-thumb" src="creme_%20V_jersey4.png" alt="Vancouver Canucks rebrand in progress" />
-              <div class="works-archive-overlay" aria-hidden="true"></div>
-            </div>
-            <div class="works-archive-title">vancouver canucks rebrand</div>
           </div>
         </div>
       </div>
@@ -2748,19 +2743,6 @@
           { text: 'FTOP collaboration', top: '12%', left: '4%', rotate: '-2deg' },
           { text: 'Chicago-based artist spotlight', top: '44%', right: '3%', rotate: '2deg' },
           { text: 'Building a shared visual language', top: '76%', left: '6%', rotate: '-0.8deg' }
-        ]
-      },
-      {
-        client: 'in progress',
-        title: 'Vancouver Canucks Rebrand',
-        tags: ['branding', 'identity', 'sports'],
-        hero: 'creme_%20V_jersey4.png',
-        images: ['creme_%20V_jersey4.png'],
-        productionBlurb: 'A visual overhaul for the Canucks that leans into heavy, utilitarian linework. I wanted to move away from typical pro-sports tropes and create something that feels more structural and grounded.',
-        marginalia: [
-          { text: 'Structural architecture of the \'V\'', top: '22%', left: '3%', rotate: '-2deg' },
-          { text: 'Utility-first aesthetic', top: '48%', right: '4%', rotate: '1.2deg' },
-          { text: 'Work in progress', top: '76%', left: '5%', rotate: '-0.5deg' }
         ]
       }
     ];
