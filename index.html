@@ -48,7 +48,6 @@
       gap: clamp(12px, 2vw, 28px);
       padding: 0 clamp(28px, 4vw, 56px);
       background: transparent;
-      transition: color var(--tr);
     }
     .name {
       display: inline-flex;
@@ -58,7 +57,6 @@
       cursor: pointer;
       user-select: none;
       text-decoration: none;
-      transition: color 0.2s;
     }
     .name:hover { color: #e6b800; }
     .name-logo-img {
@@ -66,7 +64,6 @@
       height: 96px;
       width: auto;
       max-width: min(640px, 78vw);
-      transition: filter 0.18s ease;
     }
     /* Dark mode: black logo asset reads as light on dark backgrounds */
     [data-theme="dark"] .name-logo-img--default {
@@ -105,31 +102,17 @@
       color: var(--fg-muted);
       text-decoration: none;
       white-space: nowrap;
-      transition: color 0.2s;
       cursor: pointer;
       user-select: none;
     }
     .nav-link:hover { color: #e6b800; }
-    #aboutNavLink {
-      position: relative;
-      display: inline-block;
-      transform-origin: center;
-    }
-    #aboutNavLink:hover {
-      animation: navPop 0.22s cubic-bezier(0.22,1,0.36,1);
-    }
-    @keyframes navPop {
-      0%   { transform: scale(1); }
-      55%  { transform: scale(1.18); }
-      100% { transform: scale(1); }
-    }
     .theme-btn {
       font-size: clamp(13px, 1.12vw, 16px);
       font-weight: 300;
       letter-spacing: 0.1em;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       color: var(--fg-muted); background: none; border: none;
-      cursor: pointer; transition: color 0.2s; padding: 0;
+      cursor: pointer; padding: 0;
     }
     .theme-btn:hover { color: #e6b800; }
 
@@ -220,10 +203,9 @@
     #design:target    ~ .scroll-hint,
     #photography:target ~ .scroll-hint,
     #about:target     ~ .scroll-hint { opacity: 0; }
-    /* stronger than :target hide so hint shows when a photo project is open */
+    /* hide scroll hint while lightbox is open (full-screen overlay) */
     body.photo-detail-open #photography:target ~ .scroll-hint {
-      opacity: 1;
-      bottom: calc(var(--footer-h) + 20px);
+      opacity: 0;
     }
 
     .scroll-hint-line { width: 54px; height: 1px; background: var(--fg-muted); position: relative; overflow: hidden; }
@@ -297,7 +279,7 @@
 
     .card {
       flex: 0 0 auto;
-      border-radius: clamp(8px, 1.2vw, 14px);
+      border-radius: 0;
       overflow: hidden;
       position: relative; cursor: pointer; background: var(--card-bg);
       transition: opacity 0.35s ease;
@@ -383,110 +365,314 @@
 
     /* design hero removed to make room for stacked project cards */
 
-    /* Works archive (Aries-style): simple masonry columns */
+    /* Works archive — grid rows, top-aligned neighbors; Helvetica Neue type */
     #design .works-archive-wrap {
       width: 100%;
-      max-width: 1600px;
+      max-width: 1540px;
       margin: 0 auto;
-      padding: calc(var(--nav-h) + 36px) 3% 140px;
+      padding: calc(var(--nav-h) + clamp(40px, 5vw, 72px)) clamp(20px, 4.5vw, 56px) 120px;
       box-sizing: border-box;
     }
-    #design .works-archive {
-      /* Bigger thumbnails: fewer columns */
-      columns: 3;
-      column-gap: 40px;
+    #design .works-archive-header {
+      margin-top: clamp(8px, 1.2vw, 20px);
+      margin-bottom: clamp(64px, 8vw, 112px);
+      padding: clamp(28px, 3.5vw, 48px) 0;
+      text-align: left;
+    }
+    #design .works-archive-heading {
+      font-size: clamp(22px, 3.2vw, 36px);
+      font-weight: 300;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--fg);
+      line-height: 1.15;
+    }
+    #design .works-archive-mosaic {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(56px, 8vw, 104px);
+    }
+    #design .works-archive-row {
+      display: grid;
+      align-items: start;
+      column-gap: clamp(16px, 2.2vw, 28px);
+    }
+    #design .works-archive-row--7-3 { grid-template-columns: 7fr 3fr; }
+    #design .works-archive-row--1-1 { grid-template-columns: 1fr 1fr; }
+    #design .works-archive-row--11-9 { grid-template-columns: 11fr 9fr; }
+    #design .works-archive-row--13-7 { grid-template-columns: 13fr 7fr; }
+    #design .works-archive-row--9-11 { grid-template-columns: 9fr 11fr; }
+    #design .works-archive-row--full { grid-template-columns: 1fr; }
+    #design .works-archive-row--third { grid-template-columns: 1fr 1fr 1fr; }
+    #design .works-archive-row--narrow-gap { grid-template-columns: minmax(0, 34%) 1fr; }
+    /* Single tile row: ~half width, left-aligned on the grid */
+    #design .works-archive-row--lead { grid-template-columns: minmax(0, 55%); }
+    /* Single tile row: flexible space left, card in right column (~half width) */
+    #design .works-archive-row--lead-end {
+      grid-template-columns: 1fr minmax(0, 55%);
+    }
+    #design .works-archive-row--lead-end .works-archive-item {
+      grid-column: 2;
+    }
+    @media (min-width: 901px) {
+      #design .works-archive-item--georgia-shift {
+        margin-left: clamp(18px, 3.2vw, 44px);
+      }
+    }
+    #design .works-mosaic--text-center .works-archive-meta,
+    #design .works-mosaic--text-center .works-archive-title {
+      text-align: center;
+    }
+    #design .works-mosaic--text-center .works-archive-meta {
+      justify-content: center;
     }
     #design .works-archive-item {
-      break-inside: avoid;
-      display: inline-block;
-      width: 100%;
-      margin: 0 0 110px;
-      cursor: pointer;
       position: relative;
+      cursor: pointer;
+      margin: 0;
     }
-    #design .works-archive-item--wip { cursor: default; }
-    #design .works-archive-item--wip[data-case-index] { cursor: pointer; }
+    #design .works-archive-item--wip,
+    #design .works-archive-item--placeholder {
+      cursor: default;
+      pointer-events: none;
+    }
+    /* Children still capture clicks unless disabled (parent-only pointer-events is not enough). */
+    #design .works-archive-item--wip:not([data-case-index]) *,
+    #design .works-archive-item--placeholder * {
+      pointer-events: none;
+    }
+    #design .works-archive-item--wip[data-case-index] { cursor: pointer; pointer-events: auto; }
     #design .works-archive-thumb-wrap {
       position: relative;
       display: block;
       overflow: hidden;
-      border-radius: clamp(8px, 1.2vw, 14px);
+      border-radius: 0;
+      aspect-ratio: 3 / 2;
+      background: var(--card-bg);
+    }
+    #design .works-archive-item--featured .works-archive-thumb-wrap {
+      aspect-ratio: 16 / 10;
+      min-height: clamp(200px, 26vw, 460px);
+    }
+    #design .works-archive-row--full .works-archive-item--featured .works-archive-thumb-wrap {
+      aspect-ratio: 21 / 9;
+      min-height: clamp(220px, 32vw, 560px);
+    }
+    /* “Medium” tile: between hero and narrow portrait */
+    #design .works-archive-item--mid .works-archive-thumb-wrap {
+      aspect-ratio: 5 / 6;
+      max-height: min(72vh, 540px);
+    }
+    #design .works-archive-item--compact .works-archive-thumb-wrap {
+      aspect-ratio: 3 / 4;
+      max-height: min(70vh, 520px);
+    }
+    /* Landscape strip (e.g. Gotem lead tile) */
+    #design .works-archive-item--horizontal .works-archive-thumb-wrap {
+      aspect-ratio: 2 / 1;
+      max-height: none;
+      min-height: clamp(140px, 18vw, 280px);
+    }
+    #design .works-archive-item--horizontal .works-archive-meta,
+    #design .works-archive-item--horizontal .works-archive-title {
+      text-align: right;
+    }
+    #design .works-archive-item--horizontal .works-archive-meta {
+      justify-content: flex-end;
+    }
+    #design .works-archive-item--mid .works-archive-thumb-wrap--placeholder {
+      aspect-ratio: 5 / 6;
+      max-height: min(72vh, 540px);
+    }
+    #design .works-archive-item--compact .works-archive-thumb-wrap--placeholder {
+      aspect-ratio: 3 / 4;
+      max-height: min(70vh, 520px);
+    }
+    #design .works-archive-item--featured .works-archive-thumb-wrap--placeholder {
+      aspect-ratio: 16 / 10;
+      min-height: clamp(200px, 26vw, 440px);
+      max-height: none;
+    }
+    #design .works-archive-thumb-wrap--placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--card-bg);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+    }
+    [data-theme="dark"] #design .works-archive-thumb-wrap--placeholder {
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+    #design .works-archive-placeholder-num {
+      font-size: clamp(36px, 8vw, 64px);
+      font-weight: 300;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      letter-spacing: 0.08em;
+      color: var(--fg-muted);
+      opacity: 0.45;
+      user-select: none;
     }
     #design .works-archive-thumb {
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
       margin: 0;
       padding: 0;
       border: 0;
-      border-radius: inherit;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      border-radius: 0;
+      object-fit: cover;
+      transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
     }
     #design .works-archive-item:hover .works-archive-thumb {
-      transform: scale(1.04);
+      transform: scale(1.015);
+    }
+    #design .works-archive-item--wip:hover .works-archive-thumb,
+    #design .works-archive-item--placeholder:hover .works-archive-thumb {
+      transform: none;
     }
     #design .works-archive-overlay {
       position: absolute;
       inset: 0;
       opacity: 0;
-      transition: opacity 0.2s ease;
+      transition: opacity 0.25s ease;
       pointer-events: none;
       z-index: 2;
-      background: rgba(220, 220, 222, 0.42);
+      background: rgba(0, 0, 0, 0.12);
     }
     [data-theme="dark"] #design .works-archive-overlay {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.08);
     }
     #design .works-archive-item:hover .works-archive-overlay {
       opacity: 1;
+    }
+    #design .works-archive-item--wip .works-archive-overlay,
+    #design .works-archive-item--placeholder .works-archive-overlay {
+      opacity: 1;
+      background: rgba(0, 0, 0, 0.35);
+    }
+    [data-theme="dark"] #design .works-archive-item--wip .works-archive-overlay,
+    [data-theme="dark"] #design .works-archive-item--placeholder .works-archive-overlay {
+      background: rgba(0, 0, 0, 0.5);
     }
     #design .works-archive-item--wip .works-archive-overlay {
       display: flex;
       align-items: center;
       justify-content: center;
     }
+    #design .works-archive-item--placeholder .works-archive-overlay {
+      display: none;
+    }
     #design .works-archive-wip-hint {
-      font-size: clamp(13px, 1.1vw, 16px);
-      font-weight: 400;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      letter-spacing: 0.12em;
-      text-transform: lowercase;
-      color: rgba(45, 45, 45, 0.88);
-      text-align: center;
-      line-height: 1.3;
-      padding: 0 14px;
-      pointer-events: none;
-    }
-    [data-theme="dark"] #design .works-archive-wip-hint {
-      color: rgba(255, 255, 255, 0.9);
-    }
-    #design .works-archive-title {
-      margin-top: 10px;
-      font-size: clamp(14px, 1.25vw, 17px);
+      font-size: clamp(11px, 1vw, 13px);
       font-weight: 300;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: #fff;
+      text-align: center;
+      line-height: 1.4;
+      padding: 0 16px;
+      pointer-events: none;
+    }
+    #design .works-archive-mosaic .works-archive-title {
+      margin-top: 8px;
+      font-size: clamp(13px, 1.15vw, 15px);
+      font-weight: 300;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
       color: var(--fg);
       line-height: 1.35;
+      text-align: left;
     }
-    #design .works-archive-meta {
-      margin-top: 6px;
+    #design .works-archive-mosaic .works-archive-item--compact .works-archive-title {
+      font-size: clamp(12px, 1.05vw, 14px);
+      letter-spacing: 0.16em;
+    }
+    #design .works-archive-mosaic .works-archive-item--mid .works-archive-title {
+      font-size: clamp(12px, 1.1vw, 15px);
+    }
+    #design .works-archive-mosaic .works-archive-item--featured .works-archive-title {
+      font-size: clamp(14px, 1.28vw, 18px);
+      letter-spacing: 0.14em;
+    }
+    #design .works-archive-title--placeholder {
+      margin-top: 8px;
+      color: var(--fg-muted);
+      letter-spacing: 0.12em;
+    }
+    #design .works-archive-mosaic .works-archive-meta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 0.42em;
+      margin-top: clamp(14px, 1.6vw, 20px);
+      margin-bottom: 0;
       font-size: 10px;
       font-weight: 300;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--fg-muted);
-      line-height: 1.35;
+      line-height: 1.5;
+      text-align: left;
     }
-    @media (max-width: 1100px) {
-      #design .works-archive { columns: 2; }
+    #design .works-archive-meta-scribble {
+      width: 10px;
+      height: 10px;
+      flex-shrink: 0;
+      display: block;
+      object-fit: contain;
+      vertical-align: middle;
+      opacity: 1;
     }
-    @media (max-width: 800px) {
-      #design .works-archive { columns: 1; }
+    #design .works-archive-meta--placeholder {
+      opacity: 0.65;
     }
-    @media (max-width: 520px) { /* already 1 col; keep */ }
+    @media (max-width: 900px) {
+      #design .works-archive-row--7-3,
+      #design .works-archive-row--1-1,
+      #design .works-archive-row--11-9,
+      #design .works-archive-row--13-7,
+      #design .works-archive-row--9-11,
+      #design .works-archive-row--full,
+      #design .works-archive-row--third,
+      #design .works-archive-row--lead,
+      #design .works-archive-row--lead-end,
+      #design .works-archive-row--narrow-gap {
+        grid-template-columns: 1fr;
+      }
+      #design .works-archive-row--lead-end .works-archive-item {
+        grid-column: 1;
+      }
+      #design .works-archive-row--full .works-archive-item--featured .works-archive-thumb-wrap {
+        aspect-ratio: 3 / 2;
+        min-height: 0;
+      }
+      #design .works-archive-item--featured .works-archive-thumb-wrap,
+      #design .works-archive-item--mid .works-archive-thumb-wrap,
+      #design .works-archive-item--compact .works-archive-thumb-wrap,
+      #design .works-archive-item--mid .works-archive-thumb-wrap--placeholder,
+      #design .works-archive-item--compact .works-archive-thumb-wrap--placeholder,
+      #design .works-archive-item--featured .works-archive-thumb-wrap--placeholder {
+        aspect-ratio: 3 / 2;
+        min-height: 0;
+        max-height: none;
+      }
+      #design .works-archive-item--horizontal .works-archive-thumb-wrap {
+        aspect-ratio: 3 / 2;
+        min-height: 0;
+      }
+      #design .works-archive-item--horizontal .works-archive-meta,
+      #design .works-archive-item--horizontal .works-archive-title {
+        text-align: left;
+      }
+      #design .works-archive-item--horizontal .works-archive-meta {
+        justify-content: flex-start;
+      }
+    }
 
 
     /* Nav contrast mode (white) for dark media behind it */
@@ -877,20 +1063,29 @@
       transform: translateY(0);
     }
 
-    /* ── Photo detail view: top = main image row, scroll down = BTS / process / video ─── */
+    /* ── Photo detail: full-screen lightbox (dim + blur), title under image, PREV/NEXT ─── */
     .photo-detail {
       position: fixed;
       inset: 0;
       display: flex;
       flex-direction: column;
-      overflow-y: auto;
+      overflow: hidden;
       opacity: 0;
       pointer-events: none;
-      transform: translateY(16px);
+      transform: translateY(12px);
       transition: opacity 0.45s cubic-bezier(0.16,1,0.3,1),
                   transform 0.45s cubic-bezier(0.16,1,0.3,1);
-      z-index: 150;
-      background: var(--bg);
+      z-index: 320;
+      background: transparent;
+    }
+    .photo-detail::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.74);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      z-index: 0;
     }
     .photo-detail.open {
       opacity: 1;
@@ -898,144 +1093,115 @@
       transform: translateY(0);
     }
 
-    .pd-top {
-      min-height: 100vh;
-      flex-shrink: 0;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* back button - X icon; black, yellow on hover */
-    .photo-back {
-      position: fixed;
-      top: calc(var(--nav-h) + 44px);
-      right: calc(40px + 2in);
-      left: auto;
-      font-size: 38px;
-      line-height: 1;
-      font-weight: 300;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      letter-spacing: 0;
-      text-transform: none;
-      color: #000;
+    .pd-close {
+      position: absolute;
+      top: calc(var(--nav-h) + 10px);
+      right: 28px;
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
       background: none;
       border: none;
       cursor: pointer;
-      transition: color 0.2s;
-      z-index: 20;
-      padding: 0;
-    }
-    .photo-back:hover { color: #e6b800; }
-
-    .photo-detail-title {
-      position: fixed;
-      top: calc(var(--nav-h) + 54px);
-      left: 40px;
-      font-size: 16px;
-      font-weight: 300;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      letter-spacing: 0.12em;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      color: var(--fg-muted);
-      z-index: 20;
-      pointer-events: none;
+      color: #fff;
+      padding: 10px 6px;
+      transition: opacity 0.2s;
+    }
+    .pd-close:hover { opacity: 0.75; }
+    .pd-close-x {
+      font-size: 22px;
+      line-height: 1;
+      font-weight: 300;
+      letter-spacing: 0;
     }
 
-    /* photo detail: full-width carousel + caption only */
-    .pd-center {
+    .pd-stage {
       position: relative;
+      z-index: 1;
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 0;
-      background: var(--bg);
-      overflow: hidden;
+      align-items: center;
+      justify-content: center;
+      min-height: 0;
+      padding: calc(var(--nav-h) + 48px) 40px calc(var(--footer-h) + 52px);
     }
-    .pd-scroll {
-      flex: 1;
-      display: flex;
-      overflow-x: auto;
-      overflow-y: hidden;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-      padding: calc(var(--nav-h) + 24px) 56px 64px;
-      gap: 0;
-    }
-    .pd-scroll::-webkit-scrollbar { display: none; }
-    .pd-scroll-item {
-      flex: 0 0 70%;
-      width: 70%;
-      scroll-snap-align: center;
+
+    .pd-image-wrap {
+      flex: 0 1 auto;
+      max-width: min(92vw, 1200px);
+      max-height: calc(100vh - var(--nav-h) - var(--footer-h) - 168px);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 0 12px;
-      min-height: 200px;
-      cursor: pointer;
     }
-    .pd-scroll-item img {
-      max-width: 58%;
-      max-height: 58vh;
+    .pd-main-image {
+      display: block;
+      max-width: 100%;
+      max-height: calc(100vh - var(--nav-h) - var(--footer-h) - 180px);
       width: auto;
       height: auto;
       object-fit: contain;
-      display: block;
-      transition: max-width 0.3s ease, max-height 0.3s ease;
     }
-    .pd-scroll-item.focused img {
-      max-width: 92%;
-      max-height: 82vh;
+
+    .photo-detail-title {
+      position: static;
+      margin-top: 22px;
+      max-width: min(92vw, 720px);
+      font-size: clamp(15px, 2.2vw, 19px);
+      font-weight: 600;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      text-align: center;
+      color: #fff;
+      line-height: 1.35;
+      pointer-events: none;
     }
+
+    .pd-caption-desc {
+      margin-top: 12px;
+      max-width: min(92vw, 560px);
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.78);
+      text-align: center;
+      line-height: 1.5;
+      pointer-events: none;
+    }
+    .pd-caption-desc:empty { display: none; }
+
     .pd-carousel-prev,
     .pd-carousel-next {
       position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      color: var(--fg-muted);
+      bottom: calc(var(--footer-h) + 12px);
+      z-index: 2;
+      padding: 10px 14px;
       background: none;
       border: none;
       cursor: pointer;
-      z-index: 12;
-      transition: color 0.2s;
       font-family: inherit;
-    }
-    .pd-carousel-prev { left: 16px; }
-    .pd-carousel-next { right: 16px; }
-    .pd-carousel-prev:hover,
-    .pd-carousel-next:hover {
-      color: #e6b800;
-    }
-    .pd-caption {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      padding: 12px 24px 16px;
-      background: linear-gradient(to top, var(--bg), transparent);
-      pointer-events: none;
-    }
-    .pd-caption-title {
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      color: var(--fg);
-    }
-    .pd-caption-desc {
       font-size: 12px;
-      font-weight: 300;
-      color: var(--fg-muted);
-      max-width: 50%;
-      text-align: right;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #fff;
+      transition: opacity 0.2s;
+    }
+    .pd-carousel-prev { left: 24px; }
+    .pd-carousel-next { right: 24px; }
+    .pd-carousel-prev:hover,
+    .pd-carousel-next:hover { opacity: 0.72; }
+    .pd-carousel-prev.pd-nav-hidden,
+    .pd-carousel-next.pd-nav-hidden {
+      visibility: hidden;
+      pointer-events: none;
     }
 
     /* right panel */
@@ -1419,6 +1585,7 @@
       .theme-btn {
         font-size: clamp(12px, 2.9vw, 15px);
         letter-spacing: 0.08em;
+        font-weight: 300;
       }
       .name { font-size: 18px; }
       .name-logo-img { height: 84px; max-width: min(560px, 85vw); }
@@ -1469,8 +1636,6 @@
       .design-works-row--two { grid-template-columns: 1fr; }
       .works-grid-item.design-tile--vertical { aspect-ratio: 4 / 5; }
       .works-grid-item.design-tile--horizontal { aspect-ratio: 16 / 9; width: 100%; height: auto; max-width: 100%; }
-
-      #design .works-archive { columns: 1; }
 
       /* mobile: stack Body-of-Water cycles */
       .design-bow-stack { gap: 24px; }
@@ -1557,34 +1722,18 @@
       .photo-cell.orientation-portrait  { --pw: 270px; --ph: 420px; }
       .photo-cell.orientation-square   { --pw: 320px; --ph: 320px; }
 
-      /* photo detail: larger images on mobile */
-      .pd-scroll {
-        padding: calc(var(--nav-h) + 16px) 20px 48px;
+      /* photo detail lightbox: tighter margins on phones */
+      .pd-stage {
+        padding: calc(var(--nav-h) + 40px) 16px calc(var(--footer-h) + 48px);
       }
-      .pd-scroll-item {
-        flex: 0 0 92%;
-        width: 92%;
-        min-height: 280px;
-        padding: 0 8px;
+      .pd-close {
+        right: 16px;
+        font-size: 11px;
+        letter-spacing: 0.16em;
       }
-      .pd-scroll-item img {
-        max-width: 100%;
-        max-height: 70vh;
-      }
-      .pd-scroll-item.focused img {
-        max-width: 100%;
-        max-height: 82vh;
-      }
-      .pd-carousel-prev, .pd-carousel-next {
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-      }
-      .pd-carousel-prev { left: 8px; }
-      .pd-carousel-next { right: 8px; }
-
-      .photo-back { right: 18px; top: calc(var(--nav-h) + 32px); font-size: 34px; }
-      .photo-detail-title { left: 28px; top: calc(var(--nav-h) + 44px); font-size: 14px; }
+      .pd-carousel-prev { left: 12px; }
+      .pd-carousel-next { right: 12px; }
+      .photo-detail-title { font-size: 14px; margin-top: 16px; }
     }
 
     /* scroll hint for photo detail - outside panel so it’s always visible when open */
@@ -1659,71 +1808,115 @@
   <div id="design" class="section">
     <div class="section-inner">
       <div class="works-archive-wrap">
-        <div class="works-archive">
-          <div class="works-archive-item" data-case-index="3" onclick="openCase(3)">
-            <div class="works-archive-thumb-wrap">
-              <img class="works-archive-thumb" src="25breadly_proj5.jpg" alt="Breadly" />
-              <div class="works-archive-overlay" aria-hidden="true"></div>
-            </div>
-            <div class="works-archive-title">breadly</div>
-          </div>
-
-          <div class="works-archive-item" data-case-index="7" onclick="openCase(7)">
-            <div class="works-archive-thumb-wrap">
-              <img class="works-archive-thumb" src="4trademarkxchicago_proj24.png" alt="Trademark x Chicago" />
-              <div class="works-archive-overlay" aria-hidden="true"></div>
-            </div>
-            <div class="works-archive-title">trademark x chicago</div>
-          </div>
-
-          <div class="works-archive-item" data-case-index="1" onclick="openCase(1)">
-            <div class="works-archive-thumb-wrap">
-              <img class="works-archive-thumb" src="1swissdesignstamps_proj3.jpg" alt="Swiss Design Stamps" />
-              <div class="works-archive-overlay" aria-hidden="true"></div>
-            </div>
-            <div class="works-archive-title">swiss design stamps</div>
-          </div>
-
-          <div class="works-archive-item" data-case-index="0" onclick="openCase(0)">
-            <div class="works-archive-thumb-wrap">
-              <img class="works-archive-thumb" src="2secretlifeofwalter_proj1.png" alt="Secret Life of Walter" />
-              <div class="works-archive-overlay" aria-hidden="true"></div>
-            </div>
-            <div class="works-archive-title">secret life of walter</div>
-          </div>
-
-          <div class="works-archive-item" data-case-index="6" onclick="openCase(6)">
-            <div class="works-archive-thumb-wrap">
-              <img class="works-archive-thumb" src="georgiaentertainment_proj16_cover.png" alt="Georgia Entertainment Magazine" />
-              <div class="works-archive-overlay" aria-hidden="true"></div>
-            </div>
-            <div class="works-archive-title">georgia entertainment magazine</div>
-          </div>
-
-          <div class="works-archive-item" data-case-index="2" onclick="openCase(2)">
-            <div class="works-archive-thumb-wrap">
-              <img class="works-archive-thumb" src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" />
-              <div class="works-archive-overlay" aria-hidden="true"></div>
-            </div>
-            <div class="works-archive-title">garbage magazine</div>
-          </div>
-
-          <div class="works-archive-item" data-case-index="5" onclick="openCase(5)">
-            <div class="works-archive-thumb-wrap">
-              <img class="works-archive-thumb" src="1gotem_proj14.jpg" alt="Gotem" />
-              <div class="works-archive-overlay" aria-hidden="true"></div>
-            </div>
-            <div class="works-archive-title">gotem</div>
-          </div>
-
-          <div class="works-archive-item works-archive-item--wip">
-            <div class="works-archive-thumb-wrap">
-              <img class="works-archive-thumb" src="constantin_proj25.jpg" alt="chateau constantin in progress" />
-              <div class="works-archive-overlay" aria-hidden="true">
-                <span class="works-archive-wip-hint">cooking...</span>
+        <header class="works-archive-header">
+          <h1 class="works-archive-heading">design for all</h1>
+        </header>
+        <div class="works-archive works-archive-mosaic">
+          <div class="works-archive-row works-archive-row--7-3">
+            <div class="works-archive-item works-archive-item--featured" data-case-index="3" onclick="openCase(3)">
+              <div class="works-archive-thumb-wrap">
+                <img class="works-archive-thumb" src="25breadly_proj5.jpg" alt="Breadly" />
+                <div class="works-archive-overlay" aria-hidden="true"></div>
               </div>
+              <div class="works-archive-meta"><span>branding</span><img class="works-archive-meta-scribble" src="alexascribble1.svg" alt="" width="10" height="10" decoding="async" /><span>packaging</span></div>
+              <div class="works-archive-title">breadly</div>
             </div>
-            <div class="works-archive-title">chateau constantin</div>
+            <div class="works-archive-item works-archive-item--mid works-archive-item--wip" role="group" aria-label="Trademark x Chicago, in progress">
+              <div class="works-archive-thumb-wrap">
+                <img class="works-archive-thumb" src="4trademarkxchicago_proj24.png" alt="" />
+                <div class="works-archive-overlay" aria-hidden="true">
+                  <span class="works-archive-wip-hint">In progress</span>
+                </div>
+              </div>
+              <div class="works-archive-meta">in progress</div>
+              <div class="works-archive-title">trademark x chicago</div>
+            </div>
+          </div>
+
+          <div class="works-archive-row works-archive-row--1-1">
+            <div class="works-archive-item works-archive-item--compact" data-case-index="1" onclick="openCase(1)">
+              <div class="works-archive-thumb-wrap">
+                <img class="works-archive-thumb" src="1swissdesignstamps_proj3.jpg" alt="Swiss Design Stamps" />
+                <div class="works-archive-overlay" aria-hidden="true"></div>
+              </div>
+              <div class="works-archive-meta"><span>print</span><img class="works-archive-meta-scribble" src="alexascribble1.svg" alt="" width="10" height="10" decoding="async" /><span>identity</span></div>
+              <div class="works-archive-title">swiss design stamps</div>
+            </div>
+            <div class="works-archive-item works-archive-item--compact" data-case-index="0" onclick="openCase(0)">
+              <div class="works-archive-thumb-wrap">
+                <img class="works-archive-thumb" src="2secretlifeofwalter_proj1.png" alt="Secret Life of Walter" />
+                <div class="works-archive-overlay" aria-hidden="true"></div>
+              </div>
+              <div class="works-archive-meta"><span>editorial</span><img class="works-archive-meta-scribble" src="alexascribble1.svg" alt="" width="10" height="10" decoding="async" /><span>packaging</span></div>
+              <div class="works-archive-title">secret life of walter</div>
+            </div>
+          </div>
+
+          <div class="works-archive-row works-archive-row--lead works-archive-row--lead-end">
+            <div class="works-archive-item works-archive-item--compact works-archive-item--horizontal" data-case-index="5" onclick="openCase(5)">
+              <div class="works-archive-thumb-wrap">
+                <img class="works-archive-thumb" src="1gotem_proj14.jpg" alt="Gotem" />
+                <div class="works-archive-overlay" aria-hidden="true"></div>
+              </div>
+              <div class="works-archive-meta"><span>typography</span><img class="works-archive-meta-scribble" src="alexascribble1.svg" alt="" width="10" height="10" decoding="async" /><span>graphic design</span></div>
+              <div class="works-archive-title">gotem</div>
+            </div>
+          </div>
+
+          <div class="works-archive-row works-archive-row--13-7">
+            <div class="works-archive-item works-archive-item--featured" data-case-index="2" onclick="openCase(2)">
+              <div class="works-archive-thumb-wrap">
+                <img class="works-archive-thumb" src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" />
+                <div class="works-archive-overlay" aria-hidden="true"></div>
+              </div>
+              <div class="works-archive-meta"><span>atlanta</span><img class="works-archive-meta-scribble" src="alexascribble1.svg" alt="" width="10" height="10" decoding="async" /><span>editorial</span></div>
+              <div class="works-archive-title">garbage magazine</div>
+            </div>
+            <div class="works-archive-item works-archive-item--compact works-archive-item--georgia-shift" data-case-index="6" onclick="openCase(6)">
+              <div class="works-archive-thumb-wrap">
+                <img class="works-archive-thumb" src="georgiaentertainment_proj16_cover.png" alt="Georgia Entertainment Magazine" />
+                <div class="works-archive-overlay" aria-hidden="true"></div>
+              </div>
+              <div class="works-archive-meta"><span>atlanta</span><img class="works-archive-meta-scribble" src="alexascribble1.svg" alt="" width="10" height="10" decoding="async" /><span>editorial</span></div>
+              <div class="works-archive-title">georgia entertainment magazine</div>
+            </div>
+          </div>
+
+          <div class="works-archive-row works-archive-row--9-11">
+            <div class="works-archive-item works-archive-item--compact works-archive-item--placeholder" aria-hidden="true">
+              <div class="works-archive-thumb-wrap works-archive-thumb-wrap--placeholder">
+                <span class="works-archive-placeholder-num">09</span>
+              </div>
+              <div class="works-archive-meta works-archive-meta--placeholder">slot 09</div>
+              <div class="works-archive-title works-archive-title--placeholder">—</div>
+            </div>
+            <div class="works-archive-item works-archive-item--featured works-archive-item--placeholder" aria-hidden="true">
+              <div class="works-archive-thumb-wrap works-archive-thumb-wrap--placeholder">
+                <span class="works-archive-placeholder-num">10</span>
+              </div>
+              <div class="works-archive-meta works-archive-meta--placeholder">slot 10</div>
+              <div class="works-archive-title works-archive-title--placeholder">—</div>
+            </div>
+          </div>
+
+          <div class="works-archive-row works-archive-row--full">
+            <div class="works-archive-item works-mosaic--text-center works-archive-item--featured works-archive-item--placeholder" aria-hidden="true">
+              <div class="works-archive-thumb-wrap works-archive-thumb-wrap--placeholder">
+                <span class="works-archive-placeholder-num">08</span>
+              </div>
+              <div class="works-archive-meta works-archive-meta--placeholder">slot 08</div>
+              <div class="works-archive-title works-archive-title--placeholder">—</div>
+            </div>
+          </div>
+
+          <div class="works-archive-row works-archive-row--narrow-gap">
+            <div class="works-archive-item works-mosaic--text-center works-archive-item--compact works-archive-item--placeholder" aria-hidden="true">
+              <div class="works-archive-thumb-wrap works-archive-thumb-wrap--placeholder">
+                <span class="works-archive-placeholder-num">11</span>
+              </div>
+              <div class="works-archive-meta works-archive-meta--placeholder">slot 11</div>
+              <div class="works-archive-title works-archive-title--placeholder">—</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1739,18 +1932,18 @@
 
   <!-- Photo detail: outside section so it can open from home -->
   <div id="photoDetail" class="photo-detail">
-    <button class="photo-back" onclick="closePhotoDetail()" aria-label="Close">×</button>
-    <div class="photo-detail-title" id="photoDetailTitle"></div>
-    <div class="pd-top">
-      <div class="pd-center">
-        <button type="button" class="pd-carousel-prev" id="pdCarouselPrev" aria-label="Previous image">←</button>
-        <div class="pd-scroll" id="pdScroll"></div>
-        <button type="button" class="pd-carousel-next" id="pdCarouselNext" aria-label="Next image">→</button>
-        <div class="pd-caption">
-          <span class="pd-caption-desc" id="pdCaptionDesc"></span>
-        </div>
+    <button type="button" class="pd-close" onclick="closePhotoDetail()" aria-label="Close lightbox">
+      <span>CLOSE</span><span class="pd-close-x" aria-hidden="true">×</span>
+    </button>
+    <div class="pd-stage">
+      <div class="pd-image-wrap">
+        <img class="pd-main-image" id="pdMainImage" src="" alt="" />
       </div>
+      <div class="photo-detail-title" id="photoDetailTitle"></div>
+      <p class="pd-caption-desc" id="pdCaptionDesc"></p>
     </div>
+    <button type="button" class="pd-carousel-prev" id="pdCarouselPrev" aria-label="Previous image">PREV</button>
+    <button type="button" class="pd-carousel-next" id="pdCarouselNext" aria-label="Next image">NEXT</button>
   </div>
 
   <div id="about" class="section">
@@ -1804,7 +1997,7 @@
     </a>
     <div class="nav-right">
       <div class="nav-links">
-        <a class="nav-link" href="#design">work</a>
+        <a class="nav-link" href="#design">projects</a>
         <a class="nav-link" href="#photography">photography</a>
         <a class="nav-link" href="#about" id="aboutNavLink">about</a>
       </div>
@@ -2552,6 +2745,17 @@
     if (window.initPhotoGrid) window.initPhotoGrid();
     if (location.hash === '#photography') window.dispatchEvent(new Event('hashchange'));
 
+    function formatPhotoLightboxTitle(proj) {
+      if (!proj) return '';
+      var t = (proj.title || '').trim();
+      var loc = (proj.location || '').trim();
+      var yr = (proj.year || '').trim();
+      var line = t;
+      if (loc) line += (line ? ', ' : '') + loc;
+      if (yr) line += (line ? ' ' : '') + yr;
+      return line;
+    }
+
     function openPhotoDetail(pid) {
       var proj = photoProjects.find(p => p.id === pid);
       if (!proj) return;
@@ -2562,46 +2766,53 @@
       });
       if (srcList.length === 0 && proj.thumbnail) srcList = [proj.thumbnail];
 
-      var scrollEl = document.getElementById('pdScroll');
-      scrollEl.innerHTML = '';
-      function clearFocused() {
-        var items = scrollEl.querySelectorAll('.pd-scroll-item');
-        items.forEach(function(el) { el.classList.remove('focused'); });
-      }
-      if (srcList.length) {
-        srcList.forEach(function(src) {
-          var item = document.createElement('div');
-          item.className = 'pd-scroll-item';
-          var img = document.createElement('img');
-          img.src = src;
-          img.alt = proj.title || '';
-          item.appendChild(img);
-          item.addEventListener('click', function() {
-            clearFocused();
-            item.classList.add('focused');
-            item.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-          });
-          scrollEl.appendChild(item);
-        });
-      }
-      var title = proj.title || '';
-      var detailTitleEl = document.getElementById('photoDetailTitle');
-      if (detailTitleEl) detailTitleEl.textContent = title;
-      document.getElementById('pdCaptionDesc').textContent = proj.description || '';
+      var pdState = { proj: proj, srcList: srcList, index: 0 };
+      var mainImg = document.getElementById('pdMainImage');
+      var prevBtn = document.getElementById('pdCarouselPrev');
+      var nextBtn = document.getElementById('pdCarouselNext');
 
-      scrollEl.scrollLeft = 0;
+      function syncNav() {
+        var n = pdState.srcList.length;
+        var hide = n <= 1;
+        prevBtn.classList.toggle('pd-nav-hidden', hide);
+        nextBtn.classList.toggle('pd-nav-hidden', hide);
+      }
+
+      function renderFrame() {
+        if (!pdState.srcList.length) {
+          mainImg.removeAttribute('src');
+          mainImg.alt = '';
+          syncNav();
+          return;
+        }
+        var src = pdState.srcList[pdState.index];
+        mainImg.src = src;
+        mainImg.alt = pdState.proj.title || '';
+        syncNav();
+      }
 
       function carouselPrev() {
-        var step = scrollEl.clientWidth;
-        scrollEl.scrollLeft = Math.max(0, scrollEl.scrollLeft - step);
+        var n = pdState.srcList.length;
+        if (n <= 1) return;
+        pdState.index = (pdState.index - 1 + n) % n;
+        renderFrame();
       }
       function carouselNext() {
-        var step = scrollEl.clientWidth;
-        scrollEl.scrollLeft = Math.min(scrollEl.scrollWidth - scrollEl.clientWidth, scrollEl.scrollLeft + step);
+        var n = pdState.srcList.length;
+        if (n <= 1) return;
+        pdState.index = (pdState.index + 1) % n;
+        renderFrame();
       }
 
-      document.getElementById('pdCarouselPrev').onclick = carouselPrev;
-      document.getElementById('pdCarouselNext').onclick = carouselNext;
+      var detailTitleEl = document.getElementById('photoDetailTitle');
+      if (detailTitleEl) detailTitleEl.textContent = formatPhotoLightboxTitle(proj);
+      document.getElementById('pdCaptionDesc').textContent = proj.description || '';
+
+      pdState.index = 0;
+      renderFrame();
+
+      prevBtn.onclick = carouselPrev;
+      nextBtn.onclick = carouselNext;
 
       var keyHandler = function(e) {
         if (!document.getElementById('photoDetail').classList.contains('open')) return;
