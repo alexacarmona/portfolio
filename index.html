@@ -251,11 +251,15 @@
       white-space: nowrap;
       min-width: 24ch; /* prevents layout shift across phrases */
       min-height: 2.2em; /* reserve space for the 2-line phrase */
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-weight: 300;
     }
     .home-hero-rotator-text {
       display: inline-block;
       transition: opacity 420ms ease;
       opacity: 1;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-weight: 300;
     }
     .home-hero-rotator-text.is-fading { opacity: 0; }
     .home-hero-rotator-text.two-line { white-space: normal; }
@@ -986,9 +990,9 @@
       display: grid;
       grid-template-columns: repeat(14, 320px);
       grid-auto-rows: 360px;
-      column-gap: 72px;
-      row-gap: 72px;
-      padding: 72px;
+      column-gap: 92px;
+      row-gap: 92px;
+      padding: 92px;
       align-items: start;
       justify-items: start;
       width: max-content;
@@ -1001,69 +1005,59 @@
       flex-direction: column;
       align-items: flex-start;
       gap: 12px;
+      /* PERF: allow the browser to skip painting/layout for offscreen tiles */
+      content-visibility: auto;
+      contain: content;
+      contain-intrinsic-size: 360px 440px;
     }
 
-    /* orientation-based dimensions: original aspect preserved */
-    .photo-cell.orientation-landscape { --pw: 320px; --ph: 240px; }
-    .photo-cell.orientation-portrait  { --pw: 240px; --ph: 360px; }
-    .photo-cell.orientation-square   { --pw: 280px; --ph: 280px; }
+    /* Perfect grid frames:
+       Every tile uses the same frame so rows/columns align,
+       while the image fits fully inside (no cropping). */
+    .photo-cell { --pw: 320px; --ph: 320px; }
 
     .photo-cell .photo-img-wrap {
       position: relative;
       display: inline-block;
-      max-width: var(--pw);
-      max-height: var(--ph);
-      background: var(--card-bg);
+      width: var(--pw);
+      height: var(--ph);
+      background: transparent;
       overflow: hidden;
       flex-shrink: 0;
     }
     .photo-cell .photo-img-wrap img {
       display: block;
-      max-width: var(--pw);
-      max-height: var(--ph);
-      width: auto;
-      height: auto;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      /* Anchor contained images so captions align and no "random" bottom gap */
+      object-position: left bottom;
       pointer-events: none;
       transition: opacity 0.3s;
     }
     .photo-cell .photo-img-wrap.placeholder {
-      background: var(--card-bg);
+      background: transparent;
     }
-    .photo-cell:hover .photo-img-wrap img { opacity: 0.88; }
+    /* No hover UI in photo grid */
 
     /* title always below image */
     .photo-cell .photo-title {
-      margin-top: 12px;
+      /* Use the cell's flex gap for spacing (avoid gap + margin doubling) */
+      margin-top: 0;
+      width: var(--pw);
+      max-width: var(--pw);
+      text-align: left;
       font-size: 11px;
       font-weight: 300;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       letter-spacing: 0.06em;
       color: var(--fg);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    /* hover label over image */
-    .photo-cell .photo-hover {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-start;
-      padding: 10px 10px 12px;
-      font-size: 10px;
-      font-weight: 300;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: #fff;
-      background: linear-gradient(transparent, rgba(0,0,0,0.65));
-      opacity: 0;
-      transform: translateY(6px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-      pointer-events: none;
-    }
-    .photo-cell:hover .photo-hover {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .photo-cell .photo-hover { display: none !important; }
 
     /* ── Photo detail: full-screen lightbox (dim + blur), title under image, PREV/NEXT ─── */
     .photo-detail {
@@ -1116,11 +1110,19 @@
       transition: opacity 0.2s;
     }
     .pd-close:hover { opacity: 0.75; }
+    .pd-close > span {
+      display: inline-flex;
+      align-items: center;
+      line-height: 1;
+    }
     .pd-close-x {
       font-size: 22px;
       line-height: 1;
       font-weight: 300;
       letter-spacing: 0;
+      /* Optical alignment: × sits slightly low next to spaced caps */
+      position: relative;
+      top: -3px;
     }
 
     .pd-stage {
@@ -1157,7 +1159,7 @@
       margin-top: 22px;
       max-width: min(92vw, 720px);
       font-size: clamp(15px, 2.2vw, 19px);
-      font-weight: 600;
+      font-weight: 300;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       letter-spacing: 0.02em;
       text-transform: none;
@@ -1716,13 +1718,11 @@
       #photoCanvas {
         grid-template-columns: repeat(14, 360px);
         grid-auto-rows: 420px;
-        column-gap: 48px;
-        row-gap: 48px;
-        padding: 48px;
+        column-gap: 64px;
+        row-gap: 64px;
+        padding: 64px;
       }
-      .photo-cell.orientation-landscape { --pw: 360px; --ph: 270px; }
-      .photo-cell.orientation-portrait  { --pw: 270px; --ph: 420px; }
-      .photo-cell.orientation-square   { --pw: 320px; --ph: 320px; }
+      .photo-cell { --pw: 360px; --ph: 360px; }
 
       /* photo detail lightbox: tighter margins on phones */
       .pd-stage {
@@ -1961,11 +1961,11 @@
         <h2 class="about-heading">about</h2>
         <p class="about-bio">as a graphic design bfa and photography student at scad, i use design and image-making as tools for exploration. i experiment boldly, collaborate intentionally, and embrace creative risk. my work is fueled by movement, curiosity, and the constant pursuit of expanding what's visually possible.</p>
         <div class="about-links">
-          <a class="about-link" href="mailto:alexaxcarmona@gmail.com">alexaxcarmona@gmail.com</a>
           <a class="about-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank" rel="noopener noreferrer">instagram</a>
           <a class="about-link" href="https://www.linkedin.com/in/alexacarmona" target="_blank" rel="noopener noreferrer">linkedin</a>
           <a class="about-link" href="AlexaCarmona_Resume.pdf" target="_blank" rel="noopener noreferrer">resume</a>
         <a class="about-link" href="AlexaCarmona_Portfolio%20(1).pdf" target="_blank" rel="noopener noreferrer">portfolio pdf</a>
+          <a class="about-link" href="mailto:alexaxcarmona@gmail.com">alexaxcarmona@gmail.com</a>
         </div>
       </div>
     </div>
@@ -2256,9 +2256,13 @@
         scrollWrap.style.height = '';
         var copyCountByPid = {};
         var numProjs = projs.length;
-        var numCells = BLOCKS_X * BLOCKS_Y * numProjs;
+        // PERF: keep the same "scrollable field" feel without rendering thousands of nodes.
+        // Keep this conservative; huge grids feel nice but get laggy fast.
+        var MAX_CELLS = 140;
+        var numCells = Math.min(MAX_CELLS, BLOCKS_X * BLOCKS_Y * numProjs);
         var numCols = 14;
         var order = shuffleOrder(numProjs, numCells);
+        var frag = document.createDocumentFragment();
 
         for (var i = 0; i < numCells; i++) {
           var projIdx = order[i];
@@ -2285,17 +2289,16 @@
 
           const imgWrap = document.createElement('div');
           imgWrap.className = 'photo-img-wrap' + (thumbSrc ? '' : ' placeholder');
+          var imgEl = null;
 
           if (thumbSrc) {
-            const img = document.createElement('img');
-            img.src = thumbSrc;
-            img.alt = proj.title || '';
-            imgWrap.appendChild(img);
-
-            const hover = document.createElement('div');
-            hover.className = 'photo-hover';
-            hover.textContent = 'view more';
-            imgWrap.appendChild(hover);
+            imgEl = document.createElement('img');
+            imgEl.src = thumbSrc;
+            imgEl.alt = proj.title || '';
+            imgEl.loading = 'lazy';
+            imgEl.decoding = 'async';
+            try { imgEl.fetchPriority = 'low'; } catch (e) {}
+            imgWrap.appendChild(imgEl);
           }
 
           const titleEl = document.createElement('div');
@@ -2305,12 +2308,21 @@
           el.appendChild(imgWrap);
           el.appendChild(titleEl);
 
-          el.addEventListener('click', function(e) {
-            e.preventDefault();
-            openPhotoDetail(parseInt(this.dataset.pid));
-          });
-          canvas.appendChild(el);
+          frag.appendChild(el);
         }
+
+        // Event delegation (one listener) instead of per-tile handlers.
+        if (!canvas.__photoClickBound) {
+          canvas.addEventListener('click', function(e) {
+            var cell = e.target && e.target.closest ? e.target.closest('.photo-cell') : null;
+            if (!cell || !canvas.contains(cell)) return;
+            e.preventDefault();
+            openPhotoDetail(parseInt(cell.dataset.pid, 10));
+          });
+          canvas.__photoClickBound = true;
+        }
+
+        canvas.appendChild(frag);
 
         scrollWrap.style.width  = canvas.offsetWidth + 'px';
         scrollWrap.style.height = canvas.offsetHeight + 'px';
@@ -2324,47 +2336,8 @@
         photoSection.scrollTop  = maxY > 0 ? maxY / 2 : 0;
       }
 
-      // slightly "dragged" but smoother scroll feeling in photography section
-      (function() {
-        let targetX = 0;
-        let targetY = 0;
-        let ticking = false;
-
-        function animate() {
-          ticking = false;
-          const currentX = photoSection.scrollLeft;
-          const currentY = photoSection.scrollTop;
-
-          const dx = targetX - currentX;
-          const dy = targetY - currentY;
-
-          if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) return;
-
-          const ease = 0.32;
-          photoSection.scrollLeft = currentX + dx * ease;
-          photoSection.scrollTop  = currentY + dy * ease;
-
-          requestAnimationFrame(animate);
-          ticking = true;
-        }
-
-        photoSection.addEventListener('wheel', function(e) {
-          if (e.ctrlKey) return;
-          e.preventDefault();
-          // Sync target to current scroll so we don't jump from stale (0,0) after centerScroll()
-          targetX = photoSection.scrollLeft;
-          targetY = photoSection.scrollTop;
-          const factor = 1.1;
-          targetX += e.deltaX * factor;
-          targetY += e.deltaY * factor;
-          targetX = Math.max(0, Math.min(targetX, photoSection.scrollWidth  - photoSection.clientWidth));
-          targetY = Math.max(0, Math.min(targetY, photoSection.scrollHeight - photoSection.clientHeight));
-          if (!ticking) {
-            requestAnimationFrame(animate);
-            ticking = true;
-          }
-        }, { passive: false });
-      })();
+      // PERF/UX: rely on native scroll physics.
+      // The previous wheel-smoothing layer could fight trackpad scrolling and feel “glitchy”.
 
       function initPhotoGrid() {
         buildGrid();
@@ -2474,22 +2447,6 @@
           { src: '4praise_proj12.jpg', orientation: 'landscape' },
           { src: '5praise_proj12.jpg', orientation: 'landscape' },
           { src: '6praise_proj12.jpg', orientation: 'landscape' }
-        ]
-      },
-      {
-        id: 8,
-        title: 'old skate',
-        year: '2025',
-        time: '',
-        location: '',
-        description: '',
-        details: '',
-        thumbnail: '1oldskate_proj13.jpg',
-        images: [
-          { src: '1oldskate_proj13.jpg', orientation: 'landscape' },
-          { src: '2oldskate_proj13.jpg', orientation: 'landscape' },
-          { src: '3oldskate_proj13.jpg', orientation: 'landscape' },
-          { src: '4oldskate_proj13.jpg', orientation: 'landscape' }
         ]
       },
       {
@@ -3276,6 +3233,7 @@
 
     async function openCase(i) {
       const p = projects[i];
+      window.__currentCaseIndex = i;
 
       // Hero image — full-bleed stage (cover), same spirit as #design intro media
       const heroMedia = document.getElementById('caseHeroMedia');
