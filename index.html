@@ -3,6 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <link rel="preconnect" href="https://unpkg.com" crossorigin />
   <title>alexa carmona</title>
   <link rel="icon" type="image/svg+xml" href="alexalogoA1.svg" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
@@ -2166,13 +2169,13 @@
     <header class="photo-hero" id="photoHero" aria-label="Featured photography">
       <div class="photo-hero-slides" id="photoHeroSlides">
         <div class="photo-hero-slide is-active" data-slide="0">
-          <img src="alexa_erika_soccercurl-19.jpg" alt="Erika — soccer" />
+          <img src="alexa_erika_soccercurl-19.jpg" alt="Erika — soccer" fetchpriority="high" loading="eager" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="1">
-          <img src="1atlprobikes_proj19.jpg" alt="atl pro bikes" />
+          <img src="1atlprobikes_proj19.jpg" alt="atl pro bikes" loading="lazy" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="2">
-          <img src="7stellabrauneeditorial.jpg" alt="" />
+          <img src="7stellabrauneeditorial.jpg" alt="" loading="lazy" decoding="async" />
         </div>
       </div>
       <div class="photo-hero-shade" aria-hidden="true"></div>
@@ -2223,19 +2226,19 @@
     <div class="raw-inner">
       <h1 class="raw-heading">raw</h1>
       <p class="raw-note">Experimental rock and roll stuff.</p>
-      <div class="raw-play" id="rawGrid">
+            <div class="raw-play" id="rawGrid">
       <div class="raw-row">
-        <figure class="raw-piece raw-piece--square raw-piece--mid">
-          <div class="raw-piece-media"><img src="raw_monalisa.png" alt="Mona Lisa — editorial collage" loading="lazy" decoding="async" /></div>
-        </figure>
-        <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="raw_quiksilver.png" alt="Quiksilver pop-up poster" loading="lazy" decoding="async" /></div>
-        </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
           <div class="raw-piece-media"><img src="raw_lacoste.png" alt="Lacoste play — collage" loading="lazy" decoding="async" /></div>
         </figure>
+        <figure class="raw-piece raw-piece--portrait raw-piece--tall">
+          <div class="raw-piece-media"><img src="HFH03815-2.jpg" alt="HFH03815-2" loading="lazy" decoding="async" /></div>
+        </figure>
+        <figure class="raw-piece raw-piece--square raw-piece--mid">
+          <div class="raw-piece-media"><img src="Album%20project2.png" alt="Album project2" loading="lazy" decoding="async" /></div>
+        </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--mid">
-          <div class="raw-piece-media"><img src="raw_southbound.png" alt="Southbound — transit collage" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="raw_jass.png" alt="jass — studio" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--mid">
           <div class="raw-piece-media"><img src="raw_skilodge.png" alt="Timber lodge poster" loading="lazy" decoding="async" /></div>
@@ -2243,27 +2246,50 @@
       </div>
       <div class="raw-row">
         <figure class="raw-piece raw-piece--square raw-piece--mid">
-          <div class="raw-piece-media"><img src="raw_twodo.png" alt="Two Do — app icon" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="raw_monalisa.png" alt="Mona Lisa — editorial collage" loading="lazy" decoding="async" /></div>
+        </figure>
+        <figure class="raw-piece raw-piece--landscape raw-piece--wide">
+          <div class="raw-piece-media"><img src="raw_2ruthinatl.png" alt="2ruthinatl_proj20" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
           <div class="raw-piece-media"><img src="raw_jersey.png" alt="Hockey jersey concept" loading="lazy" decoding="async" /></div>
         </figure>
-        <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="raw_pronto.png" alt="Pronto — screen print" loading="lazy" decoding="async" /></div>
+        <figure class="raw-piece raw-piece--landscape raw-piece--mid">
+          <div class="raw-piece-media"><img src="raw_southbound.png" alt="Southbound — transit collage" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="raw_denim.png" alt="Denim — experimental print" loading="lazy" decoding="async" /></div>
-        </figure>
-        <figure class="raw-piece raw-piece--square raw-piece--mid">
-          <div class="raw-piece-media"><img src="raw_landscape.png" alt="Landscape — block print" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="raw_diffue.png" alt="diffuse and direct" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       <div class="raw-row">
+        <figure class="raw-piece raw-piece--square raw-piece--mid">
+          <div class="raw-piece-media"><img src="raw_twodo.png" alt="Two Do — app icon" loading="lazy" decoding="async" /></div>
+        </figure>
+        <figure class="raw-piece raw-piece--portrait raw-piece--tall">
+          <div class="raw-piece-media"><img src="raw_1oldskate.png" alt="1oldskate_proj13" loading="lazy" decoding="async" /></div>
+        </figure>
+        <figure class="raw-piece raw-piece--landscape raw-piece--mid">
+          <div class="raw-piece-media"><img src="raw_pronto.png" alt="Pronto — screen print" loading="lazy" decoding="async" /></div>
+        </figure>
+        <figure class="raw-piece raw-piece--portrait raw-piece--tall">
+          <div class="raw-piece-media"><img src="raw_quiksilver.png" alt="Quiksilver pop-up poster" loading="lazy" decoding="async" /></div>
+        </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--mid">
           <div class="raw-piece-media"><img src="raw_sigue.png" alt="SIGUE — poster" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
-</div>
+      <div class="raw-row">
+        <figure class="raw-piece raw-piece--portrait raw-piece--tall">
+          <div class="raw-piece-media"><img src="raw_6redbluechair.png" alt="6redbluechair_proj2" loading="lazy" decoding="async" /></div>
+        </figure>
+        <figure class="raw-piece raw-piece--landscape raw-piece--mid">
+          <div class="raw-piece-media"><img src="raw_landscape.png" alt="Landscape — block print" loading="lazy" decoding="async" /></div>
+        </figure>
+        <figure class="raw-piece raw-piece--portrait raw-piece--tall">
+          <div class="raw-piece-media"><img src="raw_denim.png" alt="Denim — experimental print" loading="lazy" decoding="async" /></div>
+        </figure>
+      </div>
+      </div>
     </div>
   </div>
 
@@ -2357,9 +2383,7 @@
 
   <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-  <script src="https://unpkg.com/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
-  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  <script>
     /* DESIGN HERO - cycle first two lines */
     (function() {
       var line1 = document.getElementById('designHeroLine1');
@@ -2704,18 +2728,26 @@
         if (!projs.length) return;
 
         var sorted = projs.slice().sort(function(a, b) { return projectRank(a) - projectRank(b); });
-        var items = [];
+        var groups = [];
         sorted.forEach(function(proj) {
+          var pair = [];
           var imgs = proj.images || [];
           if (imgs.length) {
             imgs.slice(0, 2).forEach(function(item, imgIndex) {
               var src = typeof item === 'object' && item && item.src ? item.src : item;
-              if (src) items.push({ src: src, pid: proj.id, alt: proj.title || '', imgIndex: imgIndex });
+              if (src) pair.push({ src: src, pid: proj.id, alt: proj.title || '', imgIndex: imgIndex });
             });
           } else if (proj.thumbnail) {
-            items.push({ src: proj.thumbnail, pid: proj.id, alt: proj.title || '', imgIndex: 0 });
+            pair.push({ src: proj.thumbnail, pid: proj.id, alt: proj.title || '', imgIndex: 0 });
           }
+          if (pair.length) groups.push(pair);
         });
+        var items = [];
+        var slots = 0;
+        groups.forEach(function(g) { if (g.length > slots) slots = g.length; });
+        for (var s = 0; s < slots; s++) {
+          groups.forEach(function(g) { if (g[s]) items.push(g[s]); });
+        }
 
         canvas.innerHTML = '';
         var frag = document.createDocumentFragment();
@@ -2746,13 +2778,24 @@
         canvas.appendChild(frag);
       }
 
-      function initPhotoGrid() { buildGrid(); }
+      var photoGridBuilt = false;
+      function initPhotoGrid() {
+        if (photoGridBuilt) return;
+        var run = function() {
+          buildGrid();
+          photoGridBuilt = true;
+        };
+        if (location.hash === '#photography') requestAnimationFrame(run);
+        else if (typeof requestIdleCallback === 'function') requestIdleCallback(run, { timeout: 2500 });
+        else setTimeout(run, 400);
+      }
       window.initPhotoGrid = initPhotoGrid;
 
       window.addEventListener('hashchange', function() {
         closePhotoDetail();
         if (typeof closeCase === 'function') closeCase();
         if (location.hash === '#photography') {
+          if (!photoGridBuilt) buildGrid();
           photoSection.scrollTop = 0;
           photoSection.classList.remove('is-past-hero');
           updatePhotoScrollState();
@@ -3118,11 +3161,10 @@
         details: '',
         thumbnail: 'alexa_erika_soccercurl-19.jpg',
         images: [
-          { src: 'alexa_erika_soccercurl-16.jpg', orientation: 'landscape' },
+          { src: 'alexa_erika_soccercurl-26.jpg', orientation: 'landscape' },
           { src: 'alexa_erika_soccercurl-18.jpg', orientation: 'landscape' },
           { src: 'alexa_erika_soccercurl-19.jpg', orientation: 'landscape' },
           { src: 'alexa_erika_soccercurl-21.jpg', orientation: 'landscape' },
-          { src: 'alexa_erika_soccercurl-26.jpg', orientation: 'landscape' },
           { src: 'alexa_erika_soccercurl-31.jpg', orientation: 'landscape' },
           { src: 'alexa_erika_soccercurl-49.jpg', orientation: 'landscape' },
           { src: 'alexa_erika_soccercurl-51.jpg', orientation: 'landscape' }
@@ -3520,6 +3562,28 @@
       }, true);
     })();
 
+
+    var __flipbookLibsPromise = null;
+    function loadFlipbookLibs() {
+      if (typeof pdfjsLib !== 'undefined' && typeof St !== 'undefined' && St.PageFlip) {
+        return Promise.resolve();
+      }
+      if (__flipbookLibsPromise) return __flipbookLibsPromise;
+      function loadScript(src) {
+        return new Promise(function(resolve, reject) {
+          var el = document.createElement('script');
+          el.src = src;
+          el.crossOrigin = 'anonymous';
+          el.onload = resolve;
+          el.onerror = reject;
+          document.head.appendChild(el);
+        });
+      }
+      __flipbookLibsPromise = loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js').then(function() {
+        return loadScript('https://unpkg.com/page-flip@2.0.7/dist/js/page-flip.browser.js');
+      });
+      return __flipbookLibsPromise;
+    }
     var __georgiaFlipbook = null;
     var __georgiaFlipbookResizeTimer = null;
     function georgiaPdfCandidateUrls(p) {
@@ -3657,11 +3721,17 @@
         loadGeorgiaFlipbookEmbed(p);
         return;
       }
+      mount.innerHTML = '<p class="case-flipbook-loading">Preparing your magazine…</p>';
+      try {
+        await loadFlipbookLibs();
+      } catch (e) {
+        mount.innerHTML = '<p class="case-flipbook-error">Flipbook scripts did not load. Refresh the page.</p>';
+        return;
+      }
       if (typeof pdfjsLib === 'undefined' || typeof St === 'undefined' || !St.PageFlip) {
         mount.innerHTML = '<p class="case-flipbook-error">Flipbook scripts did not load. Refresh the page.</p>';
         return;
       }
-      mount.innerHTML = '<p class="case-flipbook-loading">Preparing your magazine…</p>';
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
       var doc = null;
