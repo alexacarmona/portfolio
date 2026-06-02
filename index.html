@@ -147,7 +147,7 @@
     }
 
     /* ══ SECTIONS - CSS :target based switching ==========
-       Default: #design is shown. Clicking nav links changes
+       Default: #photography is shown. Clicking nav links changes
        the hash, CSS :target handles visibility instantly.
        Works 100% from local filesystem, no server needed.
     ════════════════════════════════════════════════════ */
@@ -162,8 +162,8 @@
       background: var(--bg);
     }
 
-    /* design is default visible (no hash = show design) */
-    #design {
+    /* photography is default visible (no hash = show photography) */
+    #photography {
       opacity: 1;
       pointer-events: all;
       z-index: 60;
@@ -289,7 +289,7 @@
       width: 100%;
       max-width: 1540px;
       margin: 0 auto;
-      padding: calc(var(--nav-h) + clamp(40px, 5vw, 72px)) clamp(20px, 4.5vw, 56px) 120px;
+      padding: calc(var(--nav-h) + clamp(18px, 2.4vw, 32px)) clamp(20px, 4.5vw, 56px) 120px;
       box-sizing: border-box;
     }
     #design .works-archive-header {
@@ -1472,11 +1472,19 @@
       overflow: hidden;
     }
     .about-bts-video {
+      position: absolute;
+      inset: 0;
       display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
       background: #1a1a1a;
+      opacity: 0;
+      transition: opacity 220ms ease;
+      will-change: opacity;
+    }
+    .about-bts-video.is-active {
+      opacity: 1;
     }
     .about-body-default {
       transition:
@@ -2280,7 +2288,7 @@
     (function() {
       var h = window.location.hash;
       if (!h || h === '#home') {
-        history.replaceState(null, '', (window.location.pathname || '') + '#design');
+        history.replaceState(null, '', (window.location.pathname || '') + '#photography');
       }
     })();
   </script>
@@ -2292,9 +2300,6 @@
   <div id="design" class="section">
     <div class="section-inner">
       <div class="works-archive-wrap">
-        <header class="works-archive-header">
-          <h1 class="works-archive-heading">design for all</h1>
-        </header>
         <div class="works-archive works-archive-mosaic">
           <div class="works-archive-row works-archive-row--7-3">
             <div class="works-archive-item works-archive-item--featured" data-case-index="3" onclick="openCase(3)">
@@ -2597,12 +2602,20 @@
       <aside class="about-body-right" aria-label="Behind the scenes">
         <div class="about-bts-player" id="aboutBtsPlayer">
           <video
-            id="aboutBtsVideo"
-            class="about-bts-video"
+            id="aboutBtsVideoA"
+            class="about-bts-video is-active"
             muted
             playsinline
             preload="none"
             aria-label="Behind the scenes"
+          ></video>
+          <video
+            id="aboutBtsVideoB"
+            class="about-bts-video"
+            muted
+            playsinline
+            preload="none"
+            aria-label="Behind the scenes (buffer)"
           ></video>
         </div>
       </aside>
@@ -4198,10 +4211,11 @@
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCase(); });
 
-    /* ABOUT — BTS square player: clips play one after another */
+    /* ABOUT — BTS square player: seamless double-buffer */
     (function() {
-      var video = document.getElementById('aboutBtsVideo');
-      if (!video) return;
+      var a = document.getElementById('aboutBtsVideoA');
+      var b = document.getElementById('aboutBtsVideoB');
+      if (!a || !b) return;
       var clips = [
         'videos/btsone.mp4',
         'videos/bts3.mp4',
@@ -4210,31 +4224,72 @@
       ];
       var index = 0;
       var hasStarted = false;
+      var active = a;
+      var buffer = b;
 
-      function playClip(i) {
-        index = ((i % clips.length) + clips.length) % clips.length;
-        if (video.getAttribute('src') === clips[index] && !video.paused) return;
-        video.src = clips[index];
-        video.load();
-        var p = video.play();
+      function safePlay(v) {
+        var p = v.play();
         if (p && p.catch) p.catch(function() {});
       }
 
-      video.addEventListener('ended', function() {
-        playClip(index + 1);
+      function setSrc(v, src) {
+        if (v.getAttribute('src') === src) return;
+        v.src = src;
+        v.load();
+      }
+
+      function primeBuffer(nextIndex) {
+        var ni = ((nextIndex % clips.length) + clips.length) % clips.length;
+        setSrc(buffer, clips[ni]);
+      }
+
+      function swapToBuffer() {
+        // Start buffer video, then crossfade in the same tick.
+        safePlay(buffer);
+        buffer.classList.add('is-active');
+        active.classList.remove('is-active');
+
+        // Pause old one after fade to avoid showing grey.
+        (function(old) {
+          setTimeout(function() { try { old.pause(); } catch (e) {} }, 260);
+        })(active);
+
+        // Swap refs
+        var tmp = active;
+        active = buffer;
+        buffer = tmp;
+      }
+
+      function startAt(i) {
+        index = ((i % clips.length) + clips.length) % clips.length;
+        setSrc(active, clips[index]);
+        safePlay(active);
+        primeBuffer(index + 1);
+      }
+
+      active.addEventListener('ended', function() {
+        index = (index + 1) % clips.length;
+        swapToBuffer();
+        primeBuffer(index + 1);
+      });
+      buffer.addEventListener('ended', function() {
+        // In case buffer ends first due to a swap timing edge.
+        index = (index + 1) % clips.length;
+        swapToBuffer();
+        primeBuffer(index + 1);
       });
 
       function onAboutSection() {
         if (location.hash === '#about') {
           if (!hasStarted) {
             hasStarted = true;
-            playClip(0);
+            startAt(0);
           } else {
-            var p = video.play();
-            if (p && p.catch) p.catch(function() {});
+            safePlay(active);
           }
         } else {
-          video.pause();
+          try { active.pause(); } catch (e) {}
+          try { buffer.pause(); } catch (e) {}
         }
       }
 
@@ -4356,12 +4411,12 @@
 
         if (isLogo) {
           resetSectionScroll();
-          if (window.location.hash !== '#design') window.location.hash = 'design';
+          if (window.location.hash !== '#photography') window.location.hash = 'photography';
           requestAnimationFrame(resetSectionScroll);
           return;
         }
 
-        window.location.hash = hash || 'design';
+        window.location.hash = hash || 'photography';
       });
     }
 
