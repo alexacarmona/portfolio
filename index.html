@@ -1435,7 +1435,7 @@
     .about-hero-copy {
       margin-left: auto;
       margin-right: 0;
-      transform: translateX(12px);
+      transform: translateX(clamp(10px, 1.4vw, 22px));
       width: auto;
       max-width: none;
       text-align: right;
@@ -1455,19 +1455,8 @@
       letter-spacing: -0.02em;
       line-height: 1;
       color: #e6b800;
+      white-space: nowrap;
     }
-    .about-bio-rotator {
-      display: inline-block;
-      min-width: 9.5ch;
-      text-align: right;
-    }
-    .about-bio-word {
-      display: inline-block;
-      transition: opacity 480ms ease;
-      opacity: 1;
-      color: #e6b800;
-    }
-    .about-bio-word.is-fading { opacity: 0; }
     .about-body {
       position: relative;
       z-index: 3;
@@ -2578,11 +2567,7 @@
       <img class="about-hero-img" src="alexa_20264803%202.jpg" alt="alexa carmona in studio" />
       <div class="about-hero-overlay">
         <div class="about-hero-copy">
-          <p class="about-bio">
-            <span class="about-bio-rotator" aria-live="polite">
-              <span id="aboutBioWord" class="about-bio-word">embrace</span>
-            </span>
-          </p>
+          <p class="about-bio">embrace creative risk.</p>
         </div>
       </div>
     </div>
@@ -4227,7 +4212,7 @@
       }, { passive: false });
     })();
 
-    /* ABOUT — let's connect pulse + contact form reveal */
+    /* ABOUT — let's talk pulse + contact form reveal */
     (function() {
       var connectText = document.getElementById('aboutConnectText');
       var trigger = document.getElementById('aboutConnectTrigger');
