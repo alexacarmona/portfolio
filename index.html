@@ -1468,18 +1468,18 @@
       padding-top: clamp(24px, 5vh, 48px);
       min-width: 0;
     }
-    .about-bts-stack {
-      display: flex;
-      flex-direction: column;
-      gap: clamp(18px, 2.5vw, 28px);
-      max-width: min(100%, 560px);
+    .about-bts-player {
+      position: relative;
+      width: min(100%, 420px);
       margin-left: auto;
+      aspect-ratio: 1 / 1;
+      background: #1a1a1a;
+      overflow: hidden;
     }
     .about-bts-video {
       display: block;
       width: 100%;
-      height: auto;
-      max-height: min(34vh, 320px);
+      height: 100%;
       object-fit: cover;
       background: #1a1a1a;
     }
@@ -2140,10 +2140,7 @@
       .about-body-right {
         padding-top: 0;
       }
-      .about-bts-video {
-        max-height: none;
-      }
-      .about-bts-stack {
+      .about-bts-player {
         max-width: 100%;
         margin-left: 0;
       }
@@ -2603,26 +2600,15 @@
         </div>
       </div>
       <aside class="about-body-right" aria-label="Behind the scenes">
-        <div class="about-bts-stack">
+        <div class="about-bts-player" id="aboutBtsPlayer">
           <video
+            id="aboutBtsVideo"
             class="about-bts-video"
             src="videos/btsone.mp4"
-            autoplay
             muted
-            loop
             playsinline
-            preload="metadata"
+            preload="auto"
             aria-label="Behind the scenes"
-          ></video>
-          <video
-            class="about-bts-video"
-            src="videos/bts2-clip.mp4"
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="metadata"
-            aria-label="Behind the scenes 2"
           ></video>
         </div>
       </aside>
@@ -4217,6 +4203,42 @@
       }
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCase(); });
+
+    /* ABOUT — BTS square player: clips play one after another */
+    (function() {
+      var video = document.getElementById('aboutBtsVideo');
+      if (!video) return;
+      var clips = [
+        'videos/btsone.mp4',
+        'videos/bts3.mp4',
+        'videos/bts4.mp4',
+        'videos/bts5.mp4'
+      ];
+      var index = 0;
+
+      function playClip(i) {
+        index = ((i % clips.length) + clips.length) % clips.length;
+        video.src = clips[index];
+        video.load();
+        var p = video.play();
+        if (p && p.catch) p.catch(function() {});
+      }
+
+      video.addEventListener('ended', function() {
+        playClip(index + 1);
+      });
+
+      function onAboutSection() {
+        if (location.hash === '#about') playClip(0);
+        else video.pause();
+      }
+
+      window.addEventListener('hashchange', onAboutSection);
+      if (location.hash === '#about') {
+        if (video.readyState >= 2) playClip(0);
+        else video.addEventListener('loadeddata', function() { playClip(0); }, { once: true });
+      }
+    })();
 
     /* ABOUT — let's talk pulse + contact form reveal */
     (function() {

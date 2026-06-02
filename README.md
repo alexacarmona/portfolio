@@ -16,13 +16,14 @@ GitHub rejects very large files (over **100 MB** per file, warns above **50 MB**
 
 **What we did for the BTS videos**
 
-- Compressed `btsone.MOV` and `bts2.MOV` into **`videos/btsone.mp4`** (~11 MB) and **`videos/bts2-clip.mp4`** (~5.5 MB, 4 seconds from the middle).
+- Compressed BTS sources into **`videos/`** (all under GitHub’s size limits):
+  - `btsone.mp4` (~4s from middle of btsone), `bts3.mp4`, `bts4.mp4`, `bts5.mp4`
 - The site now uses those MP4s. Original `.MOV` files are listed in **`.gitignore`** so they are not uploaded.
 
 **Before you push**
 
-1. Make sure **`videos/btsone.mp4`** and **`videos/bts2-clip.mp4`** are in your commit.
-2. Do **not** commit `btsone.MOV`, `bts2.MOV`, or other `IMG_*.MOV` files.
+1. Make sure all **`videos/*.mp4`** files are in your commit.
+2. Do **not** commit `btsone.MOV`, `bts3.MOV`, `bts4.MOV`, `bts5.MP4`, or other raw video files.
 3. If push still fails, a photo file may be over 100 MB — find it with:
    ```bash
    find . -maxdepth 1 -type f -size +50M -exec ls -lh {} \;
