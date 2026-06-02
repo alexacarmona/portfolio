@@ -358,6 +358,9 @@
       cursor: default;
       pointer-events: none;
     }
+    #design .works-archive-item--placeholder {
+      cursor: default;
+    }
     /* Children still capture clicks unless disabled (parent-only pointer-events is not enough). */
     #design .works-archive-item--wip:not([data-case-index]) *,
     #design .works-archive-item--placeholder * {
@@ -416,23 +419,15 @@
       max-height: none;
     }
     #design .works-archive-thumb-wrap--placeholder {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--card-bg);
-      border: 1px solid rgba(0, 0, 0, 0.06);
+      display: block;
+      background: transparent;
+      border: none;
     }
     [data-theme="dark"] #design .works-archive-thumb-wrap--placeholder {
       border-color: rgba(255, 255, 255, 0.08);
     }
     #design .works-archive-placeholder-num {
-      font-size: clamp(36px, 8vw, 64px);
-      font-weight: 300;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      letter-spacing: 0.08em;
-      color: var(--fg-muted);
-      opacity: 0.45;
-      user-select: none;
+      display: none;
     }
     #design .works-archive-thumb {
       display: block;
@@ -2604,10 +2599,9 @@
           <video
             id="aboutBtsVideo"
             class="about-bts-video"
-            src="videos/btsone.mp4"
             muted
             playsinline
-            preload="auto"
+            preload="none"
             aria-label="Behind the scenes"
           ></video>
         </div>
@@ -2619,13 +2613,13 @@
   <!-- NAV comes after sections so :target general sibling selector (~) works -->
   <div class="nav-top-shade" aria-hidden="true"></div>
   <nav>
-    <a class="name" href="#design" aria-label="Work">
+    <a class="name" href="#design" aria-label="Projects">
       <img class="name-logo-img name-logo-img--default" src="alexa-logo.png" alt="Alexa" />
       <img class="name-logo-img name-logo-img--yellow" src="alexa-logo-yellow.png" alt="" aria-hidden="true" />
     </a>
     <div class="nav-right">
       <div class="nav-links">
-        <a class="nav-link" href="#design">work</a>
+        <a class="nav-link" href="#design">projects</a>
         <a class="nav-link" href="#photography">photography</a>
         <a class="nav-link" href="#raw">raw</a>
         <a class="nav-link" href="#about">info</a>
@@ -4215,9 +4209,11 @@
         'videos/bts5.mp4'
       ];
       var index = 0;
+      var hasStarted = false;
 
       function playClip(i) {
         index = ((i % clips.length) + clips.length) % clips.length;
+        if (video.getAttribute('src') === clips[index] && !video.paused) return;
         video.src = clips[index];
         video.load();
         var p = video.play();
@@ -4229,15 +4225,22 @@
       });
 
       function onAboutSection() {
-        if (location.hash === '#about') playClip(0);
-        else video.pause();
+        if (location.hash === '#about') {
+          if (!hasStarted) {
+            hasStarted = true;
+            playClip(0);
+          } else {
+            var p = video.play();
+            if (p && p.catch) p.catch(function() {});
+          }
+        } else {
+          video.pause();
+        }
       }
 
       window.addEventListener('hashchange', onAboutSection);
-      if (location.hash === '#about') {
-        if (video.readyState >= 2) playClip(0);
-        else video.addEventListener('loadeddata', function() { playClip(0); }, { once: true });
-      }
+      // Run once on load so #about works immediately on live hosting.
+      onAboutSection();
     })();
 
     /* ABOUT — let's talk pulse + contact form reveal */
