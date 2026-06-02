@@ -108,7 +108,7 @@
       box-sizing: border-box;
     }
     .nav-link {
-      font-size: clamp(13px, 1.12vw, 16px);
+      font-size: clamp(15px, 1.35vw, 19px);
       font-weight: 300;
       letter-spacing: 0.1em;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -120,8 +120,33 @@
     }
     .nav-link:hover { color: #e6b800; }
 
+    /* Top nav scrim — dark-to-clear band for legibility over hero imagery */
+    .nav-top-shade {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: calc(var(--nav-h) + 10px);
+      z-index: 345;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s;
+      background: linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.52) 0%,
+        rgba(0, 0, 0, 0.24) 62%,
+        rgba(0, 0, 0, 0) 100%
+      );
+    }
+    #photography:target:not(.is-past-hero) ~ .nav-top-shade,
+    #about:target:not(.is-past-hero) ~ .nav-top-shade {
+      opacity: 1;
+      visibility: visible;
+    }
+
     /* ══ SECTIONS - CSS :target based switching ==========
-       Default: #home is shown. Clicking nav links changes
+       Default: #design is shown. Clicking nav links changes
        the hash, CSS :target handles visibility instantly.
        Works 100% from local filesystem, no server needed.
     ════════════════════════════════════════════════════ */
@@ -136,14 +161,14 @@
       background: var(--bg);
     }
 
-    /* home is default visible (no hash = show home) */
-    #home {
+    /* design is default visible (no hash = show design) */
+    #design {
       opacity: 1;
       pointer-events: all;
       z-index: 60;
     }
 
-    /* when a section is targeted, show it and hide home */
+    /* when a section is targeted, show it */
     #design:target,
     #photography:target,
     #about:target,
@@ -153,21 +178,35 @@
       z-index: 70;
     }
 
-    /* hide home when any other section is targeted */
-    #design:target ~ #home,
-    #photography:target ~ #home,
-    #about:target ~ #home,
-    #raw:target ~ #home {
-      opacity: 0;
-      pointer-events: none;
-    }
-
     /* active nav link styling via :target */
     #design:target        ~ nav .nav-link[href="#design"],
-    #photography:target   ~ nav .nav-link[href="#photography"],
-    #about:target         ~ nav .nav-link[href="#about"],
     #raw:target           ~ nav .nav-link[href="#raw"] {
       color: var(--fg);
+    }
+    #photography:target.is-past-hero ~ nav .nav-link[href="#photography"],
+    #about:target.is-past-hero ~ nav .nav-link[href="#about"] {
+      color: #e6b800;
+    }
+    /* Photography + about hero — inactive nav links white, active link yellow */
+    #photography:target:not(.is-past-hero) ~ nav .nav-link,
+    #about:target:not(.is-past-hero) ~ nav .nav-link {
+      color: rgba(255, 255, 255, 0.92);
+    }
+    #photography:target:not(.is-past-hero) ~ nav .nav-link:hover,
+    #about:target:not(.is-past-hero) ~ nav .nav-link:hover {
+      color: #e6b800;
+    }
+    #photography:target:not(.is-past-hero) ~ nav .nav-link[href="#photography"],
+    #about:target:not(.is-past-hero) ~ nav .nav-link[href="#about"] {
+      color: #e6b800;
+    }
+    #photography:target:not(.is-past-hero) ~ nav .name,
+    #about:target:not(.is-past-hero) ~ nav .name {
+      color: rgba(255, 255, 255, 0.92);
+    }
+    #photography:target:not(.is-past-hero) ~ nav .name-logo-img--default,
+    #about:target:not(.is-past-hero) ~ nav .name-logo-img--default {
+      filter: invert(1);
     }
 
     /* footer visibility - no box, just email / links / copyright */
@@ -212,162 +251,8 @@
     }
     .theme-footer-btn:hover { color: #e6b800; }
 
-    /* scroll hint (main page + photo detail reuses it) */
-    .scroll-hint {
-      position: fixed; bottom: calc(var(--footer-h) + 22px); left: 60px;
-      display: flex; align-items: center; gap: 10px;
-      font-size: 16px; letter-spacing: 0.14em; color: var(--fg-muted);
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      font-weight: 300;
-      pointer-events: none; z-index: 200; transition: opacity 0.5s, bottom 0.3s;
-    }
-    #design:target    ~ .scroll-hint,
-    #photography:target ~ .scroll-hint,
-    #about:target     ~ .scroll-hint,
-    #raw:target       ~ .scroll-hint { opacity: 0; }
-    /* hide scroll hint while lightbox is open (full-screen overlay) */
-    body.photo-detail-open #photography:target ~ .scroll-hint {
-      opacity: 0;
-    }
-
-    .scroll-hint-line { width: 54px; height: 1px; background: var(--fg-muted); position: relative; overflow: hidden; }
-    .scroll-hint-line::after {
-      content: ''; position: absolute; top: 0; left: -100%;
-      width: 100%; height: 100%; background: #e6b800;
-      animation: slideline 1.8s ease-in-out infinite;
-    }
-    @keyframes slideline { 0%{left:-100%} 50%{left:100%} 100%{left:100%} }
-
-    /* ══ HOME ════════════════════════════════════════════ */
-    #home {
-      overflow: hidden;
-    }
-    .scroll-track {
-      position: absolute; inset: 0;
-      display: flex; align-items: center;
-      overflow-x: auto; overflow-y: hidden;
-      scrollbar-width: none;
-      padding: var(--nav-h) 0 40px;
-    }
-    .scroll-track::-webkit-scrollbar { display: none; }
-
-    .intro-panel {
-      flex: 0 0 auto; width: min(560px, 82vw); height: 100%;
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 0 100px 70px 60px;
-    }
-    .intro-title {
-      font-size: clamp(36px, 5vw, 62px);
-      font-weight: 400; line-height: 1.06; letter-spacing: -0.025em;
-      margin-bottom: 18px;
-      animation: none;
-    }
-    /* HOME HERO - headline stays in place, no fades; just character motion */
-    .home-hero-line {
-      display: inline-block;
-      white-space: nowrap;
-    }
-    /* Rotating role text: fades without layout shift */
-    .home-hero-rotator {
-      display: inline-block;
-      white-space: nowrap;
-      min-width: 24ch; /* prevents layout shift across phrases */
-      min-height: 2.2em; /* reserve space for the 2-line phrase */
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-weight: 300;
-    }
-    .home-hero-rotator-text {
-      display: inline-block;
-      transition: opacity 420ms ease;
-      opacity: 1;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-weight: 300;
-    }
-    .home-hero-rotator-text.is-fading { opacity: 0; }
-    .home-hero-rotator-text.two-line { white-space: normal; }
-    .home-hero-rotator-line { display: block; }
-    .intro-sub {
-      font-size: 11px; font-weight: 400; letter-spacing: 0.1em;
-      color: var(--fg-muted); text-transform: lowercase;
-      animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s both;
-      transition: color 0.2s;
-    }
-    .intro-sub:hover { color: #e6b800; }
-
-    .cards-row {
-      flex: 0 0 auto;
-      display: flex;
-      align-items: flex-end;
-      gap: 0;
-      padding: 0 160px 0 0;
-      height: 100%;
-    }
-
-    .card {
-      flex: 0 0 auto;
-      border-radius: 0;
-      overflow: hidden;
-      position: relative; cursor: pointer; background: var(--card-bg);
-      transition: opacity 0.35s ease;
-      margin: 0 70px;
-    }
-    .card:hover { opacity: 0.88; }
-
-    .card.pos-top    { align-self: flex-start; margin-top: calc(var(--nav-h) + 20px); }
-    .card.pos-upper  { align-self: flex-start; margin-top: calc(var(--nav-h) + 80px); }
-    .card.pos-mid    { align-self: center; }
-    .card.pos-lower  { align-self: flex-end; margin-bottom: 60px; }
-    .card.pos-bottom { align-self: flex-end; margin-bottom: 20px; }
-
-    .card.portrait  { width: 280px; height: 420px; }
-    .card.landscape { width: 460px; height: 310px; }
-    .card.tall      { width: 320px; height: 520px; }
-    .card.wide      { width: 520px; height: 340px; }
-    .card.small     { width: 220px; height: 300px; }
-
-    /* home card that sizes to the image's original proportions (no crop) */
-    .card.auto-thumb {
-      width: auto;
-      height: 300px;
-    }
-    .card.auto-thumb .card-img { height: 100%; }
-    .card.auto-thumb .card-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      display: block;
-      background: var(--card-bg);
-    }
-
-    .card-img {
-      width: 100%; height: 100%; object-fit: cover; display: block;
-      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1);
-    }
-    .card:hover .card-img { transform: scale(1.04); }
-
-    .card-hover-overlay {
-      position: absolute; inset: 0; opacity: 0;
-      transition: opacity 0.35s ease; pointer-events: none;
-    }
-    .card:hover .card-hover-overlay { opacity: 1; }
-    .cards-row > .card:nth-child(1) .card-hover-overlay { background: rgba(255,90,70,0.36); }
-    .cards-row > .card:nth-child(2) .card-hover-overlay { background: rgba(70,150,255,0.33); }
-    .cards-row > .card:nth-child(3) .card-hover-overlay { background: rgba(80,210,150,0.33); }
-    .cards-row > .card:nth-child(4) .card-hover-overlay { background: rgba(200,90,240,0.33); }
-    .cards-row > .card:nth-child(5) .card-hover-overlay { background: rgba(255,195,50,0.36); }
-    .cards-row > .card:nth-child(6) .card-hover-overlay { background: rgba(255,120,50,0.33); }
-    .cards-row > .card:nth-child(7) .card-hover-overlay { background: rgba(50,195,215,0.33); }
-    .cards-row > .card:nth-child(8) .card-hover-overlay { background: rgba(160,230,90,0.33); }
-
-    .card-label {
-      position: absolute; bottom: 18px; left: 20px; right: 20px;
-      opacity: 0; transform: translateY(5px);
-      transition: opacity 0.3s, transform 0.3s; z-index: 2;
-    }
-    .card:hover .card-label { opacity: 1; transform: translateY(0); }
-    .card-title { font-size: 12px; font-weight: 300; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #fff; text-shadow: 0 1px 8px rgba(0,0,0,0.5); text-transform: uppercase; }
-    .card-cat   { font-size: 10px; color: rgba(255,255,255,0.75); letter-spacing: 0.08em; margin-top: 2px; text-shadow: 0 1px 8px rgba(0,0,0,0.5); }
-    .card-tag   { position: absolute; top: 16px; left: 16px; font-size: 9px; letter-spacing: 0.1em; color: rgba(255,255,255,0.6); z-index: 2; }
+    /* scroll hint — removed with home page */
+    .scroll-hint { display: none; }
 
     /* placeholders */
     .ph1{background:#c8c4bc} .ph2{background:#b2afa9} .ph3{background:#d0cdc8}
@@ -1051,6 +936,41 @@
       pointer-events: none;
       background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.08) 45%, rgba(0,0,0,0.5) 100%);
     }
+    .photo-hero-copy {
+      position: absolute;
+      z-index: 5;
+      left: clamp(28px, 4vw, 56px);
+      top: 50%;
+      transform: translateY(-50%);
+      max-width: min(560px, 82vw);
+      font-size: clamp(36px, 5vw, 62px);
+      font-weight: 400;
+      line-height: 1.06;
+      letter-spacing: -0.025em;
+      color: rgba(255, 255, 255, 0.92);
+      pointer-events: none;
+    }
+    .photo-hero-copy .home-hero-rotator-text {
+      color: rgba(255, 255, 255, 0.92);
+    }
+    .home-hero-rotator {
+      display: inline-block;
+      white-space: nowrap;
+      min-width: 24ch;
+      min-height: 2.2em;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-weight: 300;
+    }
+    .home-hero-rotator-text {
+      display: inline-block;
+      transition: opacity 420ms ease;
+      opacity: 1;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-weight: 300;
+    }
+    .home-hero-rotator-text.is-fading { opacity: 0; }
+    .home-hero-rotator-text.two-line { white-space: normal; }
+    .home-hero-rotator-line { display: block; }
     @media (prefers-reduced-motion: reduce) {
       .photo-hero-slide { transition: none; }
     }
@@ -2085,7 +2005,7 @@
         justify-content: space-between;
       }
       .nav-link {
-        font-size: clamp(12px, 2.9vw, 15px);
+        font-size: clamp(14px, 3.2vw, 17px);
         letter-spacing: 0.08em;
         font-weight: 300;
       }
@@ -2095,15 +2015,6 @@
         min-width: 0;
         max-width: calc(100vw - 120px);
       }
-      .intro-panel { width: 88vw; padding: 0 30px 50px; }
-      .cards-row { padding: 0 40px 0 0; }
-      .card { margin: 0 30px; }
-      .card.portrait { width: 220px; height: 340px; }
-      .card.tall { width: 240px; height: 400px; }
-      .card.landscape { width: 340px; height: 230px; }
-      .card.wide { width: 360px; height: 240px; }
-      .card.small { width: 180px; height: 240px; }
-      .card.auto-thumb { height: 240px; }
       .case-inner { padding: 40px 24px 60px; }
       .case-hero { min-height: min(92vh, 900px); max-height: 900px; margin-bottom: 40px; }
       .case-header { grid-template-columns: 1fr; gap: 28px; }
@@ -2249,72 +2160,18 @@
 
     /* scroll hint for photo detail - outside panel so it’s always visible when open */
   </style>
+  <script>
+    (function() {
+      var h = window.location.hash;
+      if (!h || h === '#home') {
+        history.replaceState(null, '', (window.location.pathname || '') + '#design');
+      }
+    })();
+  </script>
 </head>
 <body data-theme="light">
 
   <!-- sections must come BEFORE nav for CSS :target sibling selectors to work -->
-
-  <div id="home" class="section">
-    <div class="scroll-track">
-      <div class="intro-panel">
-        <h1 class="intro-title" id="homeIntroTitle">
-          <span class="home-hero-line">
-            <span id="homeHeroRotator" class="home-hero-rotator" aria-live="polite"></span>
-          </span>
-        </h1>
-      </div>
-      <div class="cards-row">
-        <div class="card portrait pos-top" onclick="openPhotoDetail(9)">
-          <div class="card-img" style="height:100%;"><img src="9quintinwilliamsshoedesign_proj17.jpg" alt="Quintin Williams shoe design" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
-          <div class="card-hover-overlay"></div>
-          <span class="card-tag">photography</span>
-          <div class="card-label"><div class="card-title">quintin williams shoe design</div><div class="card-cat">product, fashion</div></div>
-        </div>
-        <div class="card landscape pos-lower" onclick="openCase(3)">
-          <div class="card-img" style="height:100%;"><img src="25breadly_proj5.jpg" alt="Breadly" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
-          <div class="card-hover-overlay"></div>
-          <span class="card-tag">design</span>
-          <div class="card-label"><div class="card-title">breadly</div><div class="card-cat">branding, art direction</div></div>
-        </div>
-        <div class="card landscape pos-upper" onclick="openPhotoDetail(5)">
-          <div class="card-img" style="height:100%;"><img src="1birdinmonaco.JPG.jpg" alt="Bird in Monaco" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
-          <div class="card-hover-overlay"></div>
-          <span class="card-tag">photography</span>
-          <div class="card-label"><div class="card-title">bird in monaco</div><div class="card-cat">travel</div></div>
-        </div>
-        <div class="card auto-thumb pos-bottom" onclick="openCase(2)" style="aspect-ratio: 2000 / 1333;">
-          <div class="card-img"><img src="3gargabemagazine_proj4.jpg" alt="Garbage Magazine" /></div>
-          <div class="card-hover-overlay"></div>
-          <span class="card-tag">design</span>
-          <div class="card-label"><div class="card-title">garbage magazine</div><div class="card-cat">editorial, photography</div></div>
-        </div>
-        <div class="card portrait pos-mid" onclick="openPhotoDetail(6)">
-          <div class="card-img" style="height:100%;"><img src="1sunrise_proj11.jpg" alt="Sunrise" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
-          <div class="card-hover-overlay"></div>
-          <span class="card-tag">photography</span>
-          <div class="card-label"><div class="card-title">sunrise</div><div class="card-cat">landscape</div></div>
-        </div>
-        <div class="card auto-thumb pos-lower" onclick="openCase(6)" style="aspect-ratio: 1700 / 2200;">
-          <div class="card-img" style="height:100%;"><img src="213394-GEORGIA-ENTERTAINMENT-CEJ26-text-Web.pdf.png" alt="Georgia Entertainment Magazine" style="width:100%;height:100%;object-fit:contain;display:block;" /></div>
-          <div class="card-hover-overlay"></div>
-          <span class="card-tag">design</span>
-          <div class="card-label"><div class="card-title">georgia entertainment magazine</div><div class="card-cat">editorial, layout</div></div>
-        </div>
-        <div class="card wide pos-top" onclick="openCase(0)">
-          <div class="card-img" style="height:100%;"><img src="2secretlifeofwalter_proj1.png" alt="Secret Life of Walter Mitty" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
-          <div class="card-hover-overlay"></div>
-          <span class="card-tag">design</span>
-          <div class="card-label"><div class="card-title">secret life of walter mitty</div><div class="card-cat">packaging, editorial</div></div>
-        </div>
-        <div class="card landscape pos-upper" onclick="openPhotoDetail(7)">
-          <div class="card-img" style="height:100%;"><img src="4praise_proj12.jpg" alt="Praise" style="width:100%;height:100%;object-fit:cover;display:block;" /></div>
-          <div class="card-hover-overlay"></div>
-          <span class="card-tag">photography</span>
-          <div class="card-label"><div class="card-title">praise</div><div class="card-cat">portrait</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <div id="design" class="section">
     <div class="section-inner">
@@ -2448,6 +2305,9 @@
         </div>
       </div>
       <div class="photo-hero-shade" aria-hidden="true"></div>
+      <div class="photo-hero-copy">
+        <span id="photoHeroRotator" class="home-hero-rotator" aria-live="polite"></span>
+      </div>
       <div class="photo-hero-index" id="photoHeroIndex" role="tablist" aria-label="Slides">
         <button type="button" class="photo-hero-index-btn is-active" data-slide="0">01</button>
         <button type="button" class="photo-hero-index-btn" data-slide="1">02</button>
@@ -2455,7 +2315,6 @@
       </div>
       <span class="photo-hero-scroll-label">scroll</span>
       <div class="photo-hero-caption">
-        <h2 class="photo-hero-title" id="photoHeroTitle"></h2>
         <a href="#" class="photo-hero-cta is-hidden" id="photoHeroCta">view project</a>
       </div>
     </header>
@@ -2471,7 +2330,7 @@
     </div>
   </div>
 
-  <!-- Photo detail: outside section so it can open from home -->
+  <!-- Photo detail: outside section so it can open from any page -->
   <div id="photoDetail" class="photo-detail">
     <button type="button" class="pd-close" onclick="closePhotoDetail()" aria-label="Close lightbox">
       <span>CLOSE</span><span class="pd-close-x" aria-hidden="true">×</span>
@@ -2622,8 +2481,9 @@
   </div>
 
   <!-- NAV comes after sections so :target general sibling selector (~) works -->
+  <div class="nav-top-shade" aria-hidden="true"></div>
   <nav>
-    <a class="name" href="#home" aria-label="Home">
+    <a class="name" href="#design" aria-label="Work">
       <img class="name-logo-img name-logo-img--default" src="alexa-logo.png" alt="Alexa" />
       <img class="name-logo-img name-logo-img--yellow" src="alexa-logo-yellow.png" alt="" aria-hidden="true" />
     </a>
@@ -2646,11 +2506,6 @@
     </div>
     <span class="footer-right">© alexacarmona</span>
   </footer>
-
-  <div class="scroll-hint" id="scrollHint">
-    <div class="scroll-hint-line"></div>
-    scroll
-  </div>
 
   <!-- Case study overlay - still uses JS since it's above everything -->
   <div class="case-overlay" id="caseOverlay">
@@ -2762,9 +2617,9 @@
       io.observe(heroCopy);
     })();
 
-    /* HOME HERO - no scramble/animation; headline is static now */
+    /* PHOTOGRAPHY HERO — rotating role text (same motion as former home hero) */
     (function() {
-      var mount = document.getElementById('homeHeroRotator');
+      var mount = document.getElementById('photoHeroRotator');
       if (!mount || !window.React || !window.ReactDOM) return;
 
       var roles = [
@@ -2876,7 +2731,6 @@
       var heroWipeTimer = null;
       var heroAnimating = false;
       var heroIndexBtns = photoSection.querySelectorAll('.photo-hero-index-btn');
-      var heroTitleEl = document.getElementById('photoHeroTitle');
       var heroCtaEl = document.getElementById('photoHeroCta');
       var heroAutoplayTimer = null;
       var HERO_AUTO_MS = 4500;
@@ -2907,7 +2761,6 @@
           btn.classList.toggle('is-active', idx === logicalIndex);
         });
         var slide = heroSlides[logicalIndex];
-        if (heroTitleEl) heroTitleEl.textContent = slide.title || '';
         if (heroCtaEl) {
           if (slide.projectId != null && typeof openPhotoDetail === 'function') {
             heroCtaEl.classList.remove('is-hidden');
@@ -4189,29 +4042,6 @@
     }
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCase(); });
 
-    /* Home: vertical trackpad / mouse wheel scrolls the horizontal strip (not left–right swipes). */
-    (function() {
-      var track = document.querySelector('#home .scroll-track');
-      if (!track) return;
-
-      function homeIsActive() {
-        var h = window.location.hash || '';
-        return !h || h === '#home';
-      }
-
-      track.addEventListener('wheel', function(e) {
-        if (!homeIsActive()) return;
-        if (e.ctrlKey) return;
-        var dy = e.deltaY;
-        var dx = e.deltaX;
-        if (!dy && !dx) return;
-        e.preventDefault();
-        if (Math.abs(dy) >= Math.abs(dx)) {
-          track.scrollLeft += dy;
-        }
-      }, { passive: false });
-    })();
-
     /* ABOUT — let's talk pulse + contact form reveal */
     (function() {
       var connectText = document.getElementById('aboutConnectText');
@@ -4255,6 +4085,22 @@
       }
     })();
 
+    /* ABOUT — nav contrast on hero, default after scroll */
+    (function() {
+      var about = document.getElementById('about');
+      if (!about) return;
+      function updateAboutScrollState() {
+        if (location.hash !== '#about') {
+          about.classList.remove('is-past-hero');
+          return;
+        }
+        about.classList.toggle('is-past-hero', about.scrollTop >= window.innerHeight * 0.98);
+      }
+      about.addEventListener('scroll', updateAboutScrollState, { passive: true });
+      window.addEventListener('hashchange', updateAboutScrollState);
+      updateAboutScrollState();
+    })();
+
     /* RAW — hover / click to expand */
     (function() {
       var grid = document.getElementById('rawGrid');
@@ -4293,13 +4139,7 @@
         e.preventDefault();
         if (typeof closeCase === 'function') closeCase();
         if (typeof closePhotoDetail === 'function') closePhotoDetail();
-        function resetHomeToBeginning() {
-          // Home is a horizontal scroller; reset to the intro panel.
-          var track = document.querySelector('#home .scroll-track');
-          if (track) {
-            try { track.scrollTo({ left: 0, top: 0, behavior: 'auto' }); } catch (e) { track.scrollLeft = 0; }
-          }
-          // Reset other section scroll positions so "home" always feels like a fresh start.
+        function resetSectionScroll() {
           var design = document.getElementById('design');
           var photo = document.getElementById('photography');
           var about = document.getElementById('about');
@@ -4311,18 +4151,16 @@
         }
 
         var hash = (a.getAttribute('href') || '').slice(1);
-        var isHome = !hash || hash === 'home' || a.classList.contains('name');
+        var isLogo = a.classList.contains('name');
 
-        if (isHome) {
-          // If we're already on #home, setting the same hash won't do anything — so reset explicitly.
-          resetHomeToBeginning();
-          if (window.location.hash !== '#home') window.location.hash = 'home';
-          // Run again after hash swap so layout is settled.
-          requestAnimationFrame(resetHomeToBeginning);
+        if (isLogo) {
+          resetSectionScroll();
+          if (window.location.hash !== '#design') window.location.hash = 'design';
+          requestAnimationFrame(resetSectionScroll);
           return;
         }
 
-        window.location.hash = hash || 'home';
+        window.location.hash = hash || 'design';
       });
     }
 
