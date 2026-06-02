@@ -1454,9 +1454,34 @@
       background: var(--bg);
       padding: clamp(80px, 14vh, 140px) 7% clamp(88px, 12vh, 120px);
     }
+    .about-body-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 440px) minmax(0, 1fr);
+      gap: clamp(40px, 6vw, 80px);
+      align-items: start;
+    }
     .about-body-left {
       max-width: 440px;
       padding-top: clamp(24px, 5vh, 48px);
+    }
+    .about-body-right {
+      padding-top: clamp(24px, 5vh, 48px);
+      min-width: 0;
+    }
+    .about-bts-stack {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(18px, 2.5vw, 28px);
+      max-width: min(100%, 560px);
+      margin-left: auto;
+    }
+    .about-bts-video {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: min(34vh, 320px);
+      object-fit: cover;
+      background: #1a1a1a;
     }
     .about-body-default {
       transition:
@@ -2104,9 +2129,23 @@
       .about-body {
         padding: clamp(40px, 7vh, 64px) 20px clamp(72px, 10vh, 96px);
       }
+      .about-body-layout {
+        grid-template-columns: 1fr;
+        gap: clamp(32px, 6vh, 48px);
+      }
       .about-body-left {
         max-width: none;
         padding-top: clamp(16px, 4vh, 32px);
+      }
+      .about-body-right {
+        padding-top: 0;
+      }
+      .about-bts-video {
+        max-height: none;
+      }
+      .about-bts-stack {
+        max-width: 100%;
+        margin-left: 0;
       }
       .about-work-form {
         width: 100%;
@@ -2516,6 +2555,7 @@
       </div>
     </div>
     <section class="about-body">
+      <div class="about-body-layout">
       <div class="about-body-left" id="aboutBodyLeft">
         <h2 class="about-body-name">
           <span>about me,</span>
@@ -2561,6 +2601,31 @@
             </form>
           </div>
         </div>
+      </div>
+      <aside class="about-body-right" aria-label="Behind the scenes">
+        <div class="about-bts-stack">
+          <video
+            class="about-bts-video"
+            src="videos/btsone.mp4"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label="Behind the scenes"
+          ></video>
+          <video
+            class="about-bts-video"
+            src="videos/bts2-clip.mp4"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            aria-label="Behind the scenes 2"
+          ></video>
+        </div>
+      </aside>
       </div>
     </section>
   </div>
