@@ -2681,6 +2681,9 @@
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
           <div class="raw-piece-media"><img src="raw_denim.png" alt="Denim — experimental print" loading="lazy" decoding="async" /></div>
         </figure>
+        <figure class="raw-piece raw-piece--portrait raw-piece--tall">
+          <div class="raw-piece-media"><img src="idali%2Balexa.jpg" alt="Idali + Alexa" loading="lazy" decoding="async" /></div>
+        </figure>
       </div>
       </div>
     </div>
@@ -3881,6 +3884,12 @@
         barColor: 'rgba(35, 85, 145, 0.94)',
         hero: '1gotem_proj14.jpg',
         images: ['1gotem_proj14.jpg','2gotem_proj14.jpg','3gotem_proj14.jpg'],
+        processImages: [
+          'process images/gotem_bts1.JPG',
+          'process images/gotem_bts2.JPG',
+          'process images/gotem_bts3.JPG',
+          'process images/gotem_bts4.JPG'
+        ],
         description: 'Gotem is a typographic experiment built around the language of wins, losses, and trash talk. I used loud wordmarks, condensed type, and layered textures to make each piece feel like a freeze-frame from a game highlight or a screenshot of a group chat after a big play.',
         feedSummary: 'Typographic posters exploring wins, losses, and trash-talk culture through loud type and texture. I designed each piece as a freeze-frame of competitive language.'
       },
@@ -3891,15 +3900,18 @@
         tags: ['graphic design', 'editorial', 'layout'],
         barKind: 'editorial design',
         barColor: 'rgba(225, 105, 105, 0.94)',
-        hero: '5quintinwilliamsshoedesign_proj17.jpg',
-        panelLeft: '5quintinwilliamsshoedesign_proj17.jpg',
+        hero: '6quintinwilliamsshoedesign_proj17.jpg',
+        panelLeft: '6quintinwilliamsshoedesign_proj17.jpg',
         panelRight: '3shirleyzhangatlantahawks_proj23.jpg',
         images: [
           '1quintinwilliamsshoedesign_proj17.jpg',
           '9quintinwilliamsshoedesign_proj17.jpg',
           '5quintinwilliamsshoedesign_proj17.jpg',
           '3shirleyzhangatlantahawks_proj23.jpg',
-          '4quintinwilliamsshoedesign_proj17.jpg'
+          '4quintinwilliamsshoedesign_proj17.jpg',
+          'artandathletics_proj16.jpg',
+          'process images/theatre_spread1.png',
+          'process images/theatre_spread2.png'
         ],
         panelImageOffset: 'shift-up',
         flipbookEmbedUrl: 'https://heyzine.com/flip-book/c6c377a09d.html',
@@ -4508,8 +4520,7 @@
 
       buildMersiItems();
       rebuildMotionDom();
-      showInstant(0);
-      preloadNeighbors(activeIndex);
+      goToBreadlyProject();
 
       designSection.addEventListener('wheel', onWheel, { passive: false });
 
@@ -4541,12 +4552,26 @@
       window.addEventListener('resize', onDesignViewportChange);
       window.addEventListener('orientationchange', onDesignViewportChange);
 
+      function breadlyMersiIndex() {
+        var i;
+        for (i = 0; i < mersiItems.length; i++) {
+          if (mersiItems[i].id === 3) return i;
+        }
+        return 0;
+      }
+
+      function goToBreadlyProject() {
+        var idx = breadlyMersiIndex();
+        activeIndex = idx;
+        scrollPos = 0;
+        showInstant(idx);
+        preloadNeighbors(idx);
+      }
+
       function initMersiProjects() {
         buildMersiItems();
         rebuildMotionDom();
-        if (activeIndex >= mersiItems.length) activeIndex = 0;
-        showInstant(activeIndex);
-        preloadNeighbors(activeIndex);
+        goToBreadlyProject();
       }
       window.initMersiProjects = initMersiProjects;
 
@@ -4561,6 +4586,19 @@
         }
         if (idx >= 0) setActiveIndex(idx, true);
       };
+
+      function onProjectsNavActivate() {
+        if (location.hash !== '#design' || !mersiItems.length) return;
+        cancelSnapAnimation();
+        animating = false;
+        goToBreadlyProject();
+      }
+
+      document.querySelectorAll('a[href="#design"]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          if (location.hash === '#design') onProjectsNavActivate();
+        });
+      });
 
       window.addEventListener('hashchange', function() {
         if (typeof closePhotoDetail === 'function') closePhotoDetail();
@@ -5131,15 +5169,11 @@
       destroyGeorgiaFlipbook();
       const overlay = document.getElementById('caseOverlay');
 
-      if (p.flipbookEmbedUrl || p.flipbookPdf) {
-        if (grid) grid.innerHTML = '';
-        if (galleryStage) galleryStage.hidden = true;
-        if (flipWrap) flipWrap.hidden = false;
-        if (flipSec) flipSec.hidden = false;
-      } else {
+      const hasFlipbook = !!(p.flipbookEmbedUrl || p.flipbookPdf);
+      const hasGallery = !!((p.images && p.images.length) || (p.processImages && p.processImages.length));
+
+      if (hasGallery) {
         if (galleryStage) galleryStage.hidden = false;
-        if (flipWrap) flipWrap.hidden = true;
-        if (flipSec) flipSec.hidden = true;
         if (grid) {
           grid.hidden = false;
           var galleryHtml = '';
@@ -5151,6 +5185,20 @@
           }
           grid.innerHTML = galleryHtml;
         }
+      } else {
+        if (grid) {
+          grid.innerHTML = '';
+          grid.hidden = true;
+        }
+        if (galleryStage) galleryStage.hidden = true;
+      }
+
+      if (hasFlipbook) {
+        if (flipWrap) flipWrap.hidden = false;
+        if (flipSec) flipSec.hidden = false;
+      } else {
+        if (flipWrap) flipWrap.hidden = true;
+        if (flipSec) flipSec.hidden = true;
       }
 
       overlay.scrollTop = 0;
