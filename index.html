@@ -1984,6 +1984,14 @@
       line-height: 1.45;
       color: var(--fg);
     }
+    .case-client a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .case-client a:hover {
+      color: #ffa8c4;
+    }
     .case-client[hidden] { display: none !important; }
 
     .case-meta-list {
@@ -3772,7 +3780,8 @@
         ]
       },
       {
-        client: 'breadly',
+        instagram: 'https://www.instagram.com/breadlybakeryco/',
+        instagramLabel: 'BREADLY INSTAGRAM',
         title: 'Breadly',
         tagline: '',
         tags: [
@@ -3793,10 +3802,10 @@
         images: ['1breadly_proj5.jpeg','3breadly_proj5.jpeg','5breadly_proj5.jpeg','10breadly_proj5.jpg','14breadly_proj5.jpg','15breadly_proj5.jpg','22breadly_proj5.jpg','23breadly_proj5.jpg','26breadly_proj5.jpg'],
         collaborators: 'Rose Davis, Bradley Looney, Alexa Carmona',
         aboutParagraphs: [
-          'Breadly is a Brooklyn brand that treats bread like an accessory: the trend worth leaving for and built for life on the go. The team shaped a world full of energy and hype, where the baguette bag is part of the outfit and the feed is as important as the shelf.',
-          'Photography, branding, packaging, and social all run on the same frequency. Pink leads, neutrals hold the ground, and type mixes muscle with curve. It does not read like a grocery aisle. It reads like something you meant to be seen with.'
+          'Born in Brooklyn, Breadly treats a loaf like fashion, not something to tuck away, but a reason to show up. The brand tracks how young audiences spend when everything else feels uncertain: small, photogenic indulgences that still feel like control. Nightlife is quieter, wellness is louder, and the culture keeps swinging between restraint and excess. Breadly sits in that swing with full-volume energy.',
+          'The identity runs on contrast: hard-edged layout against soft script, hot pink held in place by stone neutrals and cool secondary tones. Photography, packaging, and social carry the same attitude so the product reads less like groceries and more like a statement you can hold.'
         ],
-        feedSummary: 'Brooklyn bread as accessory culture: photography, branding, packaging, and social built for hype and on-the-go life.',
+        feedSummary: 'Brooklyn bread brand built as accessory culture: identity, packaging, photo, and social tuned for hype and on-the-go life.',
         marginalia: [
           { text: 'Bread is an accessory.', top: '11%', left: '62%', rotate: '1.9deg' },
           { text: 'Discipline × chaos', top: '40%', left: '2%', rotate: '-2deg' },
@@ -5011,12 +5020,16 @@
       }
 
       if (clientEl) {
-        if (p.client) {
+        if (p.instagram) {
+          var igLabel = p.instagramLabel || 'instagram';
+          clientEl.hidden = false;
+          clientEl.innerHTML = '<a href="' + caseEscHtml(p.instagram) + '" target="_blank" rel="noopener noreferrer">' + caseEscHtml(igLabel) + '</a>';
+        } else if (p.client) {
           clientEl.hidden = false;
           clientEl.textContent = 'Client: ' + formatCaseLabel(p.client);
         } else {
           clientEl.hidden = true;
-          clientEl.textContent = '';
+          clientEl.innerHTML = '';
         }
       }
 
@@ -5110,7 +5123,7 @@
       if (collabEl) { collabEl.hidden = true; collabEl.textContent = ''; }
       var softwareEl = document.getElementById('caseSoftware');
       if (softwareEl) { softwareEl.hidden = true; softwareEl.textContent = ''; }
-      if (clientEl) { clientEl.hidden = true; clientEl.textContent = ''; }
+      if (clientEl) { clientEl.hidden = true; clientEl.innerHTML = ''; }
       if (kindListEl) kindListEl.innerHTML = '';
       if (tagsListEl) tagsListEl.innerHTML = '';
       updateCaseProjectNav();
