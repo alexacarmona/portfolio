@@ -2,10 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-  <link rel="preconnect" href="https://unpkg.com" crossorigin />
   <title>alexa carmona</title>
   <link rel="icon" type="image/svg+xml" href="alexalogoA1.svg" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
@@ -59,7 +58,10 @@
       display: flex; align-items: center;
       justify-content: space-between;
       gap: clamp(12px, 2vw, 28px);
-      padding: 0 clamp(28px, 4vw, 56px);
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-right: max(clamp(28px, 4vw, 56px), env(safe-area-inset-right, 0px));
+      padding-bottom: 0;
+      padding-left: max(clamp(28px, 4vw, 56px), env(safe-area-inset-left, 0px));
       background: transparent;
       transition: opacity 0.45s ease, visibility 0.45s ease;
     }
@@ -805,12 +807,28 @@
     @media (max-width: 900px) {
       .mersi-slider--right { display: none; }
       .mersi-slider--left { width: 100%; left: 0; }
+      #design.mersi--single-panel .mersi-slider--left {
+        width: 100%;
+      }
       .mersi-project-bar {
-        width: min(96vw, 640px);
-        min-height: clamp(100px, 16vh, 160px);
+        width: min(92vw, 100%);
+        min-height: clamp(88px, 14vh, 140px);
+      }
+      .mersi-bar-title-wrap {
+        padding: 0 10px;
       }
       .mersi-bar-title {
-        font-size: clamp(18px, 5.2vw, 36px);
+        font-size: clamp(16px, 4.8vw, 32px);
+        letter-spacing: 0.02em;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .mersi-project-bar {
+        min-height: clamp(76px, 12vh, 120px);
+      }
+      .mersi-bar-title {
+        font-size: clamp(14px, 4.2vw, 24px);
       }
     }
 
@@ -2127,6 +2145,29 @@
     @media (max-width: 520px) {
       .case-meta-grid {
         grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .case-sheet {
+        padding-top: calc(var(--nav-h) + 48px);
+      }
+      .case-inner {
+        padding: 0 16px;
+      }
+      .case-intro-header {
+        padding-bottom: clamp(28px, 5vh, 48px);
+      }
+      .case-title {
+        font-size: clamp(20px, 5.5vw, 26px);
+        margin-bottom: 18px;
+      }
+      .case-desc,
+      .case-collaborators,
+      .case-software {
+        font-size: 15px;
+        line-height: 1.65;
+      }
+      .case-meta-list {
+        font-size: 13px;
       }
     }
 
@@ -2261,7 +2302,18 @@
     }
 
     @media (max-width: 800px) {
-      nav { padding: 0 16px; gap: 8px; }
+      nav {
+        padding-top: env(safe-area-inset-top, 0px);
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+        padding-bottom: 0;
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        gap: 8px;
+      }
+      .site-footer {
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        padding-left: max(16px, env(safe-area-inset-left, 0px));
+        padding-right: max(16px, env(safe-area-inset-right, 0px));
+      }
       .nav-links {
         max-width: none;
         flex: 1;
@@ -2320,6 +2372,18 @@
       .about-bts-player {
         max-width: 100%;
         margin-left: 0;
+      }
+      #design {
+        touch-action: pan-y;
+      }
+      .case-overlay {
+        -webkit-overflow-scrolling: touch;
+      }
+      .case-project-nav {
+        padding-left: 20px;
+        padding-right: 20px;
+        flex-wrap: wrap;
+        gap: 12px;
       }
       .about-work-form {
         width: 100%;
@@ -2804,10 +2868,8 @@
     </div>
   </div>
 
-  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
   <script>
-    /* Hero rotator — photography + projects */
+    /* Hero rotator — photography (vanilla, no React) */
     (function() {
       var heroRoles = [
         'graphic design',
@@ -2817,52 +2879,39 @@
         'ui/ux',
         'vibecoding'
       ];
+      var mount = document.getElementById('photoHeroRotator');
+      if (!mount) return;
 
-      function mountHeroRotator(mountId) {
-        var mount = document.getElementById(mountId);
-        if (!mount || !window.React || !window.ReactDOM) return;
+      var idx = 0;
+      var fadeMs = 420;
+      var holdMs = 1150;
+      var textEl = document.createElement('span');
+      textEl.className = 'home-hero-rotator-text';
+      textEl.setAttribute('aria-hidden', 'false');
+      mount.appendChild(textEl);
 
-      function Rotator() {
-        var useState = React.useState;
-        var useEffect = React.useEffect;
-
-        var _a = useState(0), idx = _a[0], setIdx = _a[1];
-        var _b = useState(false), fading = _b[0], setFading = _b[1];
-
-        useEffect(function() {
-          var fadeMs = 420;
-          var holdMs = 1150;
-          var interval = setInterval(function() {
-            setFading(true);
-            setTimeout(function() {
-              setIdx(function(prev) { return (prev + 1) % heroRoles.length; });
-              setFading(false);
-            }, fadeMs);
-          }, fadeMs + holdMs);
-          return function() { clearInterval(interval); };
-        }, []);
-
+      function renderRole() {
         var role = heroRoles[idx];
         if (role === 'marketing & advertising') {
-          return React.createElement(
-            'span',
-            { className: 'home-hero-rotator-text two-line' + (fading ? ' is-fading' : '') },
-            React.createElement('span', { className: 'home-hero-rotator-line' }, 'marketing'),
-            React.createElement('span', { className: 'home-hero-rotator-line' }, '& advertising')
-          );
+          textEl.className = 'home-hero-rotator-text two-line';
+          textEl.innerHTML =
+            '<span class="home-hero-rotator-line">marketing</span>' +
+            '<span class="home-hero-rotator-line">&amp; advertising</span>';
+        } else {
+          textEl.className = 'home-hero-rotator-text';
+          textEl.textContent = role;
         }
-
-        return React.createElement(
-          'span',
-          { className: 'home-hero-rotator-text' + (fading ? ' is-fading' : '') },
-          role
-        );
       }
 
-        ReactDOM.createRoot(mount).render(React.createElement(Rotator));
-      }
-
-      mountHeroRotator('photoHeroRotator');
+      renderRole();
+      setInterval(function() {
+        textEl.classList.add('is-fading');
+        setTimeout(function() {
+          idx = (idx + 1) % heroRoles.length;
+          renderRole();
+          textEl.classList.remove('is-fading');
+        }, fadeMs);
+      }, fadeMs + holdMs);
     })();
 
     /* THEME */
@@ -4055,13 +4104,22 @@
         if (!stack) return;
         stack.innerHTML = '';
         slides.length = 0;
+        var nSlides = mersiItems.length;
+        var eager = {};
+        if (nSlides) {
+          eager[activeIndex] = true;
+          eager[(activeIndex + 1) % nSlides] = true;
+          eager[(activeIndex - 1 + nSlides) % nSlides] = true;
+        }
         mersiItems.forEach(function(item, idx) {
           var slide = document.createElement('div');
           slide.className = 'mersi-slide-item';
           if (item.singlePanel && edge === 'top') slide.classList.add('mersi-slide-item--single');
           if (item.panelImageOffset) slide.classList.add('mersi-slide-item--' + item.panelImageOffset);
           var src = edge === 'top' ? item.leftSrc : (item.singlePanel ? item.leftSrc : item.rightSrc);
-          slide.innerHTML = '<img src="' + escHtml(src) + '" alt="' + escHtml(item.title) + '" decoding="async" loading="' + (idx === 0 ? 'eager' : 'lazy') + '" />';
+          var loadMode = eager[idx] ? 'eager' : 'lazy';
+          var fetchPri = eager[idx] && idx === activeIndex ? ' fetchpriority="high"' : '';
+          slide.innerHTML = '<img src="' + escHtml(src) + '" alt="' + escHtml(item.title) + '" decoding="async" loading="' + loadMode + '"' + fetchPri + ' />';
           stack.appendChild(slide);
           slides.push({ el: slide, edge: edge });
         });
@@ -4450,8 +4508,8 @@
 
       buildMersiItems();
       rebuildMotionDom();
-      mersiItems.forEach(function(item) { preloadPair(item); });
       showInstant(0);
+      preloadNeighbors(activeIndex);
 
       designSection.addEventListener('wheel', onWheel, { passive: false });
 
@@ -4475,17 +4533,20 @@
         if (e.key === 'ArrowUp') { e.preventDefault(); dismissIntro(); setActiveIndex(activeIndex - 1, false); }
       });
 
-      window.addEventListener('resize', function() {
+      function onDesignViewportChange() {
         if (location.hash !== '#design' || !mersiItems.length) return;
         fitBarTitle();
         showInstant(activeIndex);
-      });
+      }
+      window.addEventListener('resize', onDesignViewportChange);
+      window.addEventListener('orientationchange', onDesignViewportChange);
 
       function initMersiProjects() {
         buildMersiItems();
         rebuildMotionDom();
         if (activeIndex >= mersiItems.length) activeIndex = 0;
         showInstant(activeIndex);
+        preloadNeighbors(activeIndex);
       }
       window.initMersiProjects = initMersiProjects;
 
