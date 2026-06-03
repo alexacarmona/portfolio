@@ -669,6 +669,33 @@
       object-position: center calc(50% - 2in);
     }
 
+    #design.mersi--single-panel .mersi-slider--right {
+      display: none;
+    }
+    #design.mersi--single-panel .mersi-slider--left {
+      width: 100%;
+      left: 0;
+    }
+    .mersi-slide-item--single {
+      background: #e85a00;
+    }
+    .mersi-slide-item--single img {
+      object-fit: cover;
+      object-position: center center;
+    }
+
+    .mersi-slide-item--zoom-out img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 108%;
+      height: 108%;
+      max-width: none;
+      transform: translate(-50%, -50%) translateZ(0);
+      object-fit: cover;
+      object-position: center center;
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .mersi-slide-item { transition: none !important; }
       .mersi-bar-title { transition: none !important; }
@@ -704,6 +731,9 @@
     }
     .mersi-project-bar:hover .mersi-bar-title {
       opacity: 0.92;
+    }
+    .mersi-project-bar--no-title .mersi-bar-title-wrap {
+      visibility: hidden;
     }
 
     .mersi-bar-title-wrap {
@@ -1913,7 +1943,12 @@
       color: var(--fg);
       max-width: 480px;
     }
-    .case-desc p { margin: 0 0 1.2em; }
+    .case-desc p {
+      margin: 0 0 1.2em;
+      text-wrap: pretty;
+      widows: 2;
+      orphans: 2;
+    }
     .case-desc p:last-child { margin-bottom: 0; }
     .case-desc:empty { display: none; }
 
@@ -1928,6 +1963,18 @@
       max-width: 480px;
     }
     .case-collaborators[hidden] { display: none !important; }
+
+    .case-software {
+      margin: clamp(12px, 2vh, 18px) 0 0;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: clamp(14px, 1.55vw, 17px);
+      font-weight: 300;
+      line-height: 1.78;
+      color: var(--fg);
+      opacity: 0.78;
+      max-width: 480px;
+    }
+    .case-software[hidden] { display: none !important; }
 
     .case-client {
       margin: 0;
@@ -1950,6 +1997,14 @@
       color: rgba(120, 120, 120, 1);
     }
     .case-meta-list li + li {
+      margin-top: 0.1em;
+    }
+    .case-meta-sublist {
+      list-style: none;
+      margin: 0.45em 0 0;
+      padding: 0;
+    }
+    .case-meta-sublist li + li {
       margin-top: 0.1em;
     }
     .case-meta-col[hidden] { display: none !important; }
@@ -2681,7 +2736,7 @@
         <a class="nav-link" href="#photography">photography</a>
         <a class="nav-link" href="#design">projects</a>
         <a class="nav-link" href="#raw">raw</a>
-        <a class="nav-link" href="#about">info</a>
+        <a class="nav-link" href="#about">about</a>
       </div>
     </div>
   </nav>
@@ -2706,6 +2761,7 @@
             <div class="case-meta-col case-meta-col--main">
               <div class="case-desc" id="caseDesc"></div>
               <p class="case-collaborators" id="caseCollaborators" hidden></p>
+              <p class="case-software" id="caseSoftware" hidden></p>
             </div>
             <div class="case-meta-col case-meta-col--client">
               <p class="case-client" id="caseClient" hidden></p>
@@ -3646,6 +3702,7 @@
         tags: ['graphic design', 'packaging', 'editorial'],
         barKind: 'production and design',
         barColor: 'rgba(200, 45, 45, 0.94)',
+        titleColor: '#000',
         hero: '1secretlifeofwalter_proj1.jpg',
         tagline: 'A typographic book inspired by Life magazine and the film’s daydreamer narrative.',
         description: 'The Secret Life of Walter Mitty follows a daydreamer who manages photo negatives at Life magazine until the final cover image goes missing. I was inspired by Walter’s role at Life and the idea of photography as a bridge between imagination and reality. The book centers on three shifting scenes from the film, with typography and layout that mirror the way his inner world collides with the real one.',
@@ -3672,7 +3729,8 @@
         barColor: 'rgba(18, 18, 18, 0.94)',
         barLightText: true,
         hero: '1swissdesignstamps_proj3.jpg',
-        images: ['2swissdesignstamps_proj3.jpg','3swissdesignstamps_proj3.jpg','4swissdesignstamps_proj3.jpg','5swissdesignstamps_proj3.jpg','7swissdesignstamps_proj3.jpg'],
+        panelLeft: '6swissdesignstamps_proj3.jpg',
+        images: ['2swissdesignstamps_proj3.jpg','3swissdesignstamps_proj3.jpg','4swissdesignstamps_proj3.jpg','5swissdesignstamps_proj3.jpg','6swissdesignstamps_proj3.jpg','7swissdesignstamps_proj3.jpg'],
         processImages: [
           'process images/swiss_bts1.JPG',
           'process images/swiss_bts2.MOV'
@@ -3694,7 +3752,16 @@
         barKind: 'photo + design',
         barColor: 'rgba(130, 130, 130, 0.94)',
         hero: '1gargabemagazine_proj4.jpg',
-        images: ['2gargabemagazine_proj4.jpg','4gargabemagazine_proj4.jpg','5gargabemagazine_proj4.jpg'],
+        panelLeft: '1gargabemagazine_proj4.jpg',
+        panelRight: '2gargabemagazine_proj4.jpg',
+        images: [
+          '1gargabemagazine_proj4.jpg',
+          '2gargabemagazine_proj4.jpg',
+          '4gargabemagazine_proj4.jpg',
+          '5gargabemagazine_proj4.jpg',
+          'gar_atlanta_skyline.png',
+          '3gargabemagazine_proj4.png'
+        ],
         description: 'Garbage Magazine is a self-initiated editorial project built around photographs and design from ATL, following MARTA and the everyday infrastructure that usually gets ignored. The spreads layer typography, image, and texture to feel like a low-fi archive of construction zones, train platforms, underpasses, and street-level ephemera. I treated each story like a visual mixtape, mixing my own photos with bold type systems, high-contrast crops, and moments of quiet white space so it reads somewhere between a zine, a lookbook, and a field study of the city.',
         feedSummary: 'A self-initiated editorial zine documenting Atlanta and MARTA through my photography and layout. I mixed street imagery, type, and texture into a field study of the city’s overlooked infrastructure.',
         productionBlurb: 'An editorial project centered on the grit of Atlanta and the MARTA system. I used digital photography and specific Lightroom workflows to translate the raw, unpolished energy of the city into a magazine format.',
@@ -3707,18 +3774,32 @@
       {
         client: 'breadly',
         title: 'Breadly',
-        tagline: 'Brand identity and packaging for a bread-focused lifestyle brand.',
-        tags: ['branding', 'packaging', 'art direction'],
+        tagline: '',
+        tags: [
+          'art direction',
+          'advertising',
+          'brand identity',
+          'packaging design',
+          'printing and production',
+          'social media',
+          'video direction',
+          'photo production'
+        ],
+        barKind: 'branding',
         barColor: 'rgba(255, 168, 196, 0.94)',
         hero: '25breadly_proj5.jpg',
+        panelLeft: '23breadly_proj5.jpg',
+        panelRight: '1breadly_proj5.jpeg',
         images: ['1breadly_proj5.jpeg','3breadly_proj5.jpeg','5breadly_proj5.jpeg','10breadly_proj5.jpg','14breadly_proj5.jpg','15breadly_proj5.jpg','22breadly_proj5.jpg','23breadly_proj5.jpg','26breadly_proj5.jpg'],
-        collaborators: 'Rose Davis and Bradley Looney',
-        description: 'I photographed the packaging and led art direction. We built a brand about bread: packaging, tone, and a playful social accessory identity built around bread and the baguette. The process started with naming and positioning, then moved into testing different bread silhouettes, crust textures, and crumb shots to find a visual language that felt both everyday and a little iconic.',
-        feedSummary: 'I led art direction and product photography for Breadly, a brand built around bread as everyday icon. With collaborators, we shaped packaging, tone, and social content into one tactile identity.',
-        productionBlurb: 'We collaborated as a team to build the visual identity for Breadly, aiming for a look as tactile and authentic as the product. I focused on art direction and handled all product photography to anchor the brand\'s aesthetic.',
+        collaborators: 'Rose Davis, Bradley Looney, Alexa Carmona',
+        aboutParagraphs: [
+          'Breadly is a Brooklyn brand that treats bread like an accessory: the trend worth leaving for and built for life on the go. The team shaped a world full of energy and hype, where the baguette bag is part of the outfit and the feed is as important as the shelf.',
+          'Photography, branding, packaging, and social all run on the same frequency. Pink leads, neutrals hold the ground, and type mixes muscle with curve. It does not read like a grocery aisle. It reads like something you meant to be seen with.'
+        ],
+        feedSummary: 'Brooklyn bread as accessory culture: photography, branding, packaging, and social built for hype and on-the-go life.',
         marginalia: [
           { text: 'Bread is an accessory.', top: '11%', left: '62%', rotate: '1.9deg' },
-          { text: 'Art direction & product photography', top: '40%', left: '2%', rotate: '-2deg' },
+          { text: 'Discipline × chaos', top: '40%', left: '2%', rotate: '-2deg' },
           { text: 'A collective build', top: '71%', right: '4%', rotate: '-1.3deg' }
         ]
       },
@@ -3752,9 +3833,15 @@
         barKind: 'editorial design',
         barColor: 'rgba(225, 105, 105, 0.94)',
         hero: '5quintinwilliamsshoedesign_proj17.jpg',
-        panelLeft: '5quintinwilliamsshoedesign_proj17.jpg',
-        panelRight: '4quintinwilliamsshoedesign_proj17.jpg',
-        images: ['5quintinwilliamsshoedesign_proj17.jpg', '4quintinwilliamsshoedesign_proj17.jpg'],
+        panelLeft: '1quintinwilliamsshoedesign_proj17.jpg',
+        panelRight: '3shirleyzhangatlantahawks_proj23.jpg',
+        images: [
+          '1quintinwilliamsshoedesign_proj17.jpg',
+          '9quintinwilliamsshoedesign_proj17.jpg',
+          '5quintinwilliamsshoedesign_proj17.jpg',
+          '3shirleyzhangatlantahawks_proj23.jpg',
+          '4quintinwilliamsshoedesign_proj17.jpg'
+        ],
         panelImageOffset: 'shift-up',
         flipbookEmbedUrl: 'https://heyzine.com/flip-book/c6c377a09d.html',
         collaborators: 'Leo Ruiz and Kalina Richardson',
@@ -3776,9 +3863,12 @@
         barKind: 'design and activation, pop up',
         barColor: 'rgba(200, 45, 45, 0.94)',
         hero: '1trademarkxchicago_proj24.jpg',
-        panelLeft: '6trademarkxchicago_proj24.png',
-        panelRight: '4trademarkxchicago_proj24.png',
+        panelSingle: 'Animated_Lockup.gif',
+        hideBarTitle: true,
         images: [
+          'Animated_Lockup.gif',
+          'ftopbts1.png',
+          'GraphicWMotif_1.png',
           '1trademarkxchicago_proj24.jpg',
           '2trademarkxchicago_proj24.jpg',
           '3trademarkxchicago_proj24.jpg',
@@ -3862,6 +3952,9 @@
       }
 
       function panelImagesForProject(p) {
+        if (p.panelSingle) {
+          return { leftSrc: p.panelSingle, rightSrc: '', singlePanel: true };
+        }
         var hero = p.hero || '';
         var imgs = p.images || [];
         var leftSrc = p.panelLeft || hero || imgs[0] || '';
@@ -3896,8 +3989,11 @@
             barDarkText: !!p.barDarkText,
             leftSrc: panels.leftSrc,
             rightSrc: panels.rightSrc,
+            singlePanel: !!panels.singlePanel,
             panelFit: p.panelFit || '',
-            panelImageOffset: p.panelImageOffset || ''
+            panelImageOffset: p.panelImageOffset || '',
+            titleColor: p.titleColor || '',
+            hideBarTitle: !!p.hideBarTitle
           });
         });
       }
@@ -3952,8 +4048,10 @@
         mersiItems.forEach(function(item, idx) {
           var slide = document.createElement('div');
           slide.className = 'mersi-slide-item';
+          if (item.singlePanel && edge === 'top') slide.classList.add('mersi-slide-item--single');
           if (item.panelImageOffset) slide.classList.add('mersi-slide-item--' + item.panelImageOffset);
-          slide.innerHTML = '<img src="' + escHtml(edge === 'top' ? item.leftSrc : item.rightSrc) + '" alt="' + escHtml(item.title) + '" decoding="async" loading="' + (idx === 0 ? 'eager' : 'lazy') + '" />';
+          var src = edge === 'top' ? item.leftSrc : (item.singlePanel ? item.leftSrc : item.rightSrc);
+          slide.innerHTML = '<img src="' + escHtml(src) + '" alt="' + escHtml(item.title) + '" decoding="async" loading="' + (idx === 0 ? 'eager' : 'lazy') + '" />';
           stack.appendChild(slide);
           slides.push({ el: slide, edge: edge });
         });
@@ -3982,8 +4080,13 @@
 
       function setBarTitle(item, opacity) {
         if (!barTitleEl || !item) return;
+        if (item.hideBarTitle) {
+          barTitleEl.textContent = '';
+          barTitleEl.style.opacity = '0';
+          return;
+        }
         barTitleEl.textContent = item.title;
-        barTitleEl.style.color = '#fff';
+        barTitleEl.style.color = item.titleColor || '#fff';
         barTitleEl.style.opacity = String(Math.max(0, Math.min(1, opacity)));
         fitBarTitle();
       }
@@ -4029,6 +4132,8 @@
         var item = mersiItems[index];
         if (!item || !projectBar) return;
         projectBar.setAttribute('aria-label', 'View ' + item.title);
+        designSection.classList.toggle('mersi--single-panel', !!item.singlePanel);
+        projectBar.classList.toggle('mersi-project-bar--no-title', !!item.hideBarTitle);
       }
 
       function updateSlideStack(slides, currentIndex, nextIndex, progress, edge) {
@@ -4797,6 +4902,11 @@
     }
 
     function caseAboutHtml(p) {
+      if (p.aboutParagraphs && p.aboutParagraphs.length) {
+        return p.aboutParagraphs.map(function(para) {
+          return '<p>' + caseEscHtml(String(para).trim()) + '</p>';
+        }).join('');
+      }
       var tagline = p.tagline ? String(p.tagline).trim() : '';
       var description = p.description ? String(p.description).trim() : '';
       var feedSummary = p.feedSummary ? String(p.feedSummary).trim() : '';
@@ -4831,6 +4941,33 @@
       return p.tags.map(function(t) { return formatCaseLabel(t); });
     }
 
+    function nestTagsUnderKind(p) {
+      if (!p.barKind || !p.tags || !p.tags.length) return false;
+      if (p.nestTagsUnderKind === false) return false;
+      var parts = String(p.barKind).split(/\s*,\s*|\s+\+\s+/).map(function(s) {
+        return s.trim();
+      }).filter(Boolean);
+      return parts.length === 1;
+    }
+
+    function renderCaseKindHtml(p) {
+      var tagItems = caseTagItems(p);
+      if (nestTagsUnderKind(p)) {
+        var label = formatCaseLabel(String(p.barKind).trim());
+        var sub = tagItems.map(function(item) {
+          return '<li>' + caseEscHtml(item) + '</li>';
+        }).join('');
+        var html = '<li>' + caseEscHtml(label) + '<ul class="case-meta-sublist">' + sub + '</ul></li>';
+        if (p.year) html += '<li>' + caseEscHtml(String(p.year)) + '</li>';
+        return html;
+      }
+      var kindItems = caseKindItems(p);
+      if (p.year) kindItems.push(String(p.year));
+      return kindItems.map(function(item) {
+        return '<li>' + caseEscHtml(formatCaseLabel(item)) + '</li>';
+      }).join('');
+    }
+
     async function openCase(i) {
       const p = projects[i];
       if (!p) return;
@@ -4840,6 +4977,7 @@
       const titleEl = document.getElementById('caseTitle');
       const descEl = document.getElementById('caseDesc');
       const collabEl = document.getElementById('caseCollaborators');
+      const softwareEl = document.getElementById('caseSoftware');
       const clientEl = document.getElementById('caseClient');
       const kindListEl = document.getElementById('caseKindList');
       const tagsListEl = document.getElementById('caseTagsList');
@@ -4855,10 +4993,20 @@
       if (collabEl) {
         if (p.collaborators) {
           collabEl.hidden = false;
-          collabEl.textContent = p.collaborators;
+          collabEl.textContent = 'Collaborators: ' + p.collaborators;
         } else {
           collabEl.hidden = true;
           collabEl.textContent = '';
+        }
+      }
+
+      if (softwareEl) {
+        if (p.software) {
+          softwareEl.hidden = false;
+          softwareEl.textContent = 'Software: ' + p.software;
+        } else {
+          softwareEl.hidden = true;
+          softwareEl.textContent = '';
         }
       }
 
@@ -4873,12 +5021,9 @@
       }
 
       if (kindListEl) {
-        var kindItems = caseKindItems(p);
-        if (p.year) kindItems.push(String(p.year));
-        if (kindItems.length) {
-          kindListEl.innerHTML = kindItems.map(function(item) {
-            return '<li>' + caseEscHtml(formatCaseLabel(item)) + '</li>';
-          }).join('');
+        var kindHtml = renderCaseKindHtml(p);
+        if (kindHtml) {
+          kindListEl.innerHTML = kindHtml;
           if (kindCol) kindCol.hidden = false;
         } else {
           kindListEl.innerHTML = '';
@@ -4887,15 +5032,20 @@
       }
 
       if (tagsListEl) {
-        var tagItems = p.barKind ? caseTagItems(p) : [];
-        if (tagItems.length) {
-          tagsListEl.innerHTML = tagItems.map(function(item) {
-            return '<li>' + caseEscHtml(item) + '</li>';
-          }).join('');
-          if (tagsCol) tagsCol.hidden = false;
-        } else {
+        if (nestTagsUnderKind(p)) {
           tagsListEl.innerHTML = '';
           if (tagsCol) tagsCol.hidden = true;
+        } else {
+          var tagItems = p.barKind ? caseTagItems(p) : [];
+          if (tagItems.length) {
+            tagsListEl.innerHTML = tagItems.map(function(item) {
+              return '<li>' + caseEscHtml(item) + '</li>';
+            }).join('');
+            if (tagsCol) tagsCol.hidden = false;
+          } else {
+            tagsListEl.innerHTML = '';
+            if (tagsCol) tagsCol.hidden = true;
+          }
         }
       }
 
@@ -4958,6 +5108,8 @@
       var tagsListEl = document.getElementById('caseTagsList');
       if (descEl) descEl.innerHTML = '';
       if (collabEl) { collabEl.hidden = true; collabEl.textContent = ''; }
+      var softwareEl = document.getElementById('caseSoftware');
+      if (softwareEl) { softwareEl.hidden = true; softwareEl.textContent = ''; }
       if (clientEl) { clientEl.hidden = true; clientEl.textContent = ''; }
       if (kindListEl) kindListEl.innerHTML = '';
       if (tagsListEl) tagsListEl.innerHTML = '';
