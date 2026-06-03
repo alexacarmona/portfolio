@@ -251,14 +251,14 @@
       pointer-events: all;
     }
     .footer-left, .footer-right {
-      font-size: 11px; font-weight: 400; letter-spacing: 0.03em; color: var(--fg-muted);
+      font-size: 11px; font-weight: 400; letter-spacing: 0.03em; color: #fff;
     }
     .footer-center {
       position: absolute; left: 50%; transform: translateX(-50%);
       display: flex; align-items: center; gap: 6px;
-      font-size: 11px; color: var(--fg-muted);
+      font-size: 11px; color: #fff;
     }
-    .footer-link { color: var(--fg-muted); text-decoration: none; transition: color 0.2s; }
+    .footer-link { color: #fff; text-decoration: none; transition: color 0.2s; }
     .footer-link:hover { color: #e6b800; }
     .footer-sep { opacity: 0.5; }
     /* Theme toggle in footer — looks like a link */
@@ -267,7 +267,7 @@
       font-size: 11px;
       font-weight: 400;
       letter-spacing: 0.03em;
-      color: var(--fg-muted);
+      color: #fff;
       background: none;
       border: none;
       padding: 0;
@@ -278,6 +278,24 @@
       appearance: none;
     }
     .theme-footer-btn:hover { color: #e6b800; }
+
+    #photography:target.is-past-hero ~ .site-footer .footer-left,
+    #photography:target.is-past-hero ~ .site-footer .footer-right,
+    #photography:target.is-past-hero ~ .site-footer .footer-center,
+    #photography:target.is-past-hero ~ .site-footer .footer-link,
+    #photography:target.is-past-hero ~ .site-footer .theme-footer-btn,
+    #about:target ~ .site-footer .footer-left,
+    #about:target ~ .site-footer .footer-right,
+    #about:target ~ .site-footer .footer-center,
+    #about:target ~ .site-footer .footer-link,
+    #about:target ~ .site-footer .theme-footer-btn,
+    #raw:target ~ .site-footer .footer-left,
+    #raw:target ~ .site-footer .footer-right,
+    #raw:target ~ .site-footer .footer-center,
+    #raw:target ~ .site-footer .footer-link,
+    #raw:target ~ .site-footer .theme-footer-btn {
+      color: var(--fg-muted);
+    }
 
     /* scroll hint — removed with home page */
     .scroll-hint { display: none; }
@@ -586,8 +604,6 @@
     #design {
       overflow: hidden;
       background: #ede7de;
-      --mersi-swap-duration: 1.6s;
-      --mersi-swap-ease: cubic-bezier(0.65, 0.05, 0.36, 1);
     }
     [data-theme="dark"] #design {
       background: #1c1b19;
@@ -621,17 +637,21 @@
       backface-visibility: hidden;
     }
 
-    .mersi-swap-layer {
+    .mersi-slide-stack {
       position: absolute;
       inset: 0;
-      z-index: 1;
-      will-change: transform;
-      backface-visibility: hidden;
-      transform: translate3d(0, 0, 0) scale(1);
-      transform-origin: center center;
     }
-    .mersi-swap-layer.is-current { z-index: 2; }
-    .mersi-swap-layer img {
+
+    .mersi-slide-item {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      will-change: clip-path;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+    }
+
+    .mersi-slide-item img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -639,48 +659,9 @@
       transform: translateZ(0);
     }
 
-    .mersi-swap-layer--exit-up {
-      animation: mersiExitUp var(--mersi-swap-duration) var(--mersi-swap-ease) forwards;
-      z-index: 3;
-    }
-    .mersi-swap-layer--exit-down {
-      animation: mersiExitDown var(--mersi-swap-duration) var(--mersi-swap-ease) forwards;
-      z-index: 3;
-    }
-    .mersi-swap-layer--enter-from-down {
-      animation: mersiEnterFromDown var(--mersi-swap-duration) var(--mersi-swap-ease) forwards;
-      z-index: 2;
-    }
-    .mersi-swap-layer--enter-from-up {
-      animation: mersiEnterFromUp var(--mersi-swap-duration) var(--mersi-swap-ease) forwards;
-      z-index: 2;
-    }
-
-    @keyframes mersiExitUp {
-      from { transform: translate3d(0, 0, 0) scale(1); }
-      to { transform: translate3d(0, -100%, 0) scale(1); }
-    }
-    @keyframes mersiExitDown {
-      from { transform: translate3d(0, 0, 0) scale(1); }
-      to { transform: translate3d(0, 100%, 0) scale(1); }
-    }
-    @keyframes mersiEnterFromDown {
-      from { transform: translate3d(0, 100%, 0) scale(1.02); }
-      to { transform: translate3d(0, 0, 0) scale(1); }
-    }
-    @keyframes mersiEnterFromUp {
-      from { transform: translate3d(0, -100%, 0) scale(1.02); }
-      to { transform: translate3d(0, 0, 0) scale(1); }
-    }
-
     @media (prefers-reduced-motion: reduce) {
-      .mersi-swap-layer--exit-up,
-      .mersi-swap-layer--exit-down,
-      .mersi-swap-layer--enter-from-down,
-      .mersi-swap-layer--enter-from-up {
-        animation: none;
-      }
-      .mersi-project-bar.is-updating .mersi-bar-copy { transition: none; }
+      .mersi-slide-item { transition: none !important; }
+      .mersi-bar-card { transition: none !important; }
     }
 
     .mersi-nav {
@@ -694,32 +675,54 @@
     }
 
     .mersi-project-bar {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
+      display: block;
       width: min(480px, 50vw);
       min-height: clamp(88px, 11.5vh, 108px);
-      padding: clamp(16px, 2.4vh, 22px) clamp(18px, 2.5vw, 26px);
+      padding: 0;
       margin: 0;
       border: none;
       cursor: pointer;
       font: inherit;
       text-align: center;
-      background: #c45c28;
+      background: transparent;
       color: #fff;
       pointer-events: auto;
-      transition: background-color 800ms cubic-bezier(0.65, 0.05, 0.36, 1);
+      overflow: hidden;
+      position: relative;
+      isolation: isolate;
       box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04);
     }
     .mersi-project-bar:hover {
       filter: brightness(1.03);
     }
-    .mersi-project-bar--dark-text,
-    .mersi-project-bar--dark-text .mersi-bar-title,
-    .mersi-project-bar--dark-text .mersi-bar-kind,
-    .mersi-project-bar--dark-text .mersi-bar-year {
+
+    .mersi-bar-stack {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .mersi-bar-card {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      padding: clamp(16px, 2.4vh, 22px) clamp(18px, 2.5vw, 26px);
+      overflow: hidden;
+      will-change: clip-path;
+      backface-visibility: hidden;
+      transform: translateZ(0);
+      color: #fff;
+    }
+
+    .mersi-bar-card--dark-text,
+    .mersi-bar-card--dark-text .mersi-bar-title,
+    .mersi-bar-card--dark-text .mersi-bar-kind,
+    .mersi-bar-card--dark-text .mersi-bar-year {
       color: #1a1a1a;
     }
 
@@ -737,7 +740,7 @@
       margin: 0;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-size: clamp(17px, 1.85vw, 22px);
-      font-weight: 400;
+      font-weight: 300;
       letter-spacing: 0.01em;
       line-height: 1.15;
       text-transform: uppercase;
@@ -752,7 +755,7 @@
       margin: 0;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-size: clamp(9px, 0.82vw, 11px);
-      font-weight: 300;
+      font-weight: 200;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       line-height: 1.35;
@@ -781,10 +784,7 @@
     }
 
     .mersi-bar-copy {
-      transition: opacity 380ms ease;
-    }
-    .mersi-project-bar.is-updating .mersi-bar-copy {
-      opacity: 1;
+      transition: none;
     }
 
     .mersi-intro {
@@ -2460,23 +2460,17 @@
       <div class="mersi-intro" id="mersiIntro" aria-hidden="false"></div>
       <div class="mersi-slider mersi-slider--left" aria-hidden="true">
         <div class="mersi-swap-viewport">
-          <div class="mersi-swap-layer is-current" id="mersiLeftA"></div>
-          <div class="mersi-swap-layer" id="mersiLeftB"></div>
+          <div class="mersi-slide-stack" id="mersiLeftStack"></div>
         </div>
       </div>
       <div class="mersi-slider mersi-slider--right" aria-hidden="true">
         <div class="mersi-swap-viewport">
-          <div class="mersi-swap-layer is-current" id="mersiRightA"></div>
-          <div class="mersi-swap-layer" id="mersiRightB"></div>
+          <div class="mersi-slide-stack" id="mersiRightStack"></div>
         </div>
       </div>
       <div class="mersi-nav" id="mersiNav">
         <button type="button" class="mersi-project-bar" id="mersiProjectBar" aria-label="View project">
-          <div class="mersi-bar-main mersi-bar-copy">
-            <h2 class="mersi-bar-title" id="mersiBarTitle">Project</h2>
-            <p class="mersi-bar-kind" id="mersiBarKind"></p>
-          </div>
-          <p class="mersi-bar-year mersi-bar-copy" id="mersiBarYear"></p>
+          <div class="mersi-bar-stack" id="mersiBarStack" aria-live="polite"></div>
         </button>
       </div>
     </div>
@@ -3803,7 +3797,7 @@
         tagline: 'Editorial magazine design for Georgia Entertainment and Atlanta sports culture.',
         tags: ['graphic design', 'editorial', 'layout'],
         barKind: 'editorial design',
-        barColor: 'rgba(59, 90, 117, 0.94)',
+        barColor: 'rgba(225, 105, 105, 0.94)',
         hero: 'alexa_shirley-10.jpg',
         images: ['georgiaentertainment_proj16_cover.png', 'alexa_shirley-10.jpg'],
         flipbookEmbedUrl: 'https://heyzine.com/flip-book/c6c377a09d.html',
@@ -3824,8 +3818,7 @@
         wip: true,
         tags: ['graphic design', 'branding', 'identity'],
         barKind: 'design and activation, pop up',
-        barColor: 'rgba(237, 231, 222, 0.94)',
-        barDarkText: true,
+        barColor: 'rgba(200, 45, 45, 0.94)',
         hero: '1trademarkxchicago_proj24.jpg',
         images: [
           '1trademarkxchicago_proj24.jpg',
@@ -3851,30 +3844,27 @@
     /* ══ PROJECTS — Mersi-style split swap slider ═══════ */
     (function() {
       var designSection = document.getElementById('design');
-      var leftA = document.getElementById('mersiLeftA');
-      var leftB = document.getElementById('mersiLeftB');
-      var rightA = document.getElementById('mersiRightA');
-      var rightB = document.getElementById('mersiRightB');
+      var leftStack = document.getElementById('mersiLeftStack');
+      var rightStack = document.getElementById('mersiRightStack');
+      var barStack = document.getElementById('mersiBarStack');
       var projectBar = document.getElementById('mersiProjectBar');
-      var barTitle = document.getElementById('mersiBarTitle');
-      var barKind = document.getElementById('mersiBarKind');
-      var barYear = document.getElementById('mersiBarYear');
       var intro = document.getElementById('mersiIntro');
-      if (!designSection || !leftA || !leftB || !rightA || !rightB || !projectBar || !barTitle) return;
+      if (!designSection || !leftStack || !rightStack || !barStack || !projectBar) return;
 
-      var SWAP_EASE = 'cubic-bezier(0.65, 0.05, 0.36, 1)';
-      var wheelAccum = 0;
-      var WHEEL_THRESHOLD = 90;
-      var scrollCooldown = false;
+      var SNAP_MS = 800;
+      var SNAP_DEBOUNCE = 500;
+      var WHEEL_MULT = 1;
+      var SNAP_EDGE = 0.005;
+      var MOBILE_MAX = 900;
 
       /* project indices: 0 Walter, 1 Swiss, 2 Garbage, 3 Breadly, 5 Gotem, 6 Georgia, 7 Trademark (4 Mariana excluded) */
       var designDisplayOrder = [3, 6, 2, 1, 0, 5, 7];
-      var SWAP_MS = 1600;
       var preloadCache = {};
       var activeIndex = 0;
+      var scrollPos = 0;
       var animating = false;
-      var leftShowsA = true;
-      var rightShowsA = true;
+      var snapTimer = null;
+      var snapRaf = null;
       var introDismissed = false;
       try { introDismissed = sessionStorage.getItem('mersiIntroDismissed') === '1'; } catch (e) {}
       if (introDismissed && intro) {
@@ -3882,6 +3872,9 @@
         intro.setAttribute('aria-hidden', 'true');
       }
       var mersiItems = [];
+      var leftSlides = [];
+      var rightSlides = [];
+      var barCards = [];
 
       function escHtml(s) {
         return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -3895,6 +3888,32 @@
       function formatCategory(tags) {
         if (!tags || !tags.length) return '';
         return String(tags[0]).replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+      }
+
+      function isMobileView() {
+        return window.innerWidth <= MOBILE_MAX;
+      }
+
+      function hiddenSlideClip(edge) {
+        if (isMobileView()) return 'inset(50% 0% 50% 0%)';
+        return edge === 'top' ? 'inset(100% 0% 0% 0%)' : 'inset(0% 0% 100% 0%)';
+      }
+
+      function hiddenBarClip() {
+        if (isMobileView()) return 'inset(50% 0% 50% 0%)';
+        return 'inset(100% 0% 0% 0%)';
+      }
+
+      function barRevealClip(progress) {
+        if (isMobileView()) {
+          var inset = (1 - progress) * 50;
+          return 'inset(' + inset + '% 0% ' + inset + '% 0%)';
+        }
+        return 'inset(' + ((1 - progress) * 100) + '% 0% 0% 0%)';
+      }
+
+      function power2InOut(t) {
+        return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
       }
 
       function panelImagesForProject(p) {
@@ -3972,46 +3991,232 @@
         preloadPair(mersiItems[((idx - 1) % n + n) % n]);
       }
 
-      function setLayerImage(layer, src, alt, eager) {
-        if (!layer) return;
-        layer.innerHTML = '<img src="' + escHtml(src) + '" alt="' + escHtml(alt) + '" decoding="async" />';
-        var img = layer.querySelector('img');
-        if (!img) return;
-        img.loading = eager ? 'eager' : 'lazy';
-        if (eager) {
-          try { img.fetchPriority = 'high'; } catch (e) {}
+      function setMotionTransition(el, enabled) {
+        if (!el) return;
+        el.style.transition = enabled ? 'clip-path ' + SNAP_MS + 'ms cubic-bezier(0.65, 0.05, 0.35, 1)' : 'none';
+      }
+
+      function buildSlideStack(stack, slides, edge) {
+        if (!stack) return;
+        stack.innerHTML = '';
+        slides.length = 0;
+        mersiItems.forEach(function(item, idx) {
+          var slide = document.createElement('div');
+          slide.className = 'mersi-slide-item';
+          slide.innerHTML = '<img src="' + escHtml(edge === 'top' ? item.leftSrc : item.rightSrc) + '" alt="' + escHtml(item.title) + '" decoding="async" loading="' + (idx === 0 ? 'eager' : 'lazy') + '" />';
+          stack.appendChild(slide);
+          slides.push({ el: slide, edge: edge });
+        });
+      }
+
+      function buildBarCards() {
+        if (!barStack) return;
+        barStack.innerHTML = '';
+        barCards.length = 0;
+        mersiItems.forEach(function(item) {
+          var card = document.createElement('div');
+          card.className = 'mersi-bar-card';
+          if (item.barDarkText) card.classList.add('mersi-bar-card--dark-text');
+          card.style.backgroundColor = item.barColor;
+          card.innerHTML =
+            '<div class="mersi-bar-main">' +
+              '<h2 class="mersi-bar-title">' + escHtml(item.title) + '</h2>' +
+              '<p class="mersi-bar-kind">' + escHtml(item.category || '') + '</p>' +
+            '</div>' +
+            '<p class="mersi-bar-year">' + escHtml(item.year || '') + '</p>';
+          barStack.appendChild(card);
+          barCards.push({ el: card });
+        });
+      }
+
+      function rebuildMotionDom() {
+        buildSlideStack(leftStack, leftSlides, 'top');
+        buildSlideStack(rightStack, rightSlides, 'bottom');
+        buildBarCards();
+      }
+
+      function getDominantIndex(state) {
+        if (state.currentIndex === state.nextIndex) return state.currentIndex;
+        return state.progress >= 0.5 ? state.nextIndex : state.currentIndex;
+      }
+
+      function updateBarLabel(index) {
+        var item = mersiItems[index];
+        if (!item || !projectBar) return;
+        projectBar.setAttribute('aria-label', 'View ' + item.title);
+      }
+
+      function updateBarRevealLayers(layers, currentIndex, nextIndex, progress) {
+        var count = layers.length;
+        if (!count) return;
+        layers.forEach(function(layer, idx) {
+          var clip;
+          var z;
+          if (idx === nextIndex && nextIndex !== currentIndex) {
+            clip = barRevealClip(progress);
+            z = count + 1;
+          } else if (idx === currentIndex) {
+            clip = 'inset(0% 0% 0% 0%)';
+            z = count;
+          } else {
+            clip = hiddenBarClip();
+            z = idx + 1;
+          }
+          layer.el.style.zIndex = String(z);
+          layer.el.style.clipPath = clip;
+        });
+      }
+
+      function updateSlideStack(slides, currentIndex, nextIndex, progress, edge) {
+        var count = slides.length;
+        if (!count) return;
+        slides.forEach(function(slide, idx) {
+          var clip;
+          var z;
+          if (idx === currentIndex) {
+            clip = 'inset(0% 0% 0% 0%)';
+            z = count;
+          } else if (idx === nextIndex && nextIndex !== currentIndex) {
+            var hidden = (1 - progress) * 100;
+            clip = edge === 'top'
+              ? 'inset(' + hidden + '% 0% 0% 0%)'
+              : 'inset(0% 0% ' + hidden + '% 0%)';
+            z = count + 1;
+          } else {
+            clip = hiddenSlideClip(edge);
+            z = idx + 1;
+          }
+          slide.el.style.zIndex = String(z);
+          slide.el.style.clipPath = clip;
+        });
+      }
+
+      function updateBarCards(currentIndex, nextIndex, progress) {
+        updateBarRevealLayers(barCards, currentIndex, nextIndex, progress);
+      }
+
+      function getMotionState() {
+        var n = mersiItems.length;
+        if (!n) return { currentIndex: 0, nextIndex: 0, progress: 0 };
+        var vh = window.innerHeight || 1;
+        var maxScroll = Math.max(0, (n - 1) * vh);
+        scrollPos = Math.max(0, Math.min(maxScroll, scrollPos));
+        var currentIndex = Math.min(Math.floor(scrollPos / vh), n - 1);
+        var nextIndex = Math.min(currentIndex + 1, n - 1);
+        var progress = currentIndex === n - 1 ? 0 : (scrollPos % vh) / vh;
+        return { currentIndex: currentIndex, nextIndex: nextIndex, progress: progress };
+      }
+
+      function applyMotionState(useTransition) {
+        var state = getMotionState();
+        var motionLayers = leftSlides.concat(rightSlides).concat(
+          barCards.map(function(card) { return { el: card.el }; })
+        );
+        motionLayers.forEach(function(item) { setMotionTransition(item.el, !!useTransition); });
+        updateSlideStack(leftSlides, state.currentIndex, state.nextIndex, state.progress, 'top');
+        updateSlideStack(rightSlides, state.currentIndex, state.nextIndex, state.progress, 'bottom');
+        updateBarCards(state.currentIndex, state.nextIndex, state.progress);
+        activeIndex = getDominantIndex(state);
+        updateBarLabel(activeIndex);
+        return state;
+      }
+
+      function showInstant(index) {
+        var n = mersiItems.length;
+        if (!n) return;
+        var target = Math.max(0, Math.min(index, n - 1));
+        scrollPos = target * (window.innerHeight || 1);
+        activeIndex = target;
+        applyMotionState(false);
+        updateBarLabel(target);
+        preloadNeighbors(target);
+      }
+
+      function cancelSnapAnimation() {
+        if (snapRaf) {
+          cancelAnimationFrame(snapRaf);
+          snapRaf = null;
         }
       }
 
-      function resetLayerClasses(layer) {
-        if (!layer) return;
-        layer.className = 'mersi-swap-layer';
-        layer.style.transform = '';
-        layer.style.transition = '';
+      function snapToIndex(targetIndex, done) {
+        var n = mersiItems.length;
+        if (!n) return;
+        var target = Math.max(0, Math.min(targetIndex, n - 1));
+        var endPos = target * (window.innerHeight || 1);
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          scrollPos = endPos;
+          activeIndex = target;
+          applyMotionState(false);
+          updateBarLabel(target);
+          preloadNeighbors(target);
+          if (done) done();
+          return;
+        }
+        var startPos = scrollPos;
+        if (Math.abs(startPos - endPos) < 1) {
+          scrollPos = endPos;
+          activeIndex = target;
+          applyMotionState(false);
+          updateBarLabel(target);
+          preloadNeighbors(target);
+          if (done) done();
+          return;
+        }
+
+        cancelSnapAnimation();
+        animating = true;
+        applyMotionState(true);
+        var startTime = performance.now();
+
+        function frame(now) {
+          var t = Math.min(1, (now - startTime) / SNAP_MS);
+          scrollPos = startPos + (endPos - startPos) * power2InOut(t);
+          applyMotionState(false);
+          if (t < 1) {
+            snapRaf = requestAnimationFrame(frame);
+            return;
+          }
+          scrollPos = endPos;
+          activeIndex = target;
+          applyMotionState(false);
+          updateBarLabel(target);
+          preloadNeighbors(target);
+          animating = false;
+          snapRaf = null;
+          if (done) done();
+        }
+        snapRaf = requestAnimationFrame(frame);
       }
 
-      function updateProjectBar(idx, animate) {
-        var item = mersiItems[idx];
-        if (!item) return;
+      function scheduleSnap() {
+        if (snapTimer) clearTimeout(snapTimer);
+        snapTimer = setTimeout(function() {
+          snapTimer = null;
+          if (animating || !mersiItems.length) return;
+          var state = getMotionState();
+          if (state.progress <= SNAP_EDGE || state.currentIndex === state.nextIndex) return;
+          var target = state.progress >= 0.5 ? state.nextIndex : state.currentIndex;
+          snapToIndex(target);
+        }, SNAP_DEBOUNCE);
+      }
 
-        function applyBarContent() {
-          barTitle.textContent = item.title;
-          if (barKind) barKind.textContent = item.category || '';
-          if (barYear) barYear.textContent = item.year || '';
-          projectBar.style.backgroundColor = item.barColor;
-          projectBar.classList.toggle('mersi-project-bar--dark-text', !!item.barDarkText);
-          projectBar.setAttribute('aria-label', 'View ' + item.title);
+      function setActiveIndex(index, instant) {
+        if (!mersiItems.length) return;
+        var n = mersiItems.length;
+        var target = ((index % n) + n) % n;
+        if (snapTimer) {
+          clearTimeout(snapTimer);
+          snapTimer = null;
         }
-
-        if (animate && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-          projectBar.classList.add('is-updating');
-          setTimeout(function() {
-            applyBarContent();
-            projectBar.classList.remove('is-updating');
-          }, 200);
-        } else {
-          applyBarContent();
+        cancelSnapAnimation();
+        if (instant) {
+          animating = false;
+          showInstant(target);
+          return;
         }
+        if (target === activeIndex) return;
+        snapToIndex(target);
       }
 
       function openCaseFromDesign() {
@@ -4028,138 +4233,9 @@
         if (e.target.closest('#mersiProjectBar')) return;
         if (intro && !intro.classList.contains('is-dismissed')) return;
         if (animating) return;
-        if (!e.target.closest('.mersi-slider') && !e.target.closest('.mersi-swap-layer')) return;
+        if (!e.target.closest('.mersi-slider') && !e.target.closest('.mersi-slide-item')) return;
         openCaseFromDesign();
       });
-
-      function swapDirection(from, to, n) {
-        var diff = to - from;
-        if (diff === 0) return 0;
-        if (diff > 0) return diff > n / 2 ? -1 : 1;
-        return -diff > n / 2 ? 1 : -1;
-      }
-
-      function setLayerTransition(el, enabled) {
-        if (!el) return;
-        el.style.transition = enabled
-          ? 'transform ' + SWAP_MS + 'ms ' + SWAP_EASE
-          : 'none';
-      }
-
-      function runSwap(target, dir) {
-        var item = mersiItems[target];
-        if (!item) return;
-
-        preloadPair(item, function() {
-          var leftCur = leftShowsA ? leftA : leftB;
-          var leftIn = leftShowsA ? leftB : leftA;
-          var rightCur = rightShowsA ? rightA : rightB;
-          var rightIn = rightShowsA ? rightB : rightA;
-
-          setLayerImage(leftIn, item.leftSrc, item.title, false);
-          setLayerImage(rightIn, item.rightSrc, item.title, false);
-
-          resetLayerClasses(leftCur);
-          resetLayerClasses(leftIn);
-          resetLayerClasses(rightCur);
-          resetLayerClasses(rightIn);
-
-          leftIn.style.transform = dir > 0
-            ? 'translate3d(0, 100%, 0) scale(1.02)'
-            : 'translate3d(0, -100%, 0) scale(1.02)';
-          rightIn.style.transform = dir > 0
-            ? 'translate3d(0, -100%, 0) scale(1.02)'
-            : 'translate3d(0, 100%, 0) scale(1.02)';
-          leftCur.style.transform = 'translate3d(0, 0, 0) scale(1)';
-          rightCur.style.transform = 'translate3d(0, 0, 0) scale(1)';
-
-          void leftIn.offsetWidth;
-
-          setLayerTransition(leftCur, true);
-          setLayerTransition(leftIn, true);
-          setLayerTransition(rightCur, true);
-          setLayerTransition(rightIn, true);
-
-          leftCur.style.transform = dir > 0
-            ? 'translate3d(0, -100%, 0) scale(1)'
-            : 'translate3d(0, 100%, 0) scale(1)';
-          rightCur.style.transform = dir > 0
-            ? 'translate3d(0, 100%, 0) scale(1)'
-            : 'translate3d(0, -100%, 0) scale(1)';
-          leftIn.style.transform = 'translate3d(0, 0, 0) scale(1)';
-          rightIn.style.transform = 'translate3d(0, 0, 0) scale(1)';
-
-          animating = true;
-          activeIndex = target;
-          updateProjectBar(target, true);
-
-          var finished = false;
-          function finishSwap() {
-            if (finished) return;
-            finished = true;
-            [leftCur, leftIn, rightCur, rightIn].forEach(function(el) {
-              setLayerTransition(el, false);
-              el.style.transform = '';
-            });
-            resetLayerClasses(leftCur);
-            resetLayerClasses(rightCur);
-            leftIn.className = 'mersi-swap-layer is-current';
-            rightIn.className = 'mersi-swap-layer is-current';
-            leftShowsA = !leftShowsA;
-            rightShowsA = !rightShowsA;
-            animating = false;
-            preloadNeighbors(target);
-            setTimeout(function() {
-              scrollCooldown = false;
-              wheelAccum = 0;
-            }, 220);
-          }
-
-          var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          if (reduced) {
-            finishSwap();
-            return;
-          }
-
-          setTimeout(finishSwap, SWAP_MS + 50);
-        });
-      }
-
-      function showInstant(index) {
-        var item = mersiItems[index];
-        if (!item) return;
-        setLayerImage(leftA, item.leftSrc, item.title, index === 0);
-        setLayerImage(rightA, item.rightSrc, item.title, index === 0);
-        resetLayerClasses(leftA);
-        resetLayerClasses(leftB);
-        resetLayerClasses(rightA);
-        resetLayerClasses(rightB);
-        leftA.className = 'mersi-swap-layer is-current';
-        rightA.className = 'mersi-swap-layer is-current';
-        leftB.className = 'mersi-swap-layer';
-        rightB.className = 'mersi-swap-layer';
-        leftShowsA = true;
-        rightShowsA = true;
-        activeIndex = index;
-        updateProjectBar(index, false);
-      }
-
-      function setActiveIndex(index, instant) {
-        if (!mersiItems.length) return;
-        var n = mersiItems.length;
-        var target = ((index % n) + n) % n;
-        if (target === activeIndex && !instant) return;
-        if (animating && !instant) return;
-
-        if (instant) {
-          showInstant(target);
-          return;
-        }
-
-        var dir = swapDirection(activeIndex, target, n);
-        if (!dir) return;
-        runSwap(target, dir);
-      }
 
       function dismissIntro() {
         if (!intro || introDismissed) return;
@@ -4172,24 +4248,19 @@
       function onWheel(e) {
         if (location.hash !== '#design') return;
         if (document.body.classList.contains('case-open')) return;
-        if (!mersiItems.length) return;
+        if (!mersiItems.length || animating) return;
         e.preventDefault();
         dismissIntro();
-        if (animating || scrollCooldown) return;
-
-        wheelAccum += e.deltaY;
-        if (Math.abs(wheelAccum) < WHEEL_THRESHOLD) return;
-
-        var step = wheelAccum > 0 ? 1 : -1;
-        wheelAccum = 0;
-        scrollCooldown = true;
-        setActiveIndex(activeIndex + step, false);
+        cancelSnapAnimation();
+        scrollPos += e.deltaY * WHEEL_MULT;
+        applyMotionState(false);
+        scheduleSnap();
       }
 
       buildMersiItems();
+      rebuildMotionDom();
       mersiItems.forEach(function(item) { preloadPair(item); });
       showInstant(0);
-      preloadNeighbors(0);
 
       designSection.addEventListener('wheel', onWheel, { passive: false });
 
@@ -4202,9 +4273,7 @@
         var dy = touchStartY - e.changedTouches[0].clientY;
         if (Math.abs(dy) < 40) return;
         dismissIntro();
-        if (animating || scrollCooldown) return;
-        if (document.body.classList.contains('case-open')) return;
-        scrollCooldown = true;
+        if (animating || document.body.classList.contains('case-open')) return;
         if (dy > 0) setActiveIndex(activeIndex + 1, false);
         else setActiveIndex(activeIndex - 1, false);
       }, { passive: true });
@@ -4215,8 +4284,14 @@
         if (e.key === 'ArrowUp') { e.preventDefault(); dismissIntro(); setActiveIndex(activeIndex - 1, false); }
       });
 
+      window.addEventListener('resize', function() {
+        if (location.hash !== '#design' || !mersiItems.length) return;
+        showInstant(activeIndex);
+      });
+
       function initMersiProjects() {
         buildMersiItems();
+        rebuildMotionDom();
         if (activeIndex >= mersiItems.length) activeIndex = 0;
         showInstant(activeIndex);
       }
@@ -4645,20 +4720,23 @@
     }
 
     function caseAboutHtml(p) {
-      var parts = [];
       var tagline = p.tagline ? String(p.tagline).trim() : '';
       var description = p.description ? String(p.description).trim() : '';
       var feedSummary = p.feedSummary ? String(p.feedSummary).trim() : '';
+      var body = '';
 
-      if (tagline) parts.push('<p>' + caseEscHtml(tagline) + '</p>');
-      if (description && description !== tagline && description.indexOf(tagline) !== 0) {
-        parts.push('<p>' + caseEscHtml(description) + '</p>');
-      } else if (!tagline && description) {
-        parts.push('<p>' + caseEscHtml(description) + '</p>');
-      } else if (!tagline && !description && feedSummary) {
-        parts.push('<p>' + caseEscHtml(feedSummary) + '</p>');
+      if (tagline && description && description !== tagline && description.indexOf(tagline) !== 0) {
+        body = tagline + ' ' + description;
+      } else if (description) {
+        body = description;
+      } else if (tagline) {
+        body = tagline;
+      } else if (feedSummary) {
+        body = feedSummary;
       }
-      return parts.join('');
+
+      if (!body) return '';
+      return '<p>' + caseEscHtml(body) + '</p>';
     }
 
     function caseKindItems(p) {
