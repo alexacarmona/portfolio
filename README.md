@@ -10,6 +10,24 @@ Everything lives in this one folder:
 
 All future edits will be made to **index.html** in this folder so everything stays in one place.
 
+## Deploying to alexacarmonaportfolio.com
+
+**[alexacarmonaportfolio.com](https://alexacarmonaportfolio.com)** is built from the GitHub repo **[github.com/alexacarmona/portfolio](https://github.com/alexacarmona/portfolio)** — not from this folder automatically.
+
+After you edit `index.html` here, copy it into that repo and push:
+
+```bash
+cp index.html /path/to/your/portfolio-clone/index.html
+cd /path/to/your/portfolio-clone
+git add index.html
+git commit -m "Update site"
+git push
+```
+
+Wait 1–2 minutes, then hard-refresh the live site (Cmd+Shift+R).
+
+**Preview locally before pushing:** open `index.html` in this folder in your browser (double-click the file), go to **projects**, click a project, scroll past the hero to **process & detail**.
+
 ## Deploying to GitHub
 
 GitHub rejects very large files (over **100 MB** per file, warns above **50 MB**). Your full folder is ~1.4 GB because of raw `.MOV` files and huge photo originals.
