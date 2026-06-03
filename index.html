@@ -141,9 +141,14 @@
       );
     }
     #photography:target.nav-revealed:not(.is-past-hero) ~ .nav-top-shade,
-    #about:target:not(.is-past-hero) ~ .nav-top-shade {
+    #about:target:not(.is-past-hero) ~ .nav-top-shade,
+    #design:target ~ .nav-top-shade {
       opacity: 1;
       visibility: visible;
+    }
+    body.case-open #design:target ~ .nav-top-shade {
+      opacity: 0;
+      visibility: hidden;
     }
 
     /* ══ SECTIONS - CSS :target based switching ==========
@@ -655,13 +660,18 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+      object-position: center center;
       display: block;
       transform: translateZ(0);
     }
 
+    .mersi-slide-item--shift-up img {
+      object-position: center calc(50% - 2in);
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .mersi-slide-item { transition: none !important; }
-      .mersi-bar-card { transition: none !important; }
+      .mersi-bar-title { transition: none !important; }
     }
 
     .mersi-nav {
@@ -676,8 +686,8 @@
 
     .mersi-project-bar {
       display: block;
-      width: min(480px, 50vw);
-      min-height: clamp(88px, 11.5vh, 108px);
+      width: min(96vw, 920px);
+      min-height: clamp(120px, 18vh, 200px);
       padding: 0;
       margin: 0;
       border: none;
@@ -690,101 +700,43 @@
       overflow: hidden;
       position: relative;
       isolation: isolate;
-      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04);
+      box-shadow: none;
     }
-    .mersi-project-bar:hover {
-      filter: brightness(1.03);
+    .mersi-project-bar:hover .mersi-bar-title {
+      opacity: 0.92;
     }
 
-    .mersi-bar-stack {
+    .mersi-bar-title-wrap {
       position: absolute;
       inset: 0;
       z-index: 0;
-      overflow: hidden;
-    }
-
-    .mersi-bar-card {
-      position: absolute;
-      inset: 0;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      box-sizing: border-box;
-      padding: clamp(16px, 2.4vh, 22px) clamp(18px, 2.5vw, 26px);
+      padding: 0 clamp(12px, 2vw, 24px);
       overflow: hidden;
-      will-change: clip-path;
-      backface-visibility: hidden;
-      transform: translateZ(0);
-      color: #fff;
-    }
-
-    .mersi-bar-card--dark-text,
-    .mersi-bar-card--dark-text .mersi-bar-title,
-    .mersi-bar-card--dark-text .mersi-bar-kind,
-    .mersi-bar-card--dark-text .mersi-bar-year {
-      color: #1a1a1a;
-    }
-
-    .mersi-bar-main {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      min-width: 0;
-      max-width: 100%;
+      pointer-events: none;
     }
 
     .mersi-bar-title {
+      position: absolute;
       margin: 0;
+      width: 100%;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: clamp(17px, 1.85vw, 22px);
+      font-size: clamp(28px, 4.8vw, 56px);
       font-weight: 300;
-      letter-spacing: 0.01em;
-      line-height: 1.15;
+      letter-spacing: 0.03em;
+      line-height: 1;
       text-transform: uppercase;
+      text-align: center;
       color: #fff;
+      text-shadow: none;
+      -webkit-font-smoothing: antialiased;
+      max-width: 100%;
       white-space: nowrap;
       overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-    }
-
-    .mersi-bar-kind {
-      margin: 0;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: clamp(9px, 0.82vw, 11px);
-      font-weight: 200;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      line-height: 1.35;
-      color: #fff;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 100%;
-    }
-    .mersi-bar-kind:empty {
-      display: none;
-    }
-
-    .mersi-bar-year {
-      margin: 8px 0 0;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: clamp(9px, 0.82vw, 11px);
-      font-weight: 300;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      line-height: 1.35;
-      color: #fff;
-    }
-    .mersi-bar-year:empty {
-      display: none;
-    }
-
-    .mersi-bar-copy {
-      transition: none;
+      pointer-events: none;
+      will-change: opacity;
     }
 
     .mersi-intro {
@@ -824,11 +776,12 @@
       .mersi-slider--right { display: none; }
       .mersi-slider--left { width: 100%; left: 0; }
       .mersi-project-bar {
-        width: min(88vw, 400px);
-        min-height: clamp(84px, 11vh, 100px);
+        width: min(96vw, 640px);
+        min-height: clamp(100px, 16vh, 160px);
       }
-      .mersi-bar-title,
-      .mersi-bar-kind { white-space: normal; }
+      .mersi-bar-title {
+        font-size: clamp(18px, 5.2vw, 36px);
+      }
     }
 
     /* ══ PHOTOGRAPHY — hero slider + masonry grid ═══ */
@@ -2470,7 +2423,7 @@
       </div>
       <div class="mersi-nav" id="mersiNav">
         <button type="button" class="mersi-project-bar" id="mersiProjectBar" aria-label="View project">
-          <div class="mersi-bar-stack" id="mersiBarStack" aria-live="polite"></div>
+          <div class="mersi-bar-title-wrap" id="mersiBarTitleWrap" aria-live="polite"></div>
         </button>
       </div>
     </div>
@@ -2725,8 +2678,8 @@
     </a>
     <div class="nav-right">
       <div class="nav-links">
-        <a class="nav-link" href="#design">projects</a>
         <a class="nav-link" href="#photography">photography</a>
+        <a class="nav-link" href="#design">projects</a>
         <a class="nav-link" href="#raw">raw</a>
         <a class="nav-link" href="#about">info</a>
       </div>
@@ -3798,8 +3751,11 @@
         tags: ['graphic design', 'editorial', 'layout'],
         barKind: 'editorial design',
         barColor: 'rgba(225, 105, 105, 0.94)',
-        hero: 'alexa_shirley-10.jpg',
-        images: ['georgiaentertainment_proj16_cover.png', 'alexa_shirley-10.jpg'],
+        hero: '5quintinwilliamsshoedesign_proj17.jpg',
+        panelLeft: '5quintinwilliamsshoedesign_proj17.jpg',
+        panelRight: '4quintinwilliamsshoedesign_proj17.jpg',
+        images: ['5quintinwilliamsshoedesign_proj17.jpg', '4quintinwilliamsshoedesign_proj17.jpg'],
+        panelImageOffset: 'shift-up',
         flipbookEmbedUrl: 'https://heyzine.com/flip-book/c6c377a09d.html',
         collaborators: 'Leo Ruiz and Kalina Richardson',
         description: 'Editorial layout for Georgia Entertainment that pairs athlete portraits with abstract typography and graphic shapes. The spreads lean into motion, cropped limbs, overlapping type, and color fields so the story feels like a conversation between art direction and performance.',
@@ -3820,6 +3776,8 @@
         barKind: 'design and activation, pop up',
         barColor: 'rgba(200, 45, 45, 0.94)',
         hero: '1trademarkxchicago_proj24.jpg',
+        panelLeft: '6trademarkxchicago_proj24.png',
+        panelRight: '4trademarkxchicago_proj24.png',
         images: [
           '1trademarkxchicago_proj24.jpg',
           '2trademarkxchicago_proj24.jpg',
@@ -3846,10 +3804,10 @@
       var designSection = document.getElementById('design');
       var leftStack = document.getElementById('mersiLeftStack');
       var rightStack = document.getElementById('mersiRightStack');
-      var barStack = document.getElementById('mersiBarStack');
+      var barTitleWrap = document.getElementById('mersiBarTitleWrap');
       var projectBar = document.getElementById('mersiProjectBar');
       var intro = document.getElementById('mersiIntro');
-      if (!designSection || !leftStack || !rightStack || !barStack || !projectBar) return;
+      if (!designSection || !leftStack || !rightStack || !barTitleWrap || !projectBar) return;
 
       var SNAP_MS = 800;
       var SNAP_DEBOUNCE = 500;
@@ -3858,7 +3816,7 @@
       var MOBILE_MAX = 900;
 
       /* project indices: 0 Walter, 1 Swiss, 2 Garbage, 3 Breadly, 5 Gotem, 6 Georgia, 7 Trademark (4 Mariana excluded) */
-      var designDisplayOrder = [3, 6, 2, 1, 0, 5, 7];
+      var designDisplayOrder = [3, 2, 1, 0, 5, 7, 6];
       var preloadCache = {};
       var activeIndex = 0;
       var scrollPos = 0;
@@ -3874,7 +3832,7 @@
       var mersiItems = [];
       var leftSlides = [];
       var rightSlides = [];
-      var barCards = [];
+      var barTitleEl = null;
 
       function escHtml(s) {
         return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -3899,19 +3857,6 @@
         return edge === 'top' ? 'inset(100% 0% 0% 0%)' : 'inset(0% 0% 100% 0%)';
       }
 
-      function hiddenBarClip() {
-        if (isMobileView()) return 'inset(50% 0% 50% 0%)';
-        return 'inset(100% 0% 0% 0%)';
-      }
-
-      function barRevealClip(progress) {
-        if (isMobileView()) {
-          var inset = (1 - progress) * 50;
-          return 'inset(' + inset + '% 0% ' + inset + '% 0%)';
-        }
-        return 'inset(' + ((1 - progress) * 100) + '% 0% 0% 0%)';
-      }
-
       function power2InOut(t) {
         return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
       }
@@ -3919,13 +3864,15 @@
       function panelImagesForProject(p) {
         var hero = p.hero || '';
         var imgs = p.images || [];
-        var leftSrc = hero || imgs[0] || '';
-        var rightSrc = '';
+        var leftSrc = p.panelLeft || hero || imgs[0] || '';
+        var rightSrc = p.panelRight || '';
         var i;
-        for (i = 0; i < imgs.length; i++) {
-          if (imgs[i] && imgs[i] !== leftSrc) {
-            rightSrc = imgs[i];
-            break;
+        if (!rightSrc) {
+          for (i = 0; i < imgs.length; i++) {
+            if (imgs[i] && imgs[i] !== leftSrc) {
+              rightSrc = imgs[i];
+              break;
+            }
           }
         }
         if (!rightSrc) rightSrc = leftSrc;
@@ -3948,7 +3895,9 @@
             barColor: p.barColor || 'rgba(196, 92, 40, 0.94)',
             barDarkText: !!p.barDarkText,
             leftSrc: panels.leftSrc,
-            rightSrc: panels.rightSrc
+            rightSrc: panels.rightSrc,
+            panelFit: p.panelFit || '',
+            panelImageOffset: p.panelImageOffset || ''
           });
         });
       }
@@ -4003,36 +3952,72 @@
         mersiItems.forEach(function(item, idx) {
           var slide = document.createElement('div');
           slide.className = 'mersi-slide-item';
+          if (item.panelImageOffset) slide.classList.add('mersi-slide-item--' + item.panelImageOffset);
           slide.innerHTML = '<img src="' + escHtml(edge === 'top' ? item.leftSrc : item.rightSrc) + '" alt="' + escHtml(item.title) + '" decoding="async" loading="' + (idx === 0 ? 'eager' : 'lazy') + '" />';
           stack.appendChild(slide);
           slides.push({ el: slide, edge: edge });
         });
       }
 
-      function buildBarCards() {
-        if (!barStack) return;
-        barStack.innerHTML = '';
-        barCards.length = 0;
-        mersiItems.forEach(function(item) {
-          var card = document.createElement('div');
-          card.className = 'mersi-bar-card';
-          if (item.barDarkText) card.classList.add('mersi-bar-card--dark-text');
-          card.style.backgroundColor = item.barColor;
-          card.innerHTML =
-            '<div class="mersi-bar-main">' +
-              '<h2 class="mersi-bar-title">' + escHtml(item.title) + '</h2>' +
-              '<p class="mersi-bar-kind">' + escHtml(item.category || '') + '</p>' +
-            '</div>' +
-            '<p class="mersi-bar-year">' + escHtml(item.year || '') + '</p>';
-          barStack.appendChild(card);
-          barCards.push({ el: card });
-        });
+      function initBarTitles() {
+        if (!barTitleWrap) return;
+        barTitleWrap.innerHTML = '<h2 class="mersi-bar-title" id="mersiBarTitle"></h2>';
+        barTitleEl = document.getElementById('mersiBarTitle');
+        if (barTitleEl) barTitleEl.style.opacity = '1';
+      }
+
+      function fitBarTitle() {
+        if (!barTitleEl || !barTitleWrap) return;
+        var mobile = isMobileView();
+        var size = mobile ? 36 : 56;
+        var min = mobile ? 14 : 18;
+        barTitleEl.style.fontSize = size + 'px';
+        var maxW = barTitleWrap.clientWidth;
+        if (!maxW) return;
+        while (barTitleEl.scrollWidth > maxW && size > min) {
+          size -= 1;
+          barTitleEl.style.fontSize = size + 'px';
+        }
+      }
+
+      function setBarTitle(item, opacity) {
+        if (!barTitleEl || !item) return;
+        barTitleEl.textContent = item.title;
+        barTitleEl.style.color = '#fff';
+        barTitleEl.style.opacity = String(Math.max(0, Math.min(1, opacity)));
+        fitBarTitle();
+      }
+
+      function updateBarTitleMotion(currentIndex, nextIndex, progress) {
+        if (!barTitleEl || !mersiItems.length) return;
+        var cur = mersiItems[currentIndex];
+        if (!cur) return;
+        if (currentIndex === nextIndex || progress <= 0.001) {
+          setBarTitle(cur, 1);
+          return;
+        }
+        var nxt = mersiItems[nextIndex];
+        if (!nxt) return;
+        if (progress < 0.46) {
+          setBarTitle(cur, 1);
+          return;
+        }
+        if (progress > 0.54) {
+          setBarTitle(nxt, 1);
+          return;
+        }
+        var fade = (progress - 0.46) / 0.08;
+        if (fade < 0.5) {
+          setBarTitle(cur, 1 - fade * 2);
+        } else {
+          setBarTitle(nxt, (fade - 0.5) * 2);
+        }
       }
 
       function rebuildMotionDom() {
         buildSlideStack(leftStack, leftSlides, 'top');
         buildSlideStack(rightStack, rightSlides, 'bottom');
-        buildBarCards();
+        initBarTitles();
       }
 
       function getDominantIndex(state) {
@@ -4044,27 +4029,6 @@
         var item = mersiItems[index];
         if (!item || !projectBar) return;
         projectBar.setAttribute('aria-label', 'View ' + item.title);
-      }
-
-      function updateBarRevealLayers(layers, currentIndex, nextIndex, progress) {
-        var count = layers.length;
-        if (!count) return;
-        layers.forEach(function(layer, idx) {
-          var clip;
-          var z;
-          if (idx === nextIndex && nextIndex !== currentIndex) {
-            clip = barRevealClip(progress);
-            z = count + 1;
-          } else if (idx === currentIndex) {
-            clip = 'inset(0% 0% 0% 0%)';
-            z = count;
-          } else {
-            clip = hiddenBarClip();
-            z = idx + 1;
-          }
-          layer.el.style.zIndex = String(z);
-          layer.el.style.clipPath = clip;
-        });
       }
 
       function updateSlideStack(slides, currentIndex, nextIndex, progress, edge) {
@@ -4091,8 +4055,49 @@
         });
       }
 
-      function updateBarCards(currentIndex, nextIndex, progress) {
-        updateBarRevealLayers(barCards, currentIndex, nextIndex, progress);
+      function updateSlideStackBackward(slides, fromIndex, toIndex, progress, edge) {
+        var count = slides.length;
+        if (!count) return;
+        slides.forEach(function(slide, idx) {
+          var clip;
+          var z;
+          if (idx === fromIndex) {
+            clip = edge === 'top'
+              ? 'inset(' + (progress * 100) + '% 0% 0% 0%)'
+              : 'inset(0% 0% ' + (progress * 100) + '% 0%)';
+            z = count;
+          } else if (idx === toIndex) {
+            var hidden = (1 - progress) * 100;
+            clip = edge === 'top'
+              ? 'inset(0% 0% ' + hidden + '% 0%)'
+              : 'inset(' + hidden + '% 0% 0% 0%)';
+            z = count + 1;
+          } else {
+            clip = hiddenSlideClip(edge);
+            z = idx + 1;
+          }
+          slide.el.style.zIndex = String(z);
+          slide.el.style.clipPath = clip;
+        });
+      }
+
+      function applyWrapMotion(from, to, progress, forward) {
+        if (forward) {
+          updateSlideStack(leftSlides, from, to, progress, 'top');
+          updateSlideStack(rightSlides, from, to, progress, 'bottom');
+        } else {
+          updateSlideStackBackward(leftSlides, from, to, progress, 'top');
+          updateSlideStackBackward(rightSlides, from, to, progress, 'bottom');
+        }
+        updateBarTitleMotion(from, to, progress);
+      }
+
+      function isWrapForward(from, to, n) {
+        return from === n - 1 && to === 0;
+      }
+
+      function isWrapBackward(from, to, n) {
+        return from === 0 && to === n - 1;
       }
 
       function getMotionState() {
@@ -4109,13 +4114,11 @@
 
       function applyMotionState(useTransition) {
         var state = getMotionState();
-        var motionLayers = leftSlides.concat(rightSlides).concat(
-          barCards.map(function(card) { return { el: card.el }; })
-        );
+        var motionLayers = leftSlides.concat(rightSlides);
         motionLayers.forEach(function(item) { setMotionTransition(item.el, !!useTransition); });
         updateSlideStack(leftSlides, state.currentIndex, state.nextIndex, state.progress, 'top');
         updateSlideStack(rightSlides, state.currentIndex, state.nextIndex, state.progress, 'bottom');
-        updateBarCards(state.currentIndex, state.nextIndex, state.progress);
+        updateBarTitleMotion(state.currentIndex, state.nextIndex, state.progress);
         activeIndex = getDominantIndex(state);
         updateBarLabel(activeIndex);
         return state;
@@ -4142,7 +4145,11 @@
       function snapToIndex(targetIndex, done) {
         var n = mersiItems.length;
         if (!n) return;
-        var target = Math.max(0, Math.min(targetIndex, n - 1));
+        var target = ((targetIndex % n) + n) % n;
+        if (isWrapForward(activeIndex, target, n) || isWrapBackward(activeIndex, target, n)) {
+          animateWrapToIndex(target, done);
+          return;
+        }
         var endPos = target * (window.innerHeight || 1);
         if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
           scrollPos = endPos;
@@ -4189,6 +4196,55 @@
         snapRaf = requestAnimationFrame(frame);
       }
 
+      function animateWrapToIndex(targetIndex, done) {
+        var n = mersiItems.length;
+        if (!n || animating) return;
+        var from = activeIndex;
+        var to = ((targetIndex % n) + n) % n;
+        if (from === to) {
+          if (done) done();
+          return;
+        }
+        var forward = isWrapForward(from, to, n);
+        var backward = isWrapBackward(from, to, n);
+        if (!forward && !backward) {
+          snapToIndex(to, done);
+          return;
+        }
+        if (snapTimer) {
+          clearTimeout(snapTimer);
+          snapTimer = null;
+        }
+        cancelSnapAnimation();
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          showInstant(to);
+          if (done) done();
+          return;
+        }
+        animating = true;
+        var startTime = performance.now();
+        function frame(now) {
+          var t = Math.min(1, (now - startTime) / SNAP_MS);
+          var eased = power2InOut(t);
+          applyWrapMotion(from, to, eased, forward);
+          activeIndex = eased >= 0.5 ? to : from;
+          updateBarLabel(activeIndex);
+          if (t < 1) {
+            snapRaf = requestAnimationFrame(frame);
+            return;
+          }
+          scrollPos = to * (window.innerHeight || 1);
+          activeIndex = to;
+          applyMotionState(false);
+          updateBarLabel(to);
+          preloadNeighbors(to);
+          animating = false;
+          snapRaf = null;
+          if (done) done();
+        }
+        snapRaf = requestAnimationFrame(frame);
+      }
+
       function scheduleSnap() {
         if (snapTimer) clearTimeout(snapTimer);
         snapTimer = setTimeout(function() {
@@ -4216,6 +4272,10 @@
           return;
         }
         if (target === activeIndex) return;
+        if (isWrapForward(activeIndex, target, n) || isWrapBackward(activeIndex, target, n)) {
+          animateWrapToIndex(target);
+          return;
+        }
         snapToIndex(target);
       }
 
@@ -4252,6 +4312,22 @@
         e.preventDefault();
         dismissIntro();
         cancelSnapAnimation();
+        if (snapTimer) {
+          clearTimeout(snapTimer);
+          snapTimer = null;
+        }
+
+        var n = mersiItems.length;
+        var state = getMotionState();
+        if (e.deltaY > 0 && state.currentIndex === n - 1 && state.progress <= SNAP_EDGE) {
+          animateWrapToIndex(0);
+          return;
+        }
+        if (e.deltaY < 0 && state.currentIndex === 0 && state.progress <= SNAP_EDGE) {
+          animateWrapToIndex(n - 1);
+          return;
+        }
+
         scrollPos += e.deltaY * WHEEL_MULT;
         applyMotionState(false);
         scheduleSnap();
@@ -4286,6 +4362,7 @@
 
       window.addEventListener('resize', function() {
         if (location.hash !== '#design' || !mersiItems.length) return;
+        fitBarTitle();
         showInstant(activeIndex);
       });
 
@@ -4629,7 +4706,7 @@
       }
     }
 
-    var CASE_PROJECT_ORDER = [3, 6, 2, 1, 0, 5, 7];
+    var CASE_PROJECT_ORDER = [3, 2, 1, 0, 5, 7, 6];
 
     function caseOrderForNav() {
       return CASE_PROJECT_ORDER;
