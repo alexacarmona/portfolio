@@ -3888,6 +3888,8 @@
           '1breadly_proj5.jpeg',
           '3breadly_proj5.jpeg',
           '5breadly_proj5.jpeg',
+          'breadbts1.png',
+          'breadbts2.png',
           '10breadly_proj5.jpg',
           '14breadly_proj5.jpg',
           '15breadly_proj5.jpg',
@@ -3902,9 +3904,7 @@
           'breadbts4.jpg',
           'breadbts5.jpg',
           'breadbts6.jpg',
-          'breadbts7.jpg',
-          'breadbts1.png',
-          'breadbts2.png'
+          'breadbts7.jpg'
         ],
         collaborators: 'Rose Davis, Bradley Looney, Alexa Carmona',
         aboutParagraphs: [
@@ -3969,7 +3969,7 @@
           'artandathletics_proj16.jpg',
           'qwbts.png',
           'alexa_shirley-10.jpg',
-          'gaentbst.png',
+          { src: 'gaentbst.png', solo: true },
           'process images/theatre_spread1.png',
           'process images/theatre_spread2.png'
         ],
@@ -5058,19 +5058,41 @@
       });
     }
 
+    function caseMediaEntrySrc(entry) {
+      if (!entry) return '';
+      if (typeof entry === 'string') return entry;
+      if (entry && entry.src) return String(entry.src);
+      return '';
+    }
+
+    function isCaseMediaSolo(entry) {
+      return !!(entry && typeof entry === 'object' && entry.solo);
+    }
+
     function buildCaseMediaStack(images, title, opts) {
       if (!images || !images.length) return '';
       var html = '<div class="case-media-stack">';
       for (var i = 0; i < images.length; ) {
-        if (i + 1 < images.length) {
+        var cur = images[i];
+        var curSrc = caseMediaEntrySrc(cur);
+        if (isCaseMediaSolo(cur)) {
+          html += '<div class="case-media-row case-media-row--solo">';
+          html += buildCaseMediaPiece(curSrc, title, opts);
+          html += '</div>';
+          i += 1;
+          continue;
+        }
+        var next = images[i + 1];
+        var nextSrc = caseMediaEntrySrc(next);
+        if (next && !isCaseMediaSolo(next)) {
           html += '<div class="case-media-row case-media-row--duo">';
-          html += buildCaseMediaPiece(images[i], title, opts);
-          html += buildCaseMediaPiece(images[i + 1], title, opts);
+          html += buildCaseMediaPiece(curSrc, title, opts);
+          html += buildCaseMediaPiece(nextSrc, title, opts);
           html += '</div>';
           i += 2;
         } else {
           html += '<div class="case-media-row case-media-row--solo">';
-          html += buildCaseMediaPiece(images[i], title, opts);
+          html += buildCaseMediaPiece(curSrc, title, opts);
           html += '</div>';
           i += 1;
         }
