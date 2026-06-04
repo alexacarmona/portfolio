@@ -12,7 +12,6 @@
   <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-  <link rel="preload" as="image" href="opt/alexa_erika_soccercurl-19.jpg" fetchpriority="high" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     .sr-only {
@@ -185,14 +184,6 @@
       opacity: 1;
       pointer-events: all;
       z-index: 70;
-    }
-
-    /* Off-screen sections: skip layout/paint until opened */
-    #design:not(:target),
-    #about:not(:target),
-    #raw:not(:target) {
-      content-visibility: hidden;
-      contain: layout style paint;
     }
 
     /* active nav link styling via :target */
@@ -2585,13 +2576,13 @@
     <header class="photo-hero" id="photoHero" aria-label="Featured photography">
       <div class="photo-hero-slides" id="photoHeroSlides">
         <div class="photo-hero-slide is-active" data-slide="0">
-          <img src="opt/alexa_erika_soccercurl-19.jpg" alt="Erika — soccer" fetchpriority="high" loading="eager" decoding="async" width="2000" height="1333" />
+          <img src="alexa_erika_soccercurl-19.jpg" alt="Erika — soccer" fetchpriority="high" loading="eager" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="1">
-          <img src="opt/1atlprobikes_proj19.jpg" alt="atl pro bikes" loading="lazy" decoding="async" />
+          <img src="1atlprobikes_proj19.jpg" alt="atl pro bikes" loading="lazy" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="2">
-          <img src="opt/7stellabrauneeditorial.jpg" alt="" loading="lazy" decoding="async" />
+          <img src="7stellabrauneeditorial.jpg" alt="" loading="lazy" decoding="async" />
         </div>
       </div>
       <div class="photo-hero-shade" aria-hidden="true"></div>
@@ -2701,7 +2692,7 @@
           <div class="raw-piece-media"><img src="raw_6redbluechair.png" alt="6redbluechair_proj2" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="opt/4redbluechair_proj2.jpg" alt="4redbluechair_proj2" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="4redbluechair_proj2.jpg" alt="4redbluechair_proj2" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--mid">
           <div class="raw-piece-media"><img src="raw_landscape.png" alt="Landscape — block print" loading="lazy" decoding="async" /></div>
@@ -2710,24 +2701,24 @@
           <div class="raw-piece-media"><img src="raw_denim.png" alt="Denim — experimental print" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="opt/idali%2Balexa.jpg" alt="Idali + Alexa" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="idali%2Balexa.jpg" alt="Idali + Alexa" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       <div class="raw-row">
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="opt/_MG_2941.jpg" alt="_MG_2941" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="_MG_2941.jpg" alt="_MG_2941" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="opt/4helveticagold_proj6.jpg" alt="4helveticagold_proj6" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="4helveticagold_proj6.jpg" alt="4helveticagold_proj6" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="opt/labike-3.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="labike-3.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="opt/labike-13.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="labike-13.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="opt/friwaffle.JPEG" alt="friwaffle" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="friwaffle.JPEG" alt="friwaffle" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       </div>
@@ -2736,7 +2727,7 @@
 
   <div id="about" class="section">
     <div class="about-hero">
-      <img class="about-hero-img" src="opt/alexa_20264803%202.jpg" alt="alexa carmona in studio" loading="lazy" decoding="async" />
+      <img class="about-hero-img" src="alexa_20264803%202.jpg" alt="alexa carmona in studio" loading="lazy" decoding="async" />
       <div class="about-hero-overlay">
         <div class="about-hero-copy">
           <p class="about-bio">embrace creative risk.</p>
@@ -3658,10 +3649,7 @@
     function optImgSrc(path) {
       if (!path) return '';
       var p = String(path).replace(/^\.\//, '');
-      if (/^(https?:|data:|opt\/|process images\/|videos\/)/i.test(p)) return encodeURI(p);
-      /* BTS, raw collages, and process assets stay at full path (not in opt/) */
-      if (/bts|raw_|TRADEMARK|GraphicWMotif|ftopbts|theatre_spread|gaentbst|qwbts|breadbts|gar_atlanta/i.test(p)) return encodeURI(p);
-      return encodeURI('opt/' + p);
+      return encodeURI(p);
     }
     window.optImgSrc = optImgSrc;
 
