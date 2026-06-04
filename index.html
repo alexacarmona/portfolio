@@ -2664,7 +2664,7 @@
           <div class="raw-piece-media"><img src="raw_jersey.png" alt="Hockey jersey concept" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--mid">
-          <div class="raw-piece-media"><img src="raw_southbound.png" alt="Southbound — transit collage" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="_MG_2941.jpg" alt="_MG_2941" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
           <div class="raw-piece-media"><img src="raw_diffue.png" alt="diffuse and direct" loading="lazy" decoding="async" /></div>
@@ -2705,9 +2705,6 @@
         </figure>
       </div>
       <div class="raw-row">
-        <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="_MG_2941.jpg" alt="_MG_2941" loading="lazy" decoding="async" /></div>
-        </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
           <div class="raw-piece-media"><img src="4helveticagold_proj6.jpg" alt="4helveticagold_proj6" loading="lazy" decoding="async" /></div>
         </figure>
@@ -2814,24 +2811,47 @@
       <aside class="about-body-right" aria-label="Behind the scenes">
         <div class="about-bts-player" id="aboutBtsPlayer">
           <video
-            id="aboutBtsVideoA"
+            id="aboutBtsVideo"
             class="about-bts-video is-active"
+            src="videos/btsone.mp4"
             muted
             playsinline
             webkit-playsinline
-            preload="none"
+            preload="metadata"
             aria-label="Behind the scenes"
           ></video>
-          <video
-            id="aboutBtsVideoB"
-            class="about-bts-video"
-            muted
-            playsinline
-            webkit-playsinline
-            preload="none"
-            aria-label="Behind the scenes (buffer)"
-          ></video>
         </div>
+        <script>
+        (function() {
+          var v = document.getElementById('aboutBtsVideo');
+          if (!v) return;
+          var clips = ['videos/btsone.mp4', 'videos/bts3.mp4', 'videos/bts4.mp4', 'videos/bts5.mp4'];
+          var idx = 0;
+          function onAbout() {
+            return (location.hash || '').split('?')[0] === '#about';
+          }
+          function playBts() {
+            var p = v.play();
+            if (p && p.catch) p.catch(function() {});
+          }
+          v.addEventListener('ended', function() {
+            idx = (idx + 1) % clips.length;
+            v.src = clips[idx];
+            v.load();
+            playBts();
+          });
+          function syncBts() {
+            if (onAbout()) playBts();
+            else try { v.pause(); } catch (e) {}
+          }
+          window.addEventListener('hashchange', syncBts);
+          window.addEventListener('pageshow', syncBts);
+          document.querySelectorAll('a[href="#about"]').forEach(function(link) {
+            link.addEventListener('click', function() { setTimeout(syncBts, 0); });
+          });
+          syncBts();
+        })();
+        </script>
       </aside>
       </div>
     </section>
@@ -5425,119 +5445,6 @@
       var nextBtn = document.getElementById('caseNextBtn');
       if (prevBtn) prevBtn.addEventListener('click', function() { navigateCase(-1); });
       if (nextBtn) nextBtn.addEventListener('click', function() { navigateCase(1); });
-    })();
-
-    /* ABOUT — BTS square player: seamless double-buffer */
-    (function() {
-      var a = document.getElementById('aboutBtsVideoA');
-      var b = document.getElementById('aboutBtsVideoB');
-      if (!a || !b) return;
-      var clips = [
-        'videos/btsone.mp4',
-        'videos/bts3.mp4',
-        'videos/bts4.mp4',
-        'videos/bts5.mp4'
-      ];
-      var index = 0;
-      var hasStarted = false;
-      var active = a;
-      var buffer = b;
-
-      function isAboutOpen() {
-        return (location.hash || '').split('?')[0] === '#about';
-      }
-
-      function safePlay(v) {
-        if (!v || !v.src) return;
-        var p = v.play();
-        if (p && p.catch) p.catch(function() {});
-      }
-
-      function setSrc(v, src) {
-        if (!v || !src) return;
-        var current = v.currentSrc || v.getAttribute('src') || '';
-        if (current.indexOf(src) !== -1) return;
-        v.setAttribute('src', src);
-        v.src = src;
-        v.load();
-      }
-
-      function playWhenReady(v, done) {
-        if (!v) {
-          if (done) done();
-          return;
-        }
-        if (v.readyState >= 2) {
-          safePlay(v);
-          if (done) done();
-          return;
-        }
-        v.addEventListener('loadeddata', function onReady() {
-          v.removeEventListener('loadeddata', onReady);
-          safePlay(v);
-          if (done) done();
-        });
-      }
-
-      function primeBuffer(nextIndex) {
-        var ni = ((nextIndex % clips.length) + clips.length) % clips.length;
-        setSrc(buffer, clips[ni]);
-      }
-
-      function swapToBuffer() {
-        playWhenReady(buffer, function() {
-          buffer.classList.add('is-active');
-          active.classList.remove('is-active');
-          (function(old) {
-            setTimeout(function() { try { old.pause(); } catch (e) {} }, 260);
-          })(active);
-          var tmp = active;
-          active = buffer;
-          buffer = tmp;
-        });
-      }
-
-      function startAt(i) {
-        index = ((i % clips.length) + clips.length) % clips.length;
-        setSrc(active, clips[index]);
-        playWhenReady(active, function() {
-          primeBuffer(index + 1);
-        });
-      }
-
-      active.addEventListener('ended', function() {
-        index = (index + 1) % clips.length;
-        swapToBuffer();
-        primeBuffer(index + 1);
-      });
-      buffer.addEventListener('ended', function() {
-        index = (index + 1) % clips.length;
-        swapToBuffer();
-        primeBuffer(index + 1);
-      });
-
-      function onAboutSection() {
-        if (isAboutOpen()) {
-          if (!hasStarted) {
-            hasStarted = true;
-            startAt(0);
-          } else {
-            playWhenReady(active);
-          }
-        } else {
-          try { active.pause(); } catch (e) {}
-          try { buffer.pause(); } catch (e) {}
-        }
-      }
-
-      window.addEventListener('hashchange', onAboutSection);
-      window.addEventListener('pageshow', onAboutSection);
-      document.querySelectorAll('a[href="#about"]').forEach(function(link) {
-        link.addEventListener('click', function() {
-          setTimeout(onAboutSection, 0);
-        });
-      });
-      onAboutSection();
     })();
 
     /* ABOUT — let's talk pulse + contact form reveal */
