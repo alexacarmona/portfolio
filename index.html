@@ -1982,6 +1982,18 @@
     }
     .case-collaborators[hidden] { display: none !important; }
 
+    .case-feature {
+      margin: clamp(12px, 2vh, 18px) 0 0;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: clamp(14px, 1.55vw, 17px);
+      font-weight: 300;
+      line-height: 1.78;
+      color: var(--fg);
+      opacity: 0.78;
+      max-width: 480px;
+    }
+    .case-feature[hidden] { display: none !important; }
+
     .case-software {
       margin: clamp(12px, 2vh, 18px) 0 0;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -2076,11 +2088,14 @@
       width: 100%;
       height: auto;
     }
-    .case-media-piece video {
+    .case-media-piece--video video {
       display: block;
       width: 100%;
       height: auto;
       background: #000;
+    }
+    .case-media-piece--autoplay video {
+      pointer-events: none;
     }
 
     .case-process-section {
@@ -2162,6 +2177,7 @@
       }
       .case-desc,
       .case-collaborators,
+      .case-feature,
       .case-software {
         font-size: 15px;
         line-height: 1.65;
@@ -2836,6 +2852,7 @@
             <div class="case-meta-col case-meta-col--main">
               <div class="case-desc" id="caseDesc"></div>
               <p class="case-collaborators" id="caseCollaborators" hidden></p>
+              <p class="case-feature" id="caseFeature" hidden></p>
               <p class="case-software" id="caseSoftware" hidden></p>
             </div>
             <div class="case-meta-col case-meta-col--client">
@@ -3791,11 +3808,20 @@
         barLightText: true,
         hero: '1swissdesignstamps_proj3.jpg',
         panelLeft: '6swissdesignstamps_proj3.jpg',
-        images: ['2swissdesignstamps_proj3.jpg','3swissdesignstamps_proj3.jpg','4swissdesignstamps_proj3.jpg','5swissdesignstamps_proj3.jpg','6swissdesignstamps_proj3.jpg','7swissdesignstamps_proj3.jpg'],
-        processImages: [
-          'process images/swiss_bts1.JPG',
+        panelRight: '2swissdesignstamps_proj3.jpg',
+        images: [
+          '2swissdesignstamps_proj3.jpg',
+          '3swissdesignstamps_proj3.jpg',
+          '4swissdesignstamps_proj3.jpg',
+          '5swissdesignstamps_proj3.jpg',
+          '6swissdesignstamps_proj3.jpg',
+          '7swissdesignstamps_proj3.jpg',
+          'swissbts1.JPG',
+          'swissbts2.JPG',
+          'swissbts3.JPG',
           'process images/swiss_bts2.MOV'
         ],
+        videoAutoplayLoop: true,
         description: 'A set of stamps that follows three pioneers in Swiss design. I designed and printed the full set: stamps, envelopes, and a small brochure that works as both a keepsake and a guide to the designers. The process started by breaking down their systems into grids, color, and type rules, then rebuilding them at stamp scale so each piece feels precise but still playful. The envelope and brochure extend those rules into larger surfaces, layering type and image so the set feels like a pocket-sized archive of Swiss design thinking.',
         feedSummary: 'A stamp and print system honoring three Swiss design pioneers at miniature scale. I designed and produced the full set, from perforated stamps to envelope and brochure.',
         productionBlurb: 'A set of stamps following three pioneers of Swiss design. This project was a deep dive into the production side, taking rigid design principles and translating them into a physical, perforated format.',
@@ -3857,7 +3883,29 @@
         hero: '25breadly_proj5.jpg',
         panelLeft: '23breadly_proj5.jpg',
         panelRight: '1breadly_proj5.jpeg',
-        images: ['1breadly_proj5.jpeg','3breadly_proj5.jpeg','5breadly_proj5.jpeg','10breadly_proj5.jpg','14breadly_proj5.jpg','15breadly_proj5.jpg','22breadly_proj5.jpg','23breadly_proj5.jpg','26breadly_proj5.jpg'],
+        images: [
+          '24breadly_proj5.jpg',
+          '1breadly_proj5.jpeg',
+          '3breadly_proj5.jpeg',
+          '5breadly_proj5.jpeg',
+          '10breadly_proj5.jpg',
+          '14breadly_proj5.jpg',
+          '15breadly_proj5.jpg',
+          '22breadly_proj5.jpg',
+          '23breadly_proj5.jpg',
+          '26breadly_proj5.jpg',
+          'breadlybts1.JPG',
+          'breadbts1.jpg',
+          'breadlybts2.JPG',
+          'breadbts2.jpg',
+          'breadbts3.jpg',
+          'breadbts4.jpg',
+          'breadbts5.jpg',
+          'breadbts6.jpg',
+          'breadbts7.jpg',
+          'breadbts1.png',
+          'breadbts2.png'
+        ],
         collaborators: 'Rose Davis, Bradley Looney, Alexa Carmona',
         aboutParagraphs: [
           'Born in Brooklyn, Breadly treats a loaf like fashion, not something to tuck away, but a reason to show up. The brand tracks how young audiences spend when everything else feels uncertain: small, photogenic indulgences that still feel like control. Nightlife is quieter, wellness is louder, and the culture keeps swinging between restraint and excess. Breadly sits in that swing with full-volume energy.',
@@ -3909,18 +3957,26 @@
         panelLeft: '6quintinwilliamsshoedesign_proj17.jpg',
         panelRight: '3shirleyzhangatlantahawks_proj23.jpg',
         images: [
+          '1shirleyzhangatlantahawks_proj23.jpg',
           '1quintinwilliamsshoedesign_proj17.jpg',
+          '2shirleyzhangatlantahawks_proj23.jpg',
           '9quintinwilliamsshoedesign_proj17.jpg',
-          '5quintinwilliamsshoedesign_proj17.jpg',
           '3shirleyzhangatlantahawks_proj23.jpg',
+          '5quintinwilliamsshoedesign_proj17.jpg',
+          '4shirleyzhangatlantahawks_proj23.jpg',
           '4quintinwilliamsshoedesign_proj17.jpg',
+          '5shirleyzhangatlantahawks_proj23.jpg',
           'artandathletics_proj16.jpg',
+          'qwbts.png',
+          'alexa_shirley-10.jpg',
+          'gaentbst.png',
           'process images/theatre_spread1.png',
           'process images/theatre_spread2.png'
         ],
         panelImageOffset: 'shift-up',
         flipbookEmbedUrl: 'https://heyzine.com/flip-book/c6c377a09d.html',
-        collaborators: 'Leo Ruiz and Kalina Richardson',
+        collaborators: 'Leo Ruiz',
+        featureCredit: 'Shoe designer feature: Quintin Williams',
         description: 'Editorial layout for Georgia Entertainment that pairs athlete portraits with abstract typography and graphic shapes. The spreads lean into motion, cropped limbs, overlapping type, and color fields so the story feels like a conversation between art direction and performance.',
         feedSummary: 'Editorial layout for Georgia Entertainment pairing athlete portraits with bold type and graphic motion. I photographed shoes and environmental moments with the Hawks team to shape the magazine’s visual identity.',
         productionBlurb: 'A project for real-world client Georgia Entertainment, produced in collaboration with the Atlanta Hawks. Working with Creative Director Shirley Zhang and Professor Q Williams, I handled shoe photography and captured environmental moments to define the magazine\'s visual identity.',
@@ -4970,28 +5026,51 @@
       return /\.(mov|mp4|webm|m4v)$/i.test(String(src));
     }
 
-    function buildCaseMediaPiece(src, title) {
+    function buildCaseMediaPiece(src, title, opts) {
+      opts = opts || {};
       var safeTitle = String(title || '').replace(/"/g, '&quot;');
       var safeSrc = caseMediaSrc(src);
       if (isCaseVideoSrc(src)) {
-        return '<figure class="case-media-piece case-media-piece--video"><video src="' + safeSrc + '" controls playsinline preload="metadata"></video></figure>';
+        var autoplay = !!opts.videoAutoplay;
+        var videoClass = 'case-media-piece case-media-piece--video' + (autoplay ? ' case-media-piece--autoplay' : '');
+        var videoAttrs = autoplay
+          ? 'autoplay loop muted playsinline preload="auto"'
+          : 'controls playsinline preload="metadata"';
+        return '<figure class="' + videoClass + '"><video src="' + safeSrc + '" ' + videoAttrs + '></video></figure>';
       }
       return '<figure class="case-media-piece"><img src="' + safeSrc + '" alt="' + safeTitle + '" loading="lazy" decoding="async" /></figure>';
     }
 
-    function buildCaseMediaStack(images, title) {
+    function playCaseAutoplayVideos(root) {
+      if (!root) return;
+      root.querySelectorAll('.case-media-piece--autoplay video').forEach(function(video) {
+        video.muted = true;
+        video.loop = true;
+        var playAttempt = video.play();
+        if (playAttempt && playAttempt.catch) playAttempt.catch(function() {});
+      });
+    }
+
+    function pauseCaseVideos(root) {
+      if (!root) return;
+      root.querySelectorAll('.case-media-piece--video video').forEach(function(video) {
+        video.pause();
+      });
+    }
+
+    function buildCaseMediaStack(images, title, opts) {
       if (!images || !images.length) return '';
       var html = '<div class="case-media-stack">';
       for (var i = 0; i < images.length; ) {
         if (i + 1 < images.length) {
           html += '<div class="case-media-row case-media-row--duo">';
-          html += buildCaseMediaPiece(images[i], title);
-          html += buildCaseMediaPiece(images[i + 1], title);
+          html += buildCaseMediaPiece(images[i], title, opts);
+          html += buildCaseMediaPiece(images[i + 1], title, opts);
           html += '</div>';
           i += 2;
         } else {
           html += '<div class="case-media-row case-media-row--solo">';
-          html += buildCaseMediaPiece(images[i], title);
+          html += buildCaseMediaPiece(images[i], title, opts);
           html += '</div>';
           i += 1;
         }
@@ -5000,16 +5079,16 @@
       return html;
     }
 
-    function buildCaseImageGrid(images, title) {
-      return buildCaseMediaStack(images, title);
+    function buildCaseImageGrid(images, title, opts) {
+      return buildCaseMediaStack(images, title, opts);
     }
 
-    function buildCaseProcessSection(images, title) {
+    function buildCaseProcessSection(images, title, opts) {
       if (!images || !images.length) return '';
       return (
         '<section class="case-process-section" aria-label="Process">' +
           '<h3 class="case-process-label">Process</h3>' +
-          buildCaseMediaStack(images, title) +
+          buildCaseMediaStack(images, title, opts) +
         '</section>'
       );
     }
@@ -5098,6 +5177,7 @@
       const titleEl = document.getElementById('caseTitle');
       const descEl = document.getElementById('caseDesc');
       const collabEl = document.getElementById('caseCollaborators');
+      const featureEl = document.getElementById('caseFeature');
       const softwareEl = document.getElementById('caseSoftware');
       const clientEl = document.getElementById('caseClient');
       const kindListEl = document.getElementById('caseKindList');
@@ -5118,6 +5198,16 @@
         } else {
           collabEl.hidden = true;
           collabEl.textContent = '';
+        }
+      }
+
+      if (featureEl) {
+        if (p.featureCredit) {
+          featureEl.hidden = false;
+          featureEl.textContent = p.featureCredit;
+        } else {
+          featureEl.hidden = true;
+          featureEl.textContent = '';
         }
       }
 
@@ -5188,14 +5278,16 @@
         if (galleryStage) galleryStage.hidden = false;
         if (grid) {
           grid.hidden = false;
+          var mediaOpts = { videoAutoplay: !!p.videoAutoplayLoop };
           var galleryHtml = '';
           if (p.images && p.images.length) {
-            galleryHtml += buildCaseImageGrid(p.images, p.title);
+            galleryHtml += buildCaseImageGrid(p.images, p.title, mediaOpts);
           }
           if (p.processImages && p.processImages.length) {
-            galleryHtml += buildCaseProcessSection(p.processImages, p.title);
+            galleryHtml += buildCaseProcessSection(p.processImages, p.title, mediaOpts);
           }
           grid.innerHTML = galleryHtml;
+          playCaseAutoplayVideos(grid);
         }
       } else {
         if (grid) {
@@ -5228,6 +5320,7 @@
       var flipSec = document.getElementById('caseFlipbookSection');
       var galleryStage = document.getElementById('caseGalleryStage');
       if (grid) {
+        pauseCaseVideos(grid);
         grid.hidden = false;
         grid.innerHTML = '';
       }
@@ -5238,11 +5331,13 @@
       document.body.classList.remove('case-open');
       var descEl = document.getElementById('caseDesc');
       var collabEl = document.getElementById('caseCollaborators');
+      var featureEl = document.getElementById('caseFeature');
       var clientEl = document.getElementById('caseClient');
       var kindListEl = document.getElementById('caseKindList');
       var tagsListEl = document.getElementById('caseTagsList');
       if (descEl) descEl.innerHTML = '';
       if (collabEl) { collabEl.hidden = true; collabEl.textContent = ''; }
+      if (featureEl) { featureEl.hidden = true; featureEl.textContent = ''; }
       var softwareEl = document.getElementById('caseSoftware');
       if (softwareEl) { softwareEl.hidden = true; softwareEl.textContent = ''; }
       if (clientEl) { clientEl.hidden = true; clientEl.innerHTML = ''; }
