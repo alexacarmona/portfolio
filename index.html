@@ -12,6 +12,7 @@
   <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="preload" as="image" href="opt/alexa_erika_soccercurl-19.jpg" fetchpriority="high" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     .sr-only {
@@ -184,6 +185,14 @@
       opacity: 1;
       pointer-events: all;
       z-index: 70;
+    }
+
+    /* Off-screen sections: skip layout/paint until opened */
+    #design:not(:target),
+    #about:not(:target),
+    #raw:not(:target) {
+      content-visibility: hidden;
+      contain: layout style paint;
     }
 
     /* active nav link styling via :target */
@@ -2576,13 +2585,13 @@
     <header class="photo-hero" id="photoHero" aria-label="Featured photography">
       <div class="photo-hero-slides" id="photoHeroSlides">
         <div class="photo-hero-slide is-active" data-slide="0">
-          <img src="alexa_erika_soccercurl-19.jpg" alt="Erika — soccer" fetchpriority="high" loading="eager" decoding="async" />
+          <img src="opt/alexa_erika_soccercurl-19.jpg" alt="Erika — soccer" fetchpriority="high" loading="eager" decoding="async" width="2000" height="1333" />
         </div>
         <div class="photo-hero-slide" data-slide="1">
-          <img src="1atlprobikes_proj19.jpg" alt="atl pro bikes" loading="lazy" decoding="async" />
+          <img src="opt/1atlprobikes_proj19.jpg" alt="atl pro bikes" loading="lazy" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="2">
-          <img src="7stellabrauneeditorial.jpg" alt="" loading="lazy" decoding="async" />
+          <img src="opt/7stellabrauneeditorial.jpg" alt="" loading="lazy" decoding="async" />
         </div>
       </div>
       <div class="photo-hero-shade" aria-hidden="true"></div>
@@ -2692,7 +2701,7 @@
           <div class="raw-piece-media"><img src="raw_6redbluechair.png" alt="6redbluechair_proj2" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="4redbluechair_proj2.jpg" alt="4redbluechair_proj2" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/4redbluechair_proj2.jpg" alt="4redbluechair_proj2" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--mid">
           <div class="raw-piece-media"><img src="raw_landscape.png" alt="Landscape — block print" loading="lazy" decoding="async" /></div>
@@ -2701,21 +2710,24 @@
           <div class="raw-piece-media"><img src="raw_denim.png" alt="Denim — experimental print" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="idali%2Balexa.jpg" alt="Idali + Alexa" loading="lazy" decoding="async" /></div>
-        </figure>
-        <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="_MG_2941.jpg" alt="_MG_2941" loading="lazy" decoding="async" /></div>
-        </figure>
-        <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="4helveticagold_proj6.jpg" alt="4helveticagold_proj6" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/idali%2Balexa.jpg" alt="Idali + Alexa" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       <div class="raw-row">
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="labike-3.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/_MG_2941.jpg" alt="_MG_2941" loading="lazy" decoding="async" /></div>
+        </figure>
+        <figure class="raw-piece raw-piece--landscape raw-piece--wide">
+          <div class="raw-piece-media"><img src="opt/4helveticagold_proj6.jpg" alt="4helveticagold_proj6" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="labike-13.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/labike-3.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
+        </figure>
+        <figure class="raw-piece raw-piece--portrait raw-piece--tall">
+          <div class="raw-piece-media"><img src="opt/labike-13.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
+        </figure>
+        <figure class="raw-piece raw-piece--landscape raw-piece--wide">
+          <div class="raw-piece-media"><img src="opt/friwaffle.JPEG" alt="friwaffle" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       </div>
@@ -2724,7 +2736,7 @@
 
   <div id="about" class="section">
     <div class="about-hero">
-      <img class="about-hero-img" src="alexa_20264803%202.jpg" alt="alexa carmona in studio" />
+      <img class="about-hero-img" src="opt/alexa_20264803%202.jpg" alt="alexa carmona in studio" loading="lazy" decoding="async" />
       <div class="about-hero-overlay">
         <div class="about-hero-copy">
           <p class="about-bio">embrace creative risk.</p>
@@ -2815,6 +2827,7 @@
             class="about-bts-video is-active"
             muted
             playsinline
+            webkit-playsinline
             preload="none"
             aria-label="Behind the scenes"
           ></video>
@@ -2823,6 +2836,7 @@
             class="about-bts-video"
             muted
             playsinline
+            webkit-playsinline
             preload="none"
             aria-label="Behind the scenes (buffer)"
           ></video>
@@ -3208,7 +3222,7 @@
           el.dataset.pid = String(item.pid);
           el.dataset.imgIndex = String(item.imgIndex != null ? item.imgIndex : 0);
           var img = document.createElement('img');
-          img.src = item.src;
+          img.src = (typeof optImgSrc === 'function' ? optImgSrc(item.src) : item.src);
           img.alt = item.alt;
           img.loading = 'lazy';
           img.decoding = 'async';
@@ -3640,8 +3654,19 @@
       },
     ];
     window.photoProjects = photoProjects;
+
+    function optImgSrc(path) {
+      if (!path) return '';
+      var p = String(path).replace(/^\.\//, '');
+      if (/^(https?:|data:|opt\/|process images\/|videos\/)/i.test(p)) return encodeURI(p);
+      /* BTS, raw collages, and process assets stay at full path (not in opt/) */
+      if (/bts|raw_|TRADEMARK|GraphicWMotif|ftopbts|theatre_spread|gaentbst|qwbts|breadbts|gar_atlanta/i.test(p)) return encodeURI(p);
+      return encodeURI('opt/' + p);
+    }
+    window.optImgSrc = optImgSrc;
+
     if (window.initPhotoGrid) window.initPhotoGrid();
-    if (window.initMersiProjects) window.initMersiProjects();
+    if (location.hash === '#design' && window.initMersiProjects) window.initMersiProjects();
     if (location.hash === '#photography') window.dispatchEvent(new Event('hashchange'));
 
     function formatPhotoLightboxTitle(proj) {
@@ -3690,12 +3715,13 @@
 
       if (!imgCount || !mainImg) return;
       var src = s.srcList[s.index];
+      var displaySrc = typeof optImgSrc === 'function' ? optImgSrc(src) : src;
       mainImg.classList.remove('is-loaded');
-      if (mainImg.src !== src) {
+      if (mainImg.src !== displaySrc) {
         mainImg.onload = function() {
           mainImg.classList.add('is-loaded');
         };
-        mainImg.src = src;
+        mainImg.src = displaySrc;
         if (mainImg.complete) mainImg.classList.add('is-loaded');
       } else {
         mainImg.classList.add('is-loaded');
@@ -4169,7 +4195,8 @@
           if (done) done();
           return;
         }
-        var urls = [item.leftSrc, item.rightSrc];
+        var opt = typeof window.optImgSrc === 'function' ? window.optImgSrc : function(u) { return u; };
+        var urls = [opt(item.leftSrc), opt(item.rightSrc)];
         var pending = 0;
         var i;
         for (i = 0; i < urls.length; i++) {
@@ -4224,9 +4251,10 @@
           if (item.singlePanel && edge === 'top') slide.classList.add('mersi-slide-item--single');
           if (item.panelImageOffset) slide.classList.add('mersi-slide-item--' + item.panelImageOffset);
           var src = edge === 'top' ? item.leftSrc : (item.singlePanel ? item.leftSrc : item.rightSrc);
+          var displaySrc = typeof window.optImgSrc === 'function' ? window.optImgSrc(src) : src;
           var loadMode = eager[idx] ? 'eager' : 'lazy';
           var fetchPri = eager[idx] && idx === activeIndex ? ' fetchpriority="high"' : '';
-          slide.innerHTML = '<img src="' + escHtml(src) + '" alt="' + escHtml(item.title) + '" decoding="async" loading="' + loadMode + '"' + fetchPri + ' />';
+          slide.innerHTML = '<img src="' + escHtml(displaySrc) + '" alt="' + escHtml(item.title) + '" decoding="async" loading="' + loadMode + '"' + fetchPri + ' />';
           stack.appendChild(slide);
           slides.push({ el: slide, edge: edge });
         });
@@ -5062,11 +5090,12 @@
         var autoplay = !!opts.videoAutoplay;
         var videoClass = 'case-media-piece case-media-piece--video' + (autoplay ? ' case-media-piece--autoplay' : '');
         var videoAttrs = autoplay
-          ? 'autoplay loop muted playsinline preload="auto"'
+          ? 'autoplay loop muted playsinline preload="none"'
           : 'controls playsinline preload="metadata"';
         return '<figure class="' + videoClass + '"><video src="' + safeSrc + '" ' + videoAttrs + '></video></figure>';
       }
-      return '<figure class="case-media-piece"><img src="' + safeSrc + '" alt="' + safeTitle + '" loading="lazy" decoding="async" /></figure>';
+      var imgPath = typeof window.optImgSrc === 'function' ? window.optImgSrc(src) : safeSrc;
+      return '<figure class="case-media-piece"><img src="' + imgPath + '" alt="' + safeTitle + '" loading="lazy" decoding="async" /></figure>';
     }
 
     function playCaseAutoplayVideos(root) {
@@ -5396,7 +5425,8 @@
       updateCaseProjectNav();
     }
     document.addEventListener('keydown', function(e) {
-      if (!document.getElementById('caseOverlay').classList.contains('open')) return;
+      var caseOverlay = document.getElementById('caseOverlay');
+      if (!caseOverlay || !caseOverlay.classList.contains('open')) return;
       if (e.key === 'Escape') closeCase();
       if (e.key === 'ArrowLeft') { e.preventDefault(); navigateCase(-1); }
       if (e.key === 'ArrowRight') { e.preventDefault(); navigateCase(1); }
@@ -5425,15 +5455,40 @@
       var active = a;
       var buffer = b;
 
+      function isAboutOpen() {
+        return (location.hash || '').split('?')[0] === '#about';
+      }
+
       function safePlay(v) {
+        if (!v || !v.src) return;
         var p = v.play();
         if (p && p.catch) p.catch(function() {});
       }
 
       function setSrc(v, src) {
-        if (v.getAttribute('src') === src) return;
+        if (!v || !src) return;
+        var current = v.currentSrc || v.getAttribute('src') || '';
+        if (current.indexOf(src) !== -1) return;
+        v.setAttribute('src', src);
         v.src = src;
         v.load();
+      }
+
+      function playWhenReady(v, done) {
+        if (!v) {
+          if (done) done();
+          return;
+        }
+        if (v.readyState >= 2) {
+          safePlay(v);
+          if (done) done();
+          return;
+        }
+        v.addEventListener('loadeddata', function onReady() {
+          v.removeEventListener('loadeddata', onReady);
+          safePlay(v);
+          if (done) done();
+        });
       }
 
       function primeBuffer(nextIndex) {
@@ -5442,27 +5497,24 @@
       }
 
       function swapToBuffer() {
-        // Start buffer video, then crossfade in the same tick.
-        safePlay(buffer);
-        buffer.classList.add('is-active');
-        active.classList.remove('is-active');
-
-        // Pause old one after fade to avoid showing grey.
-        (function(old) {
-          setTimeout(function() { try { old.pause(); } catch (e) {} }, 260);
-        })(active);
-
-        // Swap refs
-        var tmp = active;
-        active = buffer;
-        buffer = tmp;
+        playWhenReady(buffer, function() {
+          buffer.classList.add('is-active');
+          active.classList.remove('is-active');
+          (function(old) {
+            setTimeout(function() { try { old.pause(); } catch (e) {} }, 260);
+          })(active);
+          var tmp = active;
+          active = buffer;
+          buffer = tmp;
+        });
       }
 
       function startAt(i) {
         index = ((i % clips.length) + clips.length) % clips.length;
         setSrc(active, clips[index]);
-        safePlay(active);
-        primeBuffer(index + 1);
+        playWhenReady(active, function() {
+          primeBuffer(index + 1);
+        });
       }
 
       active.addEventListener('ended', function() {
@@ -5471,19 +5523,18 @@
         primeBuffer(index + 1);
       });
       buffer.addEventListener('ended', function() {
-        // In case buffer ends first due to a swap timing edge.
         index = (index + 1) % clips.length;
         swapToBuffer();
         primeBuffer(index + 1);
       });
 
       function onAboutSection() {
-        if (location.hash === '#about') {
+        if (isAboutOpen()) {
           if (!hasStarted) {
             hasStarted = true;
             startAt(0);
           } else {
-            safePlay(active);
+            playWhenReady(active);
           }
         } else {
           try { active.pause(); } catch (e) {}
@@ -5492,7 +5543,12 @@
       }
 
       window.addEventListener('hashchange', onAboutSection);
-      // Run once on load so #about works immediately on live hosting.
+      window.addEventListener('pageshow', onAboutSection);
+      document.querySelectorAll('a[href="#about"]').forEach(function(link) {
+        link.addEventListener('click', function() {
+          setTimeout(onAboutSection, 0);
+        });
+      });
       onAboutSection();
     })();
 

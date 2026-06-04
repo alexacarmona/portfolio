@@ -38,9 +38,13 @@ GitHub rejects very large files (over **100 MB** per file, warns above **50 MB**
   - `btsone.mp4` (~4s from middle of btsone), `bts3.mp4`, `bts4.mp4`, `bts5.mp4`
 - The site now uses those MP4s. Original `.MOV` files are listed in **`.gitignore`** so they are not uploaded.
 
+**Web-sized images (`opt/`)**
+
+The live site loads **`opt/`** copies (compressed JPEGs) for photography, works panels, and lightbox — not the multi‑MB originals in the root folder. When you push, include the whole **`opt/`** directory plus **`index.html`**.
+
 **Before you push**
 
-1. Make sure all **`videos/*.mp4`** files are in your commit.
+1. Make sure all **`videos/*.mp4`** and **`opt/`** are in your commit.
 2. Do **not** commit `btsone.MOV`, `bts3.MOV`, `bts4.MOV`, `bts5.MP4`, or other raw video files.
 3. If push still fails, a photo file may be over 100 MB — find it with:
    ```bash
