@@ -1546,11 +1546,15 @@
     }
     .about-connect-rotator-text {
       display: inline-block;
-      transition: opacity 480ms ease;
+      transition: opacity 420ms ease, transform 420ms ease;
       opacity: 1;
+      transform: translateY(0);
       color: #e6b800;
     }
-    .about-connect-rotator-text.is-fading { opacity: 0; }
+    .about-connect-rotator-text.is-fading {
+      opacity: 0;
+      transform: translateY(0.14em);
+    }
     .about-story p {
       font-size: clamp(14px, 1.55vw, 17px);
       font-weight: 300;
@@ -1605,7 +1609,7 @@
       transform: translateY(0);
       filter: blur(0);
       pointer-events: auto;
-      max-height: 520px;
+      max-height: 680px;
       transition:
         opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
         transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
@@ -1617,9 +1621,9 @@
     .about-body-left.is-form-open .about-work-submit {
       animation: aboutFieldIn 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
     }
-    .about-body-left.is-form-open .about-work-field:nth-of-type(1) { animation-delay: 0.1s; }
-    .about-body-left.is-form-open .about-work-field:nth-of-type(2) { animation-delay: 0.18s; }
-    .about-body-left.is-form-open .about-work-field:nth-of-type(3) { animation-delay: 0.26s; }
+    .about-body-left.is-form-open .about-work-field:nth-child(6) { animation-delay: 0.1s; }
+    .about-body-left.is-form-open .about-work-field:nth-child(7) { animation-delay: 0.18s; }
+    .about-body-left.is-form-open .about-work-field:nth-child(8) { animation-delay: 0.26s; }
     .about-body-left.is-form-open .about-work-submit { animation-delay: 0.34s; }
     @keyframes aboutFieldIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -2807,6 +2811,136 @@
             </form>
           </div>
         </div>
+        <script>
+        (function() {
+          if (window.__aboutConnectInit) return;
+          window.__aboutConnectInit = true;
+
+          var connectText = document.getElementById('aboutConnectText');
+          var trigger = document.getElementById('aboutConnectTrigger');
+          var bodyLeft = document.getElementById('aboutBodyLeft');
+          var fadeMs = 420;
+          var holdMs = 1150;
+          var motionOk = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+
+          if (connectText && motionOk) {
+            setInterval(function() {
+              connectText.classList.add('is-fading');
+              setTimeout(function() {
+                connectText.classList.remove('is-fading');
+              }, fadeMs);
+            }, fadeMs + holdMs);
+          }
+
+          function setFormOpen(open) {
+            if (!bodyLeft || !trigger) return;
+            bodyLeft.classList.toggle('is-form-open', open);
+            trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (open) {
+              var nameField = document.getElementById('aboutWorkName');
+              if (nameField) setTimeout(function() { nameField.focus({ preventScroll: true }); }, 480);
+            }
+          }
+
+          if (trigger && bodyLeft) {
+            trigger.addEventListener('click', function(e) {
+              e.preventDefault();
+              e.stopPropagation();
+              setFormOpen(!bodyLeft.classList.contains('is-form-open'));
+            });
+          }
+
+          function formQueryParams() {
+            var parts = [];
+            if (window.location.search) parts.push(window.location.search.slice(1));
+            var hash = window.location.hash || '';
+            var q = hash.indexOf('?');
+            if (q !== -1) parts.push(hash.slice(q + 1));
+            return new URLSearchParams(parts.join('&'));
+          }
+
+          function showFormSuccess() {
+            var form = document.getElementById('aboutWorkForm');
+            var success = document.getElementById('aboutWorkSuccess');
+            setFormOpen(true);
+            if (form) form.classList.add('is-hidden');
+            if (success) {
+              success.classList.add('is-visible');
+              success.focus({ preventScroll: false });
+            }
+            if (window.location.hash.split('?')[0] !== '#about') {
+              window.location.hash = 'about';
+            }
+            history.replaceState(null, '', window.location.pathname + '#about');
+          }
+
+          if (formQueryParams().get('sent') === '1') {
+            showFormSuccess();
+          }
+
+          var workForm = document.getElementById('aboutWorkForm');
+          var submitBtn = document.getElementById('aboutWorkSubmit');
+          if (workForm && submitBtn) {
+            var fields = [
+              { el: document.getElementById('aboutWorkName'), wrap: null, test: function(v) { return v.trim().length >= 1; } },
+              { el: document.getElementById('aboutWorkEmail'), wrap: null, test: function(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); } },
+              { el: document.getElementById('aboutWorkMessage'), wrap: null, test: function(v) { return v.trim().length >= 3; } }
+            ];
+            fields.forEach(function(f) {
+              if (f.el) f.wrap = f.el.closest('.about-work-field');
+            });
+
+            function clearFieldErrors() {
+              fields.forEach(function(f) {
+                if (f.wrap) f.wrap.classList.remove('has-error');
+                if (f.el) f.el.removeAttribute('aria-invalid');
+              });
+            }
+
+            function validateForm() {
+              clearFieldErrors();
+              var firstBad = null;
+              fields.forEach(function(f) {
+                if (!f.el || !f.wrap) return;
+                if (!f.test(f.el.value)) {
+                  f.wrap.classList.add('has-error');
+                  f.el.setAttribute('aria-invalid', 'true');
+                  if (!firstBad) firstBad = f.el;
+                }
+              });
+              if (firstBad) {
+                firstBad.focus();
+                return false;
+              }
+              return true;
+            }
+
+            fields.forEach(function(f) {
+              if (!f.el) return;
+              f.el.addEventListener('input', function() {
+                if (f.wrap && f.wrap.classList.contains('has-error') && f.test(f.el.value)) {
+                  f.wrap.classList.remove('has-error');
+                  f.el.removeAttribute('aria-invalid');
+                }
+              });
+            });
+
+            workForm.addEventListener('submit', function(e) {
+              if (!validateForm()) {
+                e.preventDefault();
+                return;
+              }
+              if (submitBtn.disabled) {
+                e.preventDefault();
+                return;
+              }
+              submitBtn.disabled = true;
+              submitBtn.textContent = 'sending…';
+              workForm.setAttribute('aria-busy', 'true');
+            });
+          }
+        })();
+        </script>
       </div>
       <aside class="about-body-right" aria-label="Behind the scenes">
         <div class="about-bts-player" id="aboutBtsPlayer">
@@ -3640,11 +3774,11 @@
         location: '',
         description: '',
         details: '',
-        thumbnail: 'alexa_kris-41.jpg',
+        thumbnail: 'alexa_kris-43.jpg',
         images: [
+          { src: 'alexa_kris-43.jpg', orientation: 'portrait' },
           { src: 'alexa_kris-41.jpg', orientation: 'portrait' },
           { src: 'alexa_kris-29.jpg', orientation: 'landscape' },
-          { src: 'alexa_kris-43.jpg', orientation: 'portrait' },
           { src: 'alexa_kris-55.jpg', orientation: 'portrait' },
           { src: 'alexa_kris-101.jpg', orientation: 'landscape' }
         ]
@@ -5477,126 +5611,6 @@
       var nextBtn = document.getElementById('caseNextBtn');
       if (prevBtn) prevBtn.addEventListener('click', function() { navigateCase(-1); });
       if (nextBtn) nextBtn.addEventListener('click', function() { navigateCase(1); });
-    })();
-
-    /* ABOUT — let's talk pulse + contact form reveal */
-    (function() {
-      var connectText = document.getElementById('aboutConnectText');
-      var trigger = document.getElementById('aboutConnectTrigger');
-      var bodyLeft = document.getElementById('aboutBodyLeft');
-      var fadeMs = 480;
-      var holdMs = 1200;
-
-      if (connectText) {
-        setInterval(function() {
-          connectText.classList.add('is-fading');
-          setTimeout(function() {
-            connectText.classList.remove('is-fading');
-          }, fadeMs);
-        }, fadeMs + holdMs);
-      }
-
-      function setFormOpen(open) {
-        if (!bodyLeft || !trigger) return;
-        bodyLeft.classList.toggle('is-form-open', open);
-        trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      }
-
-      if (trigger && bodyLeft) {
-        trigger.addEventListener('click', function() {
-          setFormOpen(!bodyLeft.classList.contains('is-form-open'));
-        });
-      }
-
-      function formQueryParams() {
-        var parts = [];
-        if (window.location.search) parts.push(window.location.search.slice(1));
-        var hash = window.location.hash || '';
-        var q = hash.indexOf('?');
-        if (q !== -1) parts.push(hash.slice(q + 1));
-        return new URLSearchParams(parts.join('&'));
-      }
-
-      function showFormSuccess() {
-        var form = document.getElementById('aboutWorkForm');
-        var success = document.getElementById('aboutWorkSuccess');
-        setFormOpen(true);
-        if (form) form.classList.add('is-hidden');
-        if (success) {
-          success.classList.add('is-visible');
-          success.focus({ preventScroll: false });
-        }
-        if (window.location.hash.split('?')[0] !== '#about') {
-          window.location.hash = 'about';
-        }
-        history.replaceState(null, '', window.location.pathname + '#about');
-      }
-
-      if (formQueryParams().get('sent') === '1') {
-        showFormSuccess();
-      }
-
-      var workForm = document.getElementById('aboutWorkForm');
-      var submitBtn = document.getElementById('aboutWorkSubmit');
-      if (workForm && submitBtn) {
-        var fields = [
-          { el: document.getElementById('aboutWorkName'), wrap: null, test: function(v) { return v.trim().length >= 1; } },
-          { el: document.getElementById('aboutWorkEmail'), wrap: null, test: function(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()); } },
-          { el: document.getElementById('aboutWorkMessage'), wrap: null, test: function(v) { return v.trim().length >= 3; } }
-        ];
-        fields.forEach(function(f) {
-          if (f.el) f.wrap = f.el.closest('.about-work-field');
-        });
-
-        function clearFieldErrors() {
-          fields.forEach(function(f) {
-            if (f.wrap) f.wrap.classList.remove('has-error');
-            if (f.el) f.el.removeAttribute('aria-invalid');
-          });
-        }
-
-        function validateForm() {
-          clearFieldErrors();
-          var firstBad = null;
-          fields.forEach(function(f) {
-            if (!f.el || !f.wrap) return;
-            if (!f.test(f.el.value)) {
-              f.wrap.classList.add('has-error');
-              f.el.setAttribute('aria-invalid', 'true');
-              if (!firstBad) firstBad = f.el;
-            }
-          });
-          if (firstBad) {
-            firstBad.focus();
-            return false;
-          }
-          return true;
-        }
-
-        fields.forEach(function(f) {
-          if (!f.el) return;
-          f.el.addEventListener('input', function() {
-            if (f.wrap && f.wrap.classList.contains('has-error') && f.test(f.el.value)) {
-              f.wrap.classList.remove('has-error');
-              f.el.removeAttribute('aria-invalid');
-            }
-          });
-        });
-
-        workForm.addEventListener('submit', function(e) {
-          if (!validateForm()) {
-            e.preventDefault();
-            return;
-          }
-          if (submitBtn.disabled) {
-            e.preventDefault();
-            return;
-          }
-          submitBtn.disabled = true;
-          submitBtn.textContent = 'sending…';
-          workForm.setAttribute('aria-busy', 'true');
-        });
-      }
     })();
 
     /* ABOUT — nav contrast on hero, default after scroll */
