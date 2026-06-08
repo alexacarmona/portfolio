@@ -1079,7 +1079,23 @@
       #photography[data-photo-size="s"] { --photo-cols: 3; }
       #photography[data-photo-size="m"] { --photo-cols: 2; }
       #photography[data-photo-size="l"] { --photo-cols: 1; }
-      #photoCanvas { --photo-gap: 10px; }
+      #photoCanvas {
+        --photo-gap: 10px;
+        column-fill: auto;
+        transition: none;
+      }
+      .photo-cell {
+        display: inline-block;
+        width: 100%;
+        box-sizing: border-box;
+        content-visibility: visible;
+        contain-intrinsic-size: unset;
+        -webkit-column-break-inside: avoid;
+        break-inside: avoid-column;
+      }
+      .photo-cell img {
+        max-width: 100%;
+      }
     }
 
     /* ── Photo detail: full-screen lightbox (dim + blur), title under image ─── */
@@ -5218,7 +5234,6 @@
     }
 
     var CASE_PROJECT_ORDER = [3, 2, 1, 0, 5, 7, 6];
-    window.hideCaseComingSoon = hideCaseComingSoon;
 
     function caseOrderForNav() {
       return CASE_PROJECT_ORDER;
@@ -5686,6 +5701,14 @@
         if (isLogo) {
           resetSectionScroll();
           if (window.location.hash !== '#photography') window.location.hash = 'photography';
+          requestAnimationFrame(resetSectionScroll);
+          return;
+        }
+
+        if (hash === 'design') {
+          resetSectionScroll();
+          if (typeof window.initMersiProjects === 'function') window.initMersiProjects();
+          if (window.location.hash !== '#design') window.location.hash = 'design';
           requestAnimationFrame(resetSectionScroll);
           return;
         }
