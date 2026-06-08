@@ -1527,15 +1527,16 @@
     }
     .about-body-name {
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: clamp(40px, 4.6vw, 66px);
+      font-size: clamp(32px, 3.6vw, 52px);
       font-weight: 300;
       letter-spacing: -0.02em;
       color: var(--fg);
       margin-bottom: 28px;
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       align-items: baseline;
       gap: 0.28em;
+      white-space: nowrap;
     }
     .about-connect-trigger {
       font: inherit;
@@ -1562,7 +1563,7 @@
     }
     .about-connect-rotator-text {
       display: inline-block;
-      transition: opacity 420ms ease, transform 420ms ease;
+      transition: opacity 520ms ease, transform 520ms ease;
       opacity: 1;
       transform: translateY(0);
       color: #e6b800;
@@ -1581,23 +1582,43 @@
     .about-story p:last-child {
       margin-bottom: 0;
     }
+    .about-links-block {
+      margin-top: 36px;
+    }
     .about-links {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       align-items: center;
       justify-content: flex-start;
-      gap: clamp(24px, 3.5vw, 40px);
-      margin-top: 36px;
+      gap: clamp(12px, 2vw, 28px);
+      max-width: 100%;
     }
     .about-link {
       font-size: clamp(15px, 1.4vw, 18px);
       font-weight: 300;
       color: var(--fg);
       text-decoration: none;
-      transition: color 0.2s;
+      transition: color 420ms ease, opacity 420ms ease;
       white-space: nowrap;
     }
+    .about-link.is-lit {
+      color: #e6b800;
+    }
     .about-link:hover { color: #e6b800; }
+    .about-booking-link {
+      display: block;
+      margin-top: clamp(38px, 5vw, 50px);
+      font-size: clamp(17px, 1.65vw, 21px);
+      font-weight: 500;
+      color: var(--fg);
+      text-decoration: none;
+      transition: color 420ms ease, opacity 420ms ease;
+      white-space: nowrap;
+    }
+    .about-booking-link.is-lit {
+      color: #e6b800;
+    }
+    .about-booking-link:hover { color: #e6b800; }
     .about-work {
       position: relative;
       z-index: 3;
@@ -2378,7 +2399,7 @@
         transform: translateX(6px);
       }
       .about-body-name {
-        font-size: clamp(34px, 7.2vw, 48px);
+        font-size: clamp(26px, 5.8vw, 36px);
       }
       .about-bio {
         font-size: clamp(18px, 4.8vw, 36px);
@@ -2424,7 +2445,16 @@
       .about-work-form {
         width: 100%;
       }
-      .about-links { gap: 20px 28px; }
+      .about-links {
+        flex-wrap: nowrap;
+        gap: clamp(8px, 1.8vw, 14px);
+      }
+      .about-link {
+        font-size: clamp(11px, 2.8vw, 14px);
+      }
+      .about-booking-link {
+        font-size: clamp(13px, 3.2vw, 16px);
+      }
       .design-deck-viewport {
         perspective: none;
       }
@@ -2789,10 +2819,14 @@
             <p>hey, i'm alexa carmona. as a graphic design bfa and photography student at scad, i use design and image-making as tools for exploration. i experiment boldly, collaborate intentionally, and embrace creative risk.</p>
             <p>my work is fueled by movement, curiosity, and the constant pursuit of expanding what's visually possible.</p>
           </div>
-          <div class="about-links">
-            <a class="about-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank" rel="noopener noreferrer">instagram</a>
-            <a class="about-link" href="https://www.linkedin.com/in/alexacarmona" target="_blank" rel="noopener noreferrer">linkedin</a>
-            <a class="about-link" href="AlexaCarmona_Resume.pdf" target="_blank" rel="noopener noreferrer">resume</a>
+          <div class="about-links-block">
+            <div class="about-links" id="aboutLinksRow">
+              <a class="about-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank" rel="noopener noreferrer">instagram</a>
+              <a class="about-link" href="https://www.linkedin.com/in/alexacarmona" target="_blank" rel="noopener noreferrer">linkedin</a>
+              <a class="about-link" href="AlexaCarmona_Resume.pdf" target="_blank" rel="noopener noreferrer">resume</a>
+              <a class="about-link" href="mailto:alexaxcarmona@gmail.com">alexaxcarmona@gmail.com</a>
+            </div>
+            <a class="about-booking-link" href="https://cal.com/alexacarmona" target="_blank" rel="noopener noreferrer">click for bookings + meetings</a>
           </div>
         </div>
         <div class="about-work" id="aboutWork" aria-labelledby="aboutConnectTrigger">
@@ -2832,20 +2866,23 @@
           if (window.__aboutConnectInit) return;
           window.__aboutConnectInit = true;
 
-          var connectText = document.getElementById('aboutConnectText');
           var trigger = document.getElementById('aboutConnectTrigger');
           var bodyLeft = document.getElementById('aboutBodyLeft');
-          var fadeMs = 420;
-          var holdMs = 1150;
+          var linkFadeMs = 420;
+          var linkHoldMs = 1150;
           var motionOk = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-          if (connectText && motionOk) {
-            setInterval(function() {
-              connectText.classList.add('is-fading');
-              setTimeout(function() {
-                connectText.classList.remove('is-fading');
-              }, fadeMs);
-            }, fadeMs + holdMs);
+          var aboutLinkEls = document.querySelectorAll('.about-links-block .about-link, .about-links-block .about-booking-link');
+          if (aboutLinkEls.length && motionOk) {
+            var linkIdx = 0;
+            function cycleAboutLinkPulse() {
+              aboutLinkEls.forEach(function(link, i) {
+                link.classList.toggle('is-lit', i === linkIdx);
+              });
+              linkIdx = (linkIdx + 1) % aboutLinkEls.length;
+            }
+            cycleAboutLinkPulse();
+            setInterval(cycleAboutLinkPulse, linkFadeMs + linkHoldMs);
           }
 
           function setFormOpen(open) {
