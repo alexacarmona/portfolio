@@ -286,6 +286,26 @@
     }
     .theme-footer-btn:hover { color: #e6b800; }
 
+    #design:target ~ .site-footer .footer-left,
+    #design:target ~ .site-footer .footer-center {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    body.case-open #design:target ~ .site-footer .footer-left,
+    body.case-open #design:target ~ .site-footer .footer-center {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+    body.case-open .site-footer .footer-left,
+    body.case-open .site-footer .footer-right,
+    body.case-open .site-footer .footer-center,
+    body.case-open .site-footer .footer-link,
+    body.case-open .site-footer .theme-footer-btn {
+      color: var(--fg);
+    }
+
     #photography:target.is-past-hero ~ .site-footer .footer-left,
     #photography:target.is-past-hero ~ .site-footer .footer-right,
     #photography:target.is-past-hero ~ .site-footer .footer-center,
@@ -4236,7 +4256,6 @@
           'process images/theatre_spread1.png',
           'process images/theatre_spread2.png'
         ],
-        panelImageOffset: 'shift-up',
         flipbookEmbedUrl: 'https://heyzine.com/flip-book/c6c377a09d.html',
         collaborators: 'Leo Ruiz',
         featureCredit: 'Shoe designer feature: Quintin Williams',
