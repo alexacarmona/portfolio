@@ -1383,13 +1383,13 @@
       position: relative;
       z-index: 2;
       min-height: inherit;
-      padding: calc(var(--nav-h) + clamp(120px, 18vh, 200px) + 1.35in) 3% 0 22%;
+      padding: calc(var(--nav-h) + clamp(120px, 18vh, 200px) + 1.35in) clamp(36px, 6vw, 80px) 0 22%;
       box-sizing: border-box;
     }
     .about-hero-copy {
       margin-left: auto;
       margin-right: 0;
-      transform: translateX(clamp(10px, 1.4vw, 22px));
+      transform: none;
       width: auto;
       max-width: none;
       text-align: right;
@@ -1482,9 +1482,10 @@
     }
     .about-bts-player {
       position: relative;
-      width: min(100%, 420px);
+      width: min(100%, 280px);
       margin-left: auto;
-      aspect-ratio: 1 / 1;
+      margin-right: clamp(40px, 8vw, 110px);
+      aspect-ratio: 9 / 16;
       background: #1a1a1a;
       overflow: hidden;
     }
@@ -1605,20 +1606,6 @@
       color: #e6b800;
     }
     .about-link:hover { color: #e6b800; }
-    .about-booking-link {
-      display: block;
-      margin-top: clamp(38px, 5vw, 50px);
-      font-size: clamp(17px, 1.65vw, 21px);
-      font-weight: 500;
-      color: var(--fg);
-      text-decoration: none;
-      transition: color 420ms ease, opacity 420ms ease;
-      white-space: nowrap;
-    }
-    .about-booking-link.is-lit {
-      color: #e6b800;
-    }
-    .about-booking-link:hover { color: #e6b800; }
     .about-work {
       position: relative;
       z-index: 3;
@@ -2391,12 +2378,12 @@
       }
       .case-inner { padding: 0 20px; }
       .about-hero-overlay {
-        padding: calc(var(--nav-h) + 88px + 1.35in) 12px 0 20px;
+        padding: calc(var(--nav-h) + 88px + 1.35in) 24px 0 20px;
       }
       .about-hero-copy {
         width: auto;
         max-width: none;
-        transform: translateX(6px);
+        transform: none;
       }
       .about-body-name {
         font-size: clamp(26px, 5.8vw, 36px);
@@ -2429,6 +2416,7 @@
       .about-bts-player {
         max-width: 100%;
         margin-left: 0;
+        margin-right: 0;
       }
       #design {
         touch-action: pan-y;
@@ -2451,9 +2439,6 @@
       }
       .about-link {
         font-size: clamp(11px, 2.8vw, 14px);
-      }
-      .about-booking-link {
-        font-size: clamp(13px, 3.2vw, 16px);
       }
       .design-deck-viewport {
         perspective: none;
@@ -2816,17 +2801,15 @@
         </h2>
         <div class="about-body-default" id="aboutBodyDefault">
           <div class="about-story">
-            <p>hey, i'm alexa carmona. as a graphic design bfa and photography student at scad, i use design and image-making as tools for exploration. i experiment boldly, collaborate intentionally, and embrace creative risk.</p>
-            <p>my work is fueled by movement, curiosity, and the constant pursuit of expanding what's visually possible.</p>
+            <p>hey, i'm alexa carmona. as a graphic design bfa and photography student at scad, i use design and image-making as tools for exploration. i experiment boldly, collaborate intentionally, and embrace creative risk. my work is fueled by movement, curiosity, and the constant pursuit of expanding what's visually possible.</p>
           </div>
           <div class="about-links-block">
             <div class="about-links" id="aboutLinksRow">
               <a class="about-link" href="https://www.instagram.com/alexacarmonaa/" target="_blank" rel="noopener noreferrer">instagram</a>
               <a class="about-link" href="https://www.linkedin.com/in/alexacarmona" target="_blank" rel="noopener noreferrer">linkedin</a>
               <a class="about-link" href="AlexaCarmona_Resume.pdf" target="_blank" rel="noopener noreferrer">resume</a>
-              <a class="about-link" href="mailto:alexaxcarmona@gmail.com">alexaxcarmona@gmail.com</a>
+              <a class="about-link" href="https://cal.com/alexacarmona" target="_blank" rel="noopener noreferrer">meetings</a>
             </div>
-            <a class="about-booking-link" href="https://cal.com/alexacarmona" target="_blank" rel="noopener noreferrer">click for bookings + meetings</a>
           </div>
         </div>
         <div class="about-work" id="aboutWork" aria-labelledby="aboutConnectTrigger">
@@ -2872,7 +2855,7 @@
           var linkHoldMs = 1150;
           var motionOk = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 
-          var aboutLinkEls = document.querySelectorAll('.about-links-block .about-link, .about-links-block .about-booking-link');
+          var aboutLinkEls = document.querySelectorAll('.about-links-block .about-link');
           if (aboutLinkEls.length && motionOk) {
             var linkIdx = 0;
             function cycleAboutLinkPulse() {
@@ -3012,7 +2995,7 @@
         (function() {
           var v = document.getElementById('aboutBtsVideo');
           if (!v) return;
-          var clips = ['videos/btsone.mp4', 'videos/bts3.mp4', 'videos/bts4.mp4', 'videos/bts5.mp4'];
+          var clips = ['videos/btsone.mp4', 'videos/bts3.mp4', 'videos/bts5.mp4'];
           var idx = 0;
           function onAbout() {
             return (location.hash || '').split('?')[0] === '#about';
