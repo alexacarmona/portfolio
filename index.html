@@ -808,35 +808,14 @@
     }
 
     .mersi-intro {
-      position: absolute;
-      inset: 0;
-      z-index: 200;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: clamp(28px, 5vh, 48px);
-      background: #ede7de;
-      transition: opacity 0.9s ease, visibility 0.9s ease;
-      pointer-events: all;
-    }
-    [data-theme="dark"] .mersi-intro { background: #1c1b19; }
-    .mersi-intro.is-dismissed {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
+      display: none;
     }
 
     .mersi-slider,
     .mersi-nav {
-      opacity: 0;
-      transition: opacity 0.7s ease;
-    }
-    .mersi-intro.is-dismissed ~ .mersi-slider,
-    .mersi-intro.is-dismissed ~ .mersi-nav {
       opacity: 1;
     }
-    .mersi-intro.is-dismissed ~ .mersi-slider {
+    .mersi-slider {
       cursor: pointer;
     }
 
@@ -2624,13 +2603,13 @@
 
   <div id="design" class="section" aria-label="Works" tabindex="-1">
     <div class="mersi-stage" id="mersiStage">
-      <div class="mersi-intro" id="mersiIntro" aria-hidden="false"></div>
-      <div class="mersi-slider mersi-slider--left" aria-hidden="true">
+      <div class="mersi-intro is-dismissed" id="mersiIntro" aria-hidden="true"></div>
+      <div class="mersi-slider mersi-slider--left" aria-hidden="false">
         <div class="mersi-swap-viewport">
           <div class="mersi-slide-stack" id="mersiLeftStack"></div>
         </div>
       </div>
-      <div class="mersi-slider mersi-slider--right" aria-hidden="true">
+      <div class="mersi-slider mersi-slider--right" aria-hidden="false">
         <div class="mersi-swap-viewport">
           <div class="mersi-slide-stack" id="mersiRightStack"></div>
         </div>
@@ -4359,9 +4338,8 @@
       var animating = false;
       var snapTimer = null;
       var snapRaf = null;
-      var introDismissed = false;
-      try { introDismissed = sessionStorage.getItem('mersiIntroDismissed') === '1'; } catch (e) {}
-      if (introDismissed && intro) {
+      var introDismissed = true;
+      if (intro) {
         intro.classList.add('is-dismissed');
         intro.setAttribute('aria-hidden', 'true');
       }
@@ -4972,9 +4950,14 @@
       }
 
       function initMersiProjects() {
+        dismissIntro();
         buildMersiItems();
         rebuildMotionDom();
         goToBreadlyProject();
+        requestAnimationFrame(function() {
+          showInstant(activeIndex);
+          preloadNeighbors(activeIndex);
+        });
       }
       window.initMersiProjects = initMersiProjects;
 
