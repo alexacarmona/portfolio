@@ -12,6 +12,7 @@
   <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
+  <link rel="preload" as="image" href="opt/alexa_erika_soccercurl-19.jpg" fetchpriority="high" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     .sr-only {
@@ -169,8 +170,16 @@
       background: var(--bg);
     }
 
+    /* Keep unused pages out of the layout so the browser does not download their images. */
+    #design,
+    #raw,
+    #about {
+      display: none;
+    }
+
     /* photography is default visible (no hash = show photography) */
     #photography {
+      display: block;
       opacity: 1;
       pointer-events: all;
       z-index: 60;
@@ -181,9 +190,16 @@
     #photography:target,
     #about:target,
     #raw:target {
+      display: block;
       opacity: 1;
       pointer-events: all;
       z-index: 70;
+    }
+
+    body:has(#design:target) #photography,
+    body:has(#raw:target) #photography,
+    body:has(#about:target) #photography {
+      display: none;
     }
 
     /* active nav link styling via :target */
@@ -2631,13 +2647,13 @@
     <header class="photo-hero" id="photoHero" aria-label="Featured photography">
       <div class="photo-hero-slides" id="photoHeroSlides">
         <div class="photo-hero-slide is-active" data-slide="0">
-          <img src="alexa_erika_soccercurl-19.jpg" alt="Erika — soccer" fetchpriority="high" loading="eager" decoding="async" />
+          <img src="opt/alexa_erika_soccercurl-19.jpg" alt="Erika — soccer" fetchpriority="high" loading="eager" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="1">
-          <img src="1atlprobikes_proj19.jpg" alt="atl pro bikes" loading="lazy" decoding="async" />
+          <img src="opt/1atlprobikes_proj19.jpg" alt="atl pro bikes" loading="lazy" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="2">
-          <img src="7stellabrauneeditorial.jpg" alt="" loading="lazy" decoding="async" />
+          <img src="opt/7stellabrauneeditorial.jpg" alt="" loading="lazy" decoding="async" />
         </div>
       </div>
       <div class="photo-hero-shade" aria-hidden="true"></div>
@@ -2693,84 +2709,84 @@
             <div class="raw-play" id="rawGrid">
       <div class="raw-row">
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="raw_lacoste.png" alt="Lacoste play — collage" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_lacoste.png" alt="Lacoste play — collage" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="HFH03815-2.jpg" alt="HFH03815-2" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/HFH03815-2.jpg" alt="HFH03815-2" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--square raw-piece--mid">
-          <div class="raw-piece-media"><img src="Album%20project2.png" alt="Album project2" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/Album%20project2.png" alt="Album project2" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--mid">
-          <div class="raw-piece-media"><img src="raw_jass.png" alt="jass — studio" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_jass.png" alt="jass — studio" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--mid">
-          <div class="raw-piece-media"><img src="raw_skilodge.png" alt="Timber lodge poster" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_skilodge.png" alt="Timber lodge poster" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       <div class="raw-row">
         <figure class="raw-piece raw-piece--square raw-piece--mid">
-          <div class="raw-piece-media"><img src="raw_monalisa.png" alt="Mona Lisa — editorial collage" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_monalisa.png" alt="Mona Lisa — editorial collage" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="raw_2ruthinatl.png" alt="2ruthinatl_proj20" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_2ruthinatl.png" alt="2ruthinatl_proj20" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="raw_jersey.png" alt="Hockey jersey concept" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_jersey.png" alt="Hockey jersey concept" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--mid">
-          <div class="raw-piece-media"><img src="_MG_2941.jpg" alt="_MG_2941" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/_MG_2941.jpg" alt="_MG_2941" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="raw_diffue.png" alt="diffuse and direct" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_diffue.png" alt="diffuse and direct" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       <div class="raw-row">
         <figure class="raw-piece raw-piece--square raw-piece--mid">
-          <div class="raw-piece-media"><img src="raw_twodo.png" alt="Two Do — app icon" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_twodo.png" alt="Two Do — app icon" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="raw_1oldskate.png" alt="1oldskate_proj13" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_1oldskate.png" alt="1oldskate_proj13" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--mid">
-          <div class="raw-piece-media"><img src="raw_pronto.png" alt="Pronto — screen print" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_pronto.png" alt="Pronto — screen print" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="raw_quiksilver.png" alt="Quiksilver pop-up poster" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_quiksilver.png" alt="Quiksilver pop-up poster" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--mid">
-          <div class="raw-piece-media"><img src="raw_sigue.png" alt="SIGUE — poster" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_sigue.png" alt="SIGUE — poster" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       <div class="raw-row">
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="raw_6redbluechair.png" alt="6redbluechair_proj2" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_6redbluechair.png" alt="6redbluechair_proj2" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="4redbluechair_proj2.jpg" alt="4redbluechair_proj2" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/4redbluechair_proj2.jpg" alt="4redbluechair_proj2" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--mid">
-          <div class="raw-piece-media"><img src="raw_landscape.png" alt="Landscape — block print" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_landscape.png" alt="Landscape — block print" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="raw_denim.png" alt="Denim — experimental print" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_denim.png" alt="Denim — experimental print" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="idali%2Balexa.jpg" alt="Idali + Alexa" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/idali%2Balexa.jpg" alt="Idali + Alexa" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       <div class="raw-row">
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="4helveticagold_proj6.jpg" alt="4helveticagold_proj6" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/4helveticagold_proj6.jpg" alt="4helveticagold_proj6" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="labike-3.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/labike-3.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="labike-13.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/labike-13.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="friwaffle.JPEG" alt="friwaffle" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/friwaffle.JPEG" alt="friwaffle" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       </div>
@@ -2779,7 +2795,7 @@
 
   <div id="about" class="section">
     <div class="about-hero">
-      <img class="about-hero-img" src="alexa_20264803%202.jpg" alt="alexa carmona in studio" loading="lazy" decoding="async" />
+      <img class="about-hero-img" src="opt/alexa_20264803%202.jpg" alt="alexa carmona in studio" loading="lazy" decoding="async" />
       <div class="about-hero-overlay">
         <div class="about-hero-copy">
           <p class="about-bio">embrace creative risk.</p>
@@ -3003,11 +3019,10 @@
           <video
             id="aboutBtsVideo"
             class="about-bts-video is-active"
-            src="videos/btsone.mp4"
             muted
             playsinline
             webkit-playsinline
-            preload="metadata"
+            preload="none"
             aria-label="Behind the scenes"
           ></video>
         </div>
@@ -3021,6 +3036,7 @@
             return (location.hash || '').split('?')[0] === '#about';
           }
           function playBts() {
+            if (!v.getAttribute('src')) v.src = clips[idx];
             var p = v.play();
             if (p && p.catch) p.catch(function() {});
           }
@@ -3032,7 +3048,13 @@
           });
           function syncBts() {
             if (onAbout()) playBts();
-            else try { v.pause(); } catch (e) {}
+            else {
+              try { v.pause(); } catch (e) {}
+              if (v.getAttribute('src')) {
+                v.removeAttribute('src');
+                try { v.load(); } catch (e2) {}
+              }
+            }
           }
           window.addEventListener('hashchange', syncBts);
           window.addEventListener('pageshow', syncBts);
@@ -3891,7 +3913,10 @@
     function optImgSrc(path) {
       if (!path) return '';
       var p = String(path).replace(/^\.\//, '');
-      return encodeURI(p);
+      if (/^(https?:)?\/\//i.test(p) || /^data:/i.test(p)) return p;
+      if (/^opt\//i.test(p)) return encodeURI(p);
+      if (/\.(svg|gif|mp4|webm|mov|pdf)$/i.test(p)) return encodeURI(p);
+      return encodeURI('opt/' + p);
     }
     window.optImgSrc = optImgSrc;
 
@@ -4454,8 +4479,30 @@
       function preloadNeighbors(idx) {
         var n = mersiItems.length;
         if (!n) return;
+        hydrateMersiImages(idx);
         preloadPair(mersiItems[((idx + 1) % n + n) % n]);
         preloadPair(mersiItems[((idx - 1) % n + n) % n]);
+      }
+
+      function hydrateMersiImages(idx) {
+        var n = mersiItems.length;
+        if (!n) return;
+        var want = {};
+        want[idx] = true;
+        want[(idx + 1) % n] = true;
+        want[(idx - 1 + n) % n] = true;
+        function hydrate(slides) {
+          if (!slides) return;
+          slides.forEach(function(s, i) {
+            if (!want[i] || !s || !s.el) return;
+            var img = s.el.querySelector('img');
+            if (!img) return;
+            var pending = img.getAttribute('data-src');
+            if (pending && !img.getAttribute('src')) img.src = pending;
+          });
+        }
+        hydrate(leftSlides);
+        hydrate(rightSlides);
       }
 
       function setMotionTransition(el, enabled) {
@@ -4483,7 +4530,10 @@
           var displaySrc = typeof window.optImgSrc === 'function' ? window.optImgSrc(src) : src;
           var loadMode = eager[idx] ? 'eager' : 'lazy';
           var fetchPri = eager[idx] && idx === activeIndex ? ' fetchpriority="high"' : '';
-          slide.innerHTML = '<img src="' + escHtml(displaySrc) + '" alt="' + escHtml(item.title) + '" decoding="async" loading="' + loadMode + '"' + fetchPri + ' />';
+          var srcAttr = eager[idx]
+            ? ' src="' + escHtml(displaySrc) + '"'
+            : ' data-src="' + escHtml(displaySrc) + '"';
+          slide.innerHTML = '<img' + srcAttr + ' alt="' + escHtml(item.title) + '" decoding="async" loading="' + loadMode + '"' + fetchPri + ' />';
           stack.appendChild(slide);
           slides.push({ el: slide, edge: edge });
         });
@@ -4552,6 +4602,7 @@
       function rebuildMotionDom() {
         buildSlideStack(leftStack, leftSlides, 'top');
         buildSlideStack(rightStack, rightSlides, 'bottom');
+        hydrateMersiImages(activeIndex);
         initBarTitles();
       }
 
@@ -5303,6 +5354,7 @@
     }
 
     function caseMediaSrc(path) {
+      if (typeof optImgSrc === 'function') return optImgSrc(path);
       return encodeURI(String(path).replace(/^\.\//, ''));
     }
 
