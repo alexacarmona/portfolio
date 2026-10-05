@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://formsubmit.co; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://formsubmit.co https://cdnjs.cloudflare.com https://unpkg.com; worker-src 'self' blob: https://cdnjs.cloudflare.com; upgrade-insecure-requests" />
   <title>alexa carmona</title>
   <link rel="icon" type="image/svg+xml" href="alexalogoA1.svg" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
@@ -25,6 +26,20 @@
       clip: rect(0, 0, 0, 0);
       white-space: nowrap;
       border: 0;
+    }
+    .skip-link {
+      position: absolute;
+      left: 12px;
+      top: 8px;
+      z-index: 400;
+      padding: 8px 12px;
+      background: var(--bg);
+      color: var(--fg);
+      text-decoration: none;
+      transform: translateY(-200%);
+    }
+    .skip-link:focus {
+      transform: translateY(0);
     }
 
     :root {
@@ -173,7 +188,8 @@
     /* Keep unused pages out of the layout so the browser does not download their images. */
     #design,
     #raw,
-    #about {
+    #about,
+    #privacy {
       display: none;
     }
 
@@ -189,7 +205,8 @@
     #design:target,
     #photography:target,
     #about:target,
-    #raw:target {
+    #raw:target,
+    #privacy:target {
       display: block;
       opacity: 1;
       pointer-events: all;
@@ -198,7 +215,8 @@
 
     body:has(#design:target) #photography,
     body:has(#raw:target) #photography,
-    body:has(#about:target) #photography {
+    body:has(#about:target) #photography,
+    body:has(#privacy:target) #photography {
       display: none;
     }
 
@@ -276,6 +294,11 @@
     .footer-left, .footer-right {
       font-size: 11px; font-weight: 400; letter-spacing: 0.03em; color: #fff;
     }
+    .footer-right {
+      text-align: right;
+      max-width: 48%;
+      line-height: 1.35;
+    }
     .footer-center {
       position: absolute; left: 50%; transform: translateX(-50%);
       display: flex; align-items: center; gap: 6px;
@@ -336,7 +359,12 @@
     #raw:target ~ .site-footer .footer-right,
     #raw:target ~ .site-footer .footer-center,
     #raw:target ~ .site-footer .footer-link,
-    #raw:target ~ .site-footer .theme-footer-btn {
+    #raw:target ~ .site-footer .theme-footer-btn,
+    #privacy:target ~ .site-footer .footer-left,
+    #privacy:target ~ .site-footer .footer-right,
+    #privacy:target ~ .site-footer .footer-center,
+    #privacy:target ~ .site-footer .footer-link,
+    #privacy:target ~ .site-footer .theme-footer-btn {
       color: var(--fg-muted);
     }
 
@@ -1011,11 +1039,13 @@
     .photo-hero-cta:hover { color: #fff; }
     .photo-hero-cta.is-hidden { visibility: hidden; pointer-events: none; }
 
-    #photography:target ~ .site-footer {
+    #photography:target ~ .site-footer .footer-left,
+    #photography:target ~ .site-footer .footer-center {
       opacity: 0;
       pointer-events: none;
     }
-    #photography:target.is-past-hero ~ .site-footer {
+    #photography:target.is-past-hero ~ .site-footer .footer-left,
+    #photography:target.is-past-hero ~ .site-footer .footer-center {
       opacity: 1;
       pointer-events: all;
     }
@@ -1792,6 +1822,76 @@
     .about-work-success.is-visible { display: block; }
     .about-work-form.is-hidden { display: none; }
 
+    .about-work-consent {
+      font-size: clamp(10px, 1vw, 11px);
+      font-weight: 300;
+      color: var(--fg-muted);
+      line-height: 1.5;
+      margin: 2px 0 0;
+      max-width: 28em;
+    }
+    .about-work-consent a,
+    .about-work-privacy {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .about-work-consent a:hover,
+    .about-work-privacy:hover {
+      color: #e6b800;
+    }
+    .about-work-privacy {
+      font-size: clamp(10px, 1vw, 11px);
+      font-weight: 300;
+    }
+
+    /* ══ PRIVACY ══════════════════════════════════════════ */
+    #privacy {
+      overflow-y: auto;
+      scrollbar-width: thin; scrollbar-color: var(--fg-muted) transparent;
+      padding: calc(var(--nav-h) + 36px) clamp(28px, 6vw, 80px) calc(var(--footer-h) + 48px);
+      background: var(--bg);
+    }
+    .privacy-page {
+      max-width: 42rem;
+    }
+    .privacy-page h1 {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      text-transform: lowercase;
+      margin-bottom: 28px;
+    }
+    .privacy-page h2 {
+      font-size: clamp(14px, 1.4vw, 16px);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: lowercase;
+      margin: 28px 0 10px;
+    }
+    .privacy-page p,
+    .privacy-page li {
+      font-size: clamp(13px, 1.3vw, 15px);
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--fg);
+    }
+    .privacy-page ul {
+      margin: 0 0 8px 1.1em;
+    }
+    .privacy-page a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .privacy-page a:hover { color: #e6b800; }
+    .privacy-updated {
+      margin-top: 32px;
+      font-size: 12px;
+      color: var(--fg-muted);
+    }
+
     /* ══ RAW (play / experiments) ═════════════════════════ */
     #raw {
       overflow-y: auto;
@@ -2373,6 +2473,10 @@
         padding-left: max(16px, env(safe-area-inset-left, 0px));
         padding-right: max(16px, env(safe-area-inset-right, 0px));
       }
+      .footer-right {
+        font-size: 9px;
+        max-width: 50%;
+      }
       .nav-links {
         max-width: none;
         flex: 1;
@@ -2598,6 +2702,12 @@
   </script>
 </head>
 <body data-theme="light">
+  <a class="skip-link" href="#photography">Skip to content</a>
+  <script>
+    if (window.top !== window.self) {
+      try { window.top.location = window.self.location; } catch (e) {}
+    }
+  </script>
 
   <!-- sections must come BEFORE nav for CSS :target sibling selectors to work -->
 
@@ -2626,13 +2736,13 @@
     <header class="photo-hero" id="photoHero" aria-label="Featured photography">
       <div class="photo-hero-slides" id="photoHeroSlides">
         <div class="photo-hero-slide is-active" data-slide="0">
-          <img src="opt/alexa_erika_soccercurl-19.jpg" alt="Erika — soccer" fetchpriority="high" loading="eager" decoding="async" />
+          <img src="opt/alexa_erika_soccercurl-19.jpg" alt="Erika in hair rollers applying makeup beside a soccer goal at night" fetchpriority="high" loading="eager" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="1">
-          <img src="opt/1atlprobikes_proj19.jpg" alt="atl pro bikes" loading="lazy" decoding="async" />
+          <img src="opt/1atlprobikes_proj19.jpg" alt="Cyclists and spectators at an Atlanta Pro Bikes event" loading="lazy" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="2">
-          <img src="opt/7stellabrauneeditorial.jpg" alt="" loading="lazy" decoding="async" />
+          <img src="opt/7stellabrauneeditorial.jpg" alt="Stella Braune fashion editorial portrait" loading="lazy" decoding="async" />
         </div>
       </div>
       <div class="photo-hero-shade" aria-hidden="true"></div>
@@ -2670,7 +2780,7 @@
       <div class="pd-image-row">
         <button type="button" class="pd-image-nav pd-image-nav--prev" id="pdImagePrev" aria-label="Previous image in project">←</button>
         <div class="pd-image-wrap">
-        <img class="pd-main-image" id="pdMainImage" src="" alt="" />
+        <img class="pd-main-image" id="pdMainImage" src="" alt="Photograph" />
         </div>
         <button type="button" class="pd-image-nav pd-image-nav--next" id="pdImageNext" aria-label="Next image in project">→</button>
       </div>
@@ -2688,84 +2798,84 @@
             <div class="raw-play" id="rawGrid">
       <div class="raw-row">
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="opt/raw_lacoste.png" alt="Lacoste play — collage" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_lacoste.png" alt="Lacoste play collage with geometric color blocks over a landscape" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="opt/HFH03815-2.jpg" alt="HFH03815-2" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/HFH03815-2.jpg" alt="Performer singing on stage in front of a crowd" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--square raw-piece--mid">
-          <div class="raw-piece-media"><img src="opt/Album%20project2.png" alt="Album project2" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/Album%20project2.png" alt="Experimental album artwork collage" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--mid">
-          <div class="raw-piece-media"><img src="opt/raw_jass.png" alt="jass — studio" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_jass.png" alt="Studio portrait framed with a thin red border" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--mid">
-          <div class="raw-piece-media"><img src="opt/raw_skilodge.png" alt="Timber lodge poster" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_skilodge.png" alt="Timber lodge poster design" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       <div class="raw-row">
         <figure class="raw-piece raw-piece--square raw-piece--mid">
-          <div class="raw-piece-media"><img src="opt/raw_monalisa.png" alt="Mona Lisa — editorial collage" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_monalisa.png" alt="Mona Lisa through a crowd editorial collage" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="opt/raw_2ruthinatl.png" alt="2ruthinatl_proj20" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_2ruthinatl.png" alt="Person standing on a stone bridge against a cloudy sky" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="opt/raw_jersey.png" alt="Hockey jersey concept" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_jersey.png" alt="Maroon and cream hockey jersey concept with a V logo" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--mid">
-          <div class="raw-piece-media"><img src="opt/_MG_2941.jpg" alt="_MG_2941" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/MG_2941.jpg" alt="Experimental black-and-white photograph" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="opt/raw_diffue.png" alt="diffuse and direct" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_diffue.png" alt="Diffuse and direct lighting study" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       <div class="raw-row">
         <figure class="raw-piece raw-piece--square raw-piece--mid">
-          <div class="raw-piece-media"><img src="opt/raw_twodo.png" alt="Two Do — app icon" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_twodo.png" alt="Two Do app icon concept" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="opt/raw_1oldskate.png" alt="1oldskate_proj13" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_1oldskate.png" alt="Skate photograph from an experimental series" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--mid">
-          <div class="raw-piece-media"><img src="opt/raw_pronto.png" alt="Pronto — screen print" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_pronto.png" alt="Pronto screen print" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
           <div class="raw-piece-media"><img src="opt/raw_quiksilver.png" alt="Quiksilver pop-up poster" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--mid">
-          <div class="raw-piece-media"><img src="opt/raw_sigue.png" alt="SIGUE — poster" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_sigue.png" alt="SIGUE poster design" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       <div class="raw-row">
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="opt/raw_6redbluechair.png" alt="6redbluechair_proj2" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_6redbluechair.png" alt="Red and blue chair study" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="opt/4redbluechair_proj2.jpg" alt="4redbluechair_proj2" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/4redbluechair_proj2.jpg" alt="Photograph of a red and blue chair" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--mid">
-          <div class="raw-piece-media"><img src="opt/raw_landscape.png" alt="Landscape — block print" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_landscape.png" alt="Landscape block print" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="opt/raw_denim.png" alt="Denim — experimental print" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/raw_denim.png" alt="Experimental denim print" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="opt/idali%2Balexa.jpg" alt="Idali + Alexa" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/idali%2Balexa.jpg" alt="Portrait of Idali and Alexa" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       <div class="raw-row">
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="opt/4helveticagold_proj6.jpg" alt="4helveticagold_proj6" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/4helveticagold_proj6.jpg" alt="Helvetica gold typographic poster" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="opt/labike-3.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/labike-3.jpg" alt="Bicycle photographed in Los Angeles" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--portrait raw-piece--tall">
-          <div class="raw-piece-media"><img src="opt/labike-13.jpg" alt="LA bike" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/labike-13.jpg" alt="Bicycle detail photographed in Los Angeles" loading="lazy" decoding="async" /></div>
         </figure>
         <figure class="raw-piece raw-piece--landscape raw-piece--wide">
-          <div class="raw-piece-media"><img src="opt/friwaffle.JPEG" alt="friwaffle" loading="lazy" decoding="async" /></div>
+          <div class="raw-piece-media"><img src="opt/friwaffle.JPEG" alt="Waffle still-life photograph" loading="lazy" decoding="async" /></div>
         </figure>
       </div>
       </div>
@@ -2774,7 +2884,7 @@
 
   <div id="about" class="section">
     <div class="about-hero">
-      <img class="about-hero-img" src="opt/alexa_20264803-2-hero.jpg" alt="alexa carmona in studio" decoding="async" fetchpriority="high" />
+      <img class="about-hero-img" src="opt/alexa_20264803-2-hero.jpg" alt="Alexa Carmona standing in a photography studio" decoding="async" fetchpriority="high" />
       <div class="about-hero-overlay">
         <div class="about-hero-copy">
           <p class="about-bio">embrace creative risk.</p>
@@ -2830,7 +2940,7 @@
         <div class="about-work" id="aboutWork" aria-labelledby="aboutConnectTrigger">
           <div class="about-work-panel" id="aboutWorkPanel">
             <p class="about-work-success" id="aboutWorkSuccess" role="status" aria-live="polite" tabindex="-1">thanks — message sent. i'll reply to your email soon.</p>
-            <form class="about-work-form" id="aboutWorkForm" action="https://formsubmit.co/alexaxcarmona@gmail.com" method="POST" novalidate>
+            <form class="about-work-form" id="aboutWorkForm" action="https://formsubmit.co/alexaxcarmona@gmail.com" method="POST" novalidate aria-describedby="aboutWorkConsent aboutWorkHint">
               <input type="hidden" name="_subject" value="Portfolio — let's work inquiry" />
               <input type="hidden" name="_next" value="https://alexacarmonaportfolio.com/?sent=1#about" />
               <input type="hidden" name="_captcha" value="false" />
@@ -2841,20 +2951,21 @@
               </div>
               <div class="about-work-field">
                 <label class="about-work-label" for="aboutWorkName">name</label>
-                <input class="about-work-input" type="text" id="aboutWorkName" name="name" required autocomplete="name" maxlength="120" aria-required="true" />
+                <input class="about-work-input" type="text" id="aboutWorkName" name="name" required autocomplete="name" maxlength="120" aria-required="true" aria-describedby="aboutWorkNameError" />
                 <span class="about-work-error" id="aboutWorkNameError">please add your name.</span>
               </div>
               <div class="about-work-field">
                 <label class="about-work-label" for="aboutWorkEmail">email</label>
-                <input class="about-work-input" type="email" id="aboutWorkEmail" name="email" required autocomplete="email" maxlength="254" inputmode="email" spellcheck="false" aria-required="true" />
+                <input class="about-work-input" type="email" id="aboutWorkEmail" name="email" required autocomplete="email" maxlength="254" inputmode="email" spellcheck="false" aria-required="true" aria-describedby="aboutWorkEmailError" />
                 <span class="about-work-error" id="aboutWorkEmailError">please use a valid email address.</span>
               </div>
               <div class="about-work-field">
                 <label class="about-work-label" for="aboutWorkMessage">message</label>
-                <textarea class="about-work-textarea" id="aboutWorkMessage" name="message" required maxlength="4000" rows="4" aria-required="true"></textarea>
+                <textarea class="about-work-textarea" id="aboutWorkMessage" name="message" required maxlength="4000" rows="4" aria-required="true" aria-describedby="aboutWorkMessageError"></textarea>
                 <span class="about-work-error" id="aboutWorkMessageError">please write a short message.</span>
               </div>
-              <p class="about-work-hint">your details are sent securely and only used to reply — no mailing lists.</p>
+              <p class="about-work-hint" id="aboutWorkHint">your details are sent only so i can reply — never sold, shared, or added to a mailing list.</p>
+              <p class="about-work-consent" id="aboutWorkConsent">by sending, you agree this message is used solely for direct communication. <a class="about-work-privacy" href="privacy.html">privacy policy</a></p>
               <button class="about-work-submit" type="submit" id="aboutWorkSubmit">send</button>
             </form>
           </div>
@@ -2977,6 +3088,11 @@
             });
 
             workForm.addEventListener('submit', function(e) {
+              var honey = document.getElementById('aboutWorkHoney');
+              if (honey && String(honey.value || '').trim()) {
+                e.preventDefault();
+                return;
+              }
               if (!validateForm()) {
                 e.preventDefault();
                 return;
@@ -3002,7 +3118,7 @@
             playsinline
             webkit-playsinline
             preload="none"
-            aria-label="Behind the scenes"
+            aria-label="Behind-the-scenes studio video"
           ></video>
         </div>
         <script>
@@ -3048,11 +3164,41 @@
     </section>
   </div>
 
+  <div id="privacy" class="section" aria-label="Privacy Policy">
+    <article class="privacy-page">
+      <h1>privacy policy</h1>
+      <p>This policy explains how Alexa Carmona (“I,” “me”) uses information you send through alexacarmonaportfolio.com. This site is a personal portfolio. It does not run advertising networks or sell personal data.</p>
+
+      <h2>contact form</h2>
+      <p>If you submit the contact form on the About page, I collect the name, email address, and message you type. Those submissions are used solely for direct communication — to read your note and reply. They are never sold, shared with unrelated third parties, or added to unauthorized mailing lists.</p>
+      <p>The form is delivered through FormSubmit, which emails the message to me. Do not include sensitive information (passwords, payment details, or government IDs) in a message.</p>
+
+      <h2>what I do not do</h2>
+      <ul>
+        <li>I do not sell or rent your information.</li>
+        <li>I do not add form submissions to a newsletter or marketing list unless you separately ask to stay in touch.</li>
+        <li>I do not use contact-form data for automated profiling or advertising.</li>
+      </ul>
+
+      <h2>other information</h2>
+      <p>The hosting provider may keep standard server logs (such as IP address, browser, and pages requested) to operate and secure the site. This site does not use analytics cookies or tracking pixels.</p>
+      <p>Links to Instagram, LinkedIn, Cal.com, and similar services are governed by those companies’ own policies once you leave this site.</p>
+
+      <h2>how long I keep messages</h2>
+      <p>I keep inquiry emails only as long as needed to respond and follow up on the conversation, then delete them from active mail when they are no longer needed.</p>
+
+      <h2>your choices</h2>
+      <p>You can email <a href="mailto:alexaxcarmona@gmail.com">alexaxcarmona@gmail.com</a> to ask what I hold from a form submission or to request that a message be deleted.</p>
+
+      <p class="privacy-updated">Last updated: October 4, 2026.</p>
+    </article>
+  </div>
+
   <!-- NAV comes after sections so :target general sibling selector (~) works -->
   <div class="nav-top-shade" aria-hidden="true"></div>
   <nav>
     <a class="name" href="#design" aria-label="Works">
-      <img class="name-logo-img name-logo-img--default" src="alexa-logo.png" alt="Alexa" />
+      <img class="name-logo-img name-logo-img--default" src="alexa-logo.png" alt="Alexa Carmona" />
       <img class="name-logo-img name-logo-img--yellow" src="alexa-logo-yellow.png" alt="" aria-hidden="true" />
     </a>
     <div class="nav-right">
@@ -3072,7 +3218,7 @@
     <div class="footer-center">
       <button type="button" class="theme-footer-btn" id="themeBtn" onclick="toggleTheme()" aria-label="Switch theme">light/dark</button>
     </div>
-    <span class="footer-right">© alexacarmona</span>
+    <span class="footer-right">© 2026 Alexa Carmona. All Rights Reserved.</span>
   </footer>
 
   <!-- Case study overlay -->
@@ -3425,7 +3571,9 @@
           el.dataset.imgIndex = String(item.imgIndex != null ? item.imgIndex : 0);
           var img = document.createElement('img');
           img.src = (typeof optImgSrc === 'function' ? optImgSrc(item.src) : item.src);
-          img.alt = item.alt;
+          var altTitle = String(item.alt || '').trim() || 'Photography by Alexa Carmona';
+          var n = (item.imgIndex != null ? item.imgIndex : 0) + 1;
+          img.alt = altTitle + ' — photograph ' + n;
           img.loading = 'lazy';
           img.decoding = 'async';
           try { img.fetchPriority = 'low'; } catch (e) {}
@@ -3688,7 +3836,7 @@
       },
       {
         id: 18,
-        title: 'Carmona_Alexa_MonaLisaThroughACrowd',
+        title: 'mona lisa through a crowd',
         year: '',
         time: '',
         location: '',
@@ -3777,7 +3925,7 @@
           { src: 'alexa_garage_out.jpg', orientation: 'portrait' },
           { src: 'alexa_garage_out-14.jpg', orientation: 'portrait' },
           { src: 'alexa_garage_out-23.png', orientation: 'portrait' },
-          { src: 'alexa_garage_out-26.png', orientation: 'portrait' }
+          { src: 'alexa_garage_out-26.jpg', orientation: 'portrait' }
         ]
       },
       {
@@ -3960,7 +4108,8 @@
       } else {
         mainImg.classList.add('is-loaded');
       }
-      mainImg.alt = s.proj.title || '';
+      mainImg.alt = (s.proj.title || 'Photography by Alexa Carmona') +
+        (s.srcList.length > 1 ? (' — photograph ' + (s.index + 1) + ' of ' + s.srcList.length) : ' — photograph');
     }
 
     function photoImageStep(delta) {
@@ -4511,7 +4660,7 @@
           var srcAttr = eager[idx]
             ? ' src="' + escHtml(displaySrc) + '"'
             : ' data-src="' + escHtml(displaySrc) + '"';
-          slide.innerHTML = '<img' + srcAttr + ' alt="' + escHtml(item.title) + '" decoding="async" loading="' + loadMode + '"' + fetchPri + ' />';
+          slide.innerHTML = '<img' + srcAttr + ' alt="' + escHtml(item.title) + ' project image" decoding="async" loading="' + loadMode + '"' + fetchPri + ' />';
           stack.appendChild(slide);
           slides.push({ el: slide, edge: edge });
         });
@@ -5355,10 +5504,10 @@
         var videoAttrs = autoplay
           ? 'autoplay loop muted playsinline preload="none"'
           : 'controls playsinline preload="metadata"';
-        return '<figure class="' + videoClass + '"><video src="' + safeSrc + '" ' + videoAttrs + '></video></figure>';
+        return '<figure class="' + videoClass + '"><video src="' + safeSrc + '" ' + videoAttrs + ' aria-label="' + safeTitle + ' project video"></video></figure>';
       }
       var imgPath = typeof window.optImgSrc === 'function' ? window.optImgSrc(src) : safeSrc;
-      return '<figure class="case-media-piece"><img src="' + imgPath + '" alt="' + safeTitle + '" loading="lazy" decoding="async" /></figure>';
+      return '<figure class="case-media-piece"><img src="' + imgPath + '" alt="' + safeTitle + ' project image" loading="lazy" decoding="async" /></figure>';
     }
 
     function playCaseAutoplayVideos(root) {
