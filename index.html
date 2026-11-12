@@ -1096,24 +1096,27 @@
       --photo-gap: clamp(10px, 1.2vw, 16px);
       columns: var(--photo-cols, 4);
       column-gap: var(--photo-gap);
+      column-fill: auto;
       width: 100%;
-      transition: column-gap 0.4s ease;
     }
 
     .photo-cell {
       break-inside: avoid;
+      -webkit-column-break-inside: avoid;
       margin-bottom: var(--photo-gap);
       cursor: pointer;
       line-height: 0;
-      content-visibility: auto;
-      contain-intrinsic-size: auto 280px;
     }
     .photo-cell img {
       display: block;
       width: 100%;
       height: auto;
       vertical-align: bottom;
+      object-fit: cover;
     }
+    .photo-cell--portrait img { aspect-ratio: 2 / 3; }
+    .photo-cell--landscape img { aspect-ratio: 3 / 2; }
+    .photo-cell--square img { aspect-ratio: 1 / 1; }
 
     @media (max-width: 1100px) {
       #photography[data-photo-size="s"] { --photo-cols: 5; }
@@ -1126,15 +1129,11 @@
       #photography[data-photo-size="l"] { --photo-cols: 1; }
       #photoCanvas {
         --photo-gap: 10px;
-        column-fill: auto;
-        transition: none;
       }
       .photo-cell {
         display: inline-block;
         width: 100%;
         box-sizing: border-box;
-        content-visibility: visible;
-        contain-intrinsic-size: unset;
         -webkit-column-break-inside: avoid;
         break-inside: avoid-column;
       }
@@ -3344,7 +3343,7 @@
       var CATEGORY_RANK = { fashion: 0, editorial: 1, product: 2, branding: 3 };
       var projectCategory = {
         0: 'fashion', 10: 'fashion', 12: 'fashion', 16: 'fashion', 22: 'fashion', 29: 'fashion', 30: 'fashion', 31: 'fashion', 32: 'fashion', 33: 'fashion',
-        1: 'editorial', 5: 'editorial', 6: 'editorial', 7: 'editorial', 17: 'editorial', 18: 'editorial', 23: 'editorial', 24: 'editorial', 25: 'editorial', 26: 'editorial', 27: 'editorial', 28: 'editorial',
+        1: 'editorial', 5: 'editorial', 6: 'editorial', 7: 'editorial', 17: 'editorial', 18: 'editorial', 23: 'editorial', 24: 'editorial', 25: 'editorial', 26: 'editorial', 27: 'editorial', 28: 'editorial', 34: 'editorial', 35: 'editorial',
         9: 'product', 11: 'product',
         14: 'branding', 15: 'branding'
       };
@@ -3551,10 +3550,11 @@
           if (imgs.length) {
             imgs.slice(0, 2).forEach(function(item, imgIndex) {
               var src = typeof item === 'object' && item && item.src ? item.src : item;
-              if (src) pair.push({ src: src, pid: proj.id, alt: proj.title || '', imgIndex: imgIndex });
+              var orientation = typeof item === 'object' && item && item.orientation ? item.orientation : '';
+              if (src) pair.push({ src: src, pid: proj.id, alt: proj.title || '', imgIndex: imgIndex, orientation: orientation });
             });
           } else if (proj.thumbnail) {
-            pair.push({ src: proj.thumbnail, pid: proj.id, alt: proj.title || '', imgIndex: 0 });
+            pair.push({ src: proj.thumbnail, pid: proj.id, alt: proj.title || '', imgIndex: 0, orientation: '' });
           }
           if (pair.length) groups.push(pair);
         });
@@ -3570,6 +3570,7 @@
         items.forEach(function(item) {
           var el = document.createElement('div');
           el.className = 'photo-cell';
+          if (item.orientation) el.classList.add('photo-cell--' + item.orientation);
           el.dataset.pid = String(item.pid);
           el.dataset.imgIndex = String(item.imgIndex != null ? item.imgIndex : 0);
           var img = document.createElement('img');
