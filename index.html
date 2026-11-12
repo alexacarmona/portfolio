@@ -719,15 +719,20 @@
       position: absolute;
       inset: 0;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       will-change: clip-path;
       backface-visibility: hidden;
       transform: translateZ(0);
     }
 
     .mersi-slide-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
       object-position: center center;
       display: block;
       transform: translateZ(0);
@@ -748,19 +753,20 @@
       background: #e85a00;
     }
     .mersi-slide-item--single img {
-      object-fit: cover;
+      object-fit: contain;
       object-position: center center;
     }
 
     .mersi-slide-item--zoom-out img {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 108%;
-      height: 108%;
-      max-width: none;
-      transform: translate(-50%, -50%) translateZ(0);
-      object-fit: cover;
+      position: static;
+      left: auto;
+      top: auto;
+      width: auto;
+      height: auto;
+      max-width: 100%;
+      max-height: 100%;
+      transform: none;
+      object-fit: contain;
       object-position: center center;
     }
 
@@ -2627,13 +2633,13 @@
     <header class="photo-hero" id="photoHero" aria-label="Featured photography">
       <div class="photo-hero-slides" id="photoHeroSlides">
         <div class="photo-hero-slide is-active" data-slide="0">
-          <img src="opt/alexa_erika_soccercurl-19.jpg" alt="Erika in hair rollers applying makeup beside a soccer goal at night" fetchpriority="high" loading="eager" decoding="async" />
+          <img src="opt/viviene_alexa1.jpg" alt="Viviene photographed by Alexa Carmona" fetchpriority="high" loading="eager" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="1">
-          <img src="opt/1atlprobikes_proj19.jpg" alt="Cyclists and spectators at an Atlanta Pro Bikes event" loading="lazy" decoding="async" />
+          <img src="opt/alexa_erika_soccercurl-19.jpg" alt="Erika in hair rollers applying makeup beside a soccer goal at night" loading="lazy" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="2">
-          <img src="opt/viviene_alexa1.jpg" alt="Viviene photographed by Alexa Carmona" loading="lazy" decoding="async" />
+          <img src="opt/1atlprobikes_proj19.jpg" alt="Cyclists and spectators at an Atlanta Pro Bikes event" loading="lazy" decoding="async" />
         </div>
       </div>
       <div class="photo-hero-shade" aria-hidden="true"></div>
@@ -3229,7 +3235,7 @@
       var CATEGORY_RANK = { fashion: 0, editorial: 1, product: 2, branding: 3 };
       var projectCategory = {
         0: 'fashion', 10: 'fashion', 12: 'fashion', 16: 'fashion', 22: 'fashion', 29: 'fashion', 30: 'fashion', 31: 'fashion', 32: 'fashion', 33: 'fashion',
-        1: 'editorial', 5: 'editorial', 6: 'editorial', 7: 'editorial', 17: 'editorial', 18: 'editorial', 23: 'editorial', 24: 'editorial', 25: 'editorial', 26: 'editorial', 27: 'editorial', 28: 'editorial', 34: 'editorial', 35: 'editorial',
+        1: 'editorial', 5: 'editorial', 6: 'editorial', 7: 'editorial', 17: 'editorial', 18: 'editorial', 23: 'editorial', 24: 'editorial', 25: 'editorial', 26: 'editorial', 27: 'editorial', 28: 'editorial', 34: 'editorial',
         9: 'product', 11: 'product',
         14: 'branding', 15: 'branding'
       };
@@ -3251,9 +3257,9 @@
       }
 
       var heroSlides = [
+        { title: '', projectId: 34 },
         { title: '', projectId: 25 },
-        { title: '', projectId: 11 },
-        { title: '', projectId: 34 }
+        { title: '', projectId: 11 }
       ];
       var heroIndex = 0;
       var heroWipeTimer = null;
@@ -3942,19 +3948,7 @@
           { src: 'viviene_alexa8.jpg', orientation: 'landscape' },
           { src: 'viviene_alexa9.jpg', orientation: 'portrait' },
           { src: 'viviene_alexa10.jpg', orientation: 'portrait' },
-          { src: 'viviene_alexa11.jpg', orientation: 'portrait' }
-        ]
-      },
-      {
-        id: 35,
-        title: 'alexa + jaylon',
-        year: '',
-        time: '',
-        location: '',
-        description: '',
-        details: '',
-        thumbnail: 'alexaxjaylon-66.jpg',
-        images: [
+          { src: 'viviene_alexa11.jpg', orientation: 'portrait' },
           { src: 'alexaxjaylon-66.jpg', orientation: 'landscape' }
         ]
       },
@@ -4296,7 +4290,7 @@
         barKind: 'photo and design',
         barColor: 'rgba(35, 85, 145, 0.94)',
         hero: 'gotem_port24.jpg',
-        panelLeft: 'gotem_port24.jpg',
+        panelSingle: 'gotem_port24.jpg',
         images: [
           '1gotem_proj14.jpg',
           '2gotem_proj14.jpg',
