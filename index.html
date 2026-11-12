@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://formsubmit.co; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://unpkg.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://formsubmit.co https://cdnjs.cloudflare.com https://unpkg.com; worker-src 'self' blob: https://cdnjs.cloudflare.com; upgrade-insecure-requests" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; form-action 'self' https://formsubmit.co; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; font-src 'self'; connect-src 'self' https://formsubmit.co; upgrade-insecure-requests" />
   <title>alexa carmona</title>
   <link rel="icon" type="image/svg+xml" href="alexalogoA1.svg" />
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
@@ -2195,8 +2195,6 @@
     }
     .case-gallery-stage[hidden] { display: none !important; }
 
-    .case-flipbook-wrap[hidden] { display: none !important; }
-
     .case-grid {
       width: 100%;
       max-width: min(1680px, 100%);
@@ -2344,115 +2342,6 @@
     .case-text-block p + p { margin-top: 16px; }
     .case-img-block { width: 100%; }
     .case-img-block img { display: block; max-width: 100%; width: auto; height: auto; }
-    /* Georgia Entertainment — FlipHTML5-style book (pdf.js + StPageFlip) */
-    .case-flipbook-section { position: relative; z-index: 1; max-width: 1000px; margin: 0 auto; padding-bottom: 48px; }
-    .case-flipbook-section[hidden] { display: none !important; }
-    .case-pdf-viewer {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      gap: clamp(6px, 2vw, 20px);
-      width: 100%;
-      padding: 12px 0 24px;
-    }
-    .case-pdf-arrow {
-      flex: 0 0 auto;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: clamp(26px, 4.5vw, 40px);
-      font-weight: 300;
-      line-height: 1;
-      padding: 8px 10px;
-      margin: 0;
-      border: none;
-      background: transparent;
-      color: var(--fg);
-      cursor: pointer;
-      opacity: 0.5;
-      transition: opacity 0.2s ease;
-      outline: none;
-      box-shadow: none;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .case-pdf-arrow::-moz-focus-inner {
-      border: 0;
-      padding: 0;
-    }
-    .case-pdf-arrow:focus,
-    .case-pdf-arrow:focus-visible,
-    .case-pdf-arrow:active {
-      outline: none;
-      box-shadow: none;
-    }
-    .case-pdf-arrow:hover:not(:disabled) { opacity: 1; }
-    .case-pdf-arrow:disabled {
-      opacity: 0.1;
-      cursor: default;
-    }
-    .case-pdf-page-wrap {
-      flex: 1 1 auto;
-      min-width: 0;
-      max-width: 100%;
-      min-height: min(52vh, 520px);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: none;
-      outline: none;
-      background: transparent;
-    }
-    .case-pdf-page-wrap .stf__parent {
-      margin: 0 auto;
-      filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.2));
-    }
-    .case-pdf-meta {
-      text-align: center;
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      color: var(--fg-muted);
-      margin-top: 8px;
-    }
-    .case-flipbook-hint {
-      text-align: center;
-      font-size: 10px;
-      letter-spacing: 0.08em;
-      color: var(--fg-muted);
-      margin-top: 10px;
-      opacity: 0.85;
-    }
-    .case-flipbook-loading, .case-flipbook-error {
-      text-align: center; font-size: 14px; font-weight: 300; color: var(--fg-muted); padding: 32px 16px;
-    }
-    .case-flipbook-error code {
-      font-size: 12px;
-      padding: 2px 6px;
-      background: var(--card-bg);
-      font-weight: 400;
-    }
-    .case-flipbook-section--embed .case-pdf-viewer {
-      padding: 8px 0 16px;
-    }
-    .case-flipbook-section--embed .case-pdf-arrow,
-    .case-flipbook-section--embed .case-pdf-meta {
-      display: none !important;
-    }
-    .case-flipbook-section--embed .case-pdf-page-wrap {
-      min-height: min(72vh, 780px);
-      width: 100%;
-    }
-    iframe.case-flipbook-embed {
-      width: 100%;
-      height: min(72vh, 780px);
-      min-height: 420px;
-      border: 0;
-      display: block;
-      background: #1a1a1a;
-    }
-    @media (max-width: 800px) {
-      .case-pdf-viewer { gap: 2px; }
-      .case-pdf-page-wrap { min-height: 42vh; }
-      iframe.case-flipbook-embed { min-height: 360px; height: 65vh; }
-    }
 
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(18px); }
@@ -3250,17 +3139,6 @@
       </div>
       <div class="case-gallery-stage" id="caseGalleryStage">
         <div class="case-grid" id="caseGrid"></div>
-      </div>
-      <div class="case-inner case-flipbook-wrap" id="caseFlipbookWrap" hidden>
-        <div class="case-flipbook-section" id="caseFlipbookSection">
-        <div class="case-pdf-viewer" id="casePdfViewer" aria-label="PDF pages">
-          <button type="button" class="case-pdf-arrow case-pdf-arrow--prev" id="caseFlipbookPrev" aria-label="Previous page">←</button>
-          <div class="case-pdf-page-wrap" id="caseFlipbookMount"></div>
-          <button type="button" class="case-pdf-arrow case-pdf-arrow--next" id="caseFlipbookNext" aria-label="Next page">→</button>
-        </div>
-        <div class="case-pdf-meta"><span id="caseFlipbookStatus" aria-live="polite"></span></div>
-        <p class="case-flipbook-hint">Drag a page corner or edge to turn — or use the arrows.</p>
-        </div>
       </div>
       <nav class="case-project-nav" id="caseProjectNav" aria-label="Project navigation">
         <button type="button" class="case-project-nav-btn" id="casePrevBtn">Back</button>
@@ -4449,7 +4327,6 @@
           'process images/theatre_spread1.png',
           'process images/theatre_spread2.png'
         ],
-        flipbookEmbedUrl: 'https://heyzine.com/flip-book/c6c377a09d.html',
         collaborators: 'Leo Ruiz',
         featureCredit: 'Shoe designer feature: Quintin Williams',
         description: 'Editorial layout for Georgia Entertainment that pairs athlete portraits with abstract typography and graphic shapes. The spreads lean into motion, cropped limbs, overlapping type, and color fields so the story feels like a conversation between art direction and performance.',
@@ -5268,233 +5145,6 @@
     })();
 
 
-    var __flipbookLibsPromise = null;
-    function loadFlipbookLibs() {
-      if (typeof pdfjsLib !== 'undefined' && typeof St !== 'undefined' && St.PageFlip) {
-        return Promise.resolve();
-      }
-      if (__flipbookLibsPromise) return __flipbookLibsPromise;
-      function loadScript(src) {
-        return new Promise(function(resolve, reject) {
-          var el = document.createElement('script');
-          el.src = src;
-          el.crossOrigin = 'anonymous';
-          el.onload = resolve;
-          el.onerror = reject;
-          document.head.appendChild(el);
-        });
-      }
-      __flipbookLibsPromise = loadScript('https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js').then(function() {
-        return loadScript('https://unpkg.com/page-flip@2.0.7/dist/js/page-flip.browser.js');
-      });
-      return __flipbookLibsPromise;
-    }
-    var __georgiaFlipbook = null;
-    var __georgiaFlipbookResizeTimer = null;
-    function georgiaPdfCandidateUrls(p) {
-      var list = [];
-      function add(u) {
-        if (!u) return;
-        try {
-          var abs = new URL(u, window.location.href).href;
-          if (list.indexOf(abs) < 0) list.push(abs);
-        } catch (e) {}
-      }
-      add(p && p.flipbookPdf);
-      add('assets/georgia-entertainment-cej26.pdf');
-      add('georgia-entertainment-cej26.pdf');
-      add('213394-GEORGIA-ENTERTAINMENT-CEJ26-text-Web.pdf');
-      return list;
-    }
-    function destroyGeorgiaFlipbook() {
-      window.removeEventListener('resize', onGeorgiaFlipbookResize);
-      if (__georgiaFlipbookResizeTimer) {
-        clearTimeout(__georgiaFlipbookResizeTimer);
-        __georgiaFlipbookResizeTimer = null;
-      }
-      if (__georgiaFlipbook) {
-        try { __georgiaFlipbook.destroy(); } catch (e) {}
-        __georgiaFlipbook = null;
-      }
-      var flipSec = document.getElementById('caseFlipbookSection');
-      if (flipSec) flipSec.classList.remove('case-flipbook-section--embed');
-      var prev = document.getElementById('caseFlipbookPrev');
-      var next = document.getElementById('caseFlipbookNext');
-      if (prev) { prev.style.display = ''; prev.disabled = false; }
-      if (next) { next.style.display = ''; next.disabled = false; }
-      var mount = document.getElementById('caseFlipbookMount');
-      if (mount) mount.innerHTML = '';
-      var st = document.getElementById('caseFlipbookStatus');
-      if (st) st.textContent = '';
-      var hint = document.querySelector('#caseFlipbookSection .case-flipbook-hint');
-      if (hint) hint.textContent = 'Drag a page corner or edge to turn — or use the arrows.';
-    }
-    function onGeorgiaFlipbookResize() {
-      if (!__georgiaFlipbook || !__georgiaFlipbook.getUI) return;
-      clearTimeout(__georgiaFlipbookResizeTimer);
-      __georgiaFlipbookResizeTimer = setTimeout(function() {
-        try { __georgiaFlipbook.getUI().update(); } catch (e) {}
-      }, 120);
-    }
-    function updateGeorgiaFlipbookNav() {
-      var st = document.getElementById('caseFlipbookStatus');
-      var prev = document.getElementById('caseFlipbookPrev');
-      var next = document.getElementById('caseFlipbookNext');
-      if (!__georgiaFlipbook || !st) return;
-      var cur = __georgiaFlipbook.getCurrentPageIndex();
-      var total = __georgiaFlipbook.getPageCount();
-      st.textContent = (cur + 1) + ' / ' + total;
-      if (prev) prev.disabled = cur <= 0;
-      if (next) next.disabled = cur >= total - 1;
-    }
-    function wireGeorgiaFlipbookControls() {
-      var prev = document.getElementById('caseFlipbookPrev');
-      var next = document.getElementById('caseFlipbookNext');
-      if (prev) prev.onclick = function() { if (__georgiaFlipbook) __georgiaFlipbook.flipPrev('top'); };
-      if (next) next.onclick = function() { if (__georgiaFlipbook) __georgiaFlipbook.flipNext('top'); };
-      if (__georgiaFlipbook) {
-        __georgiaFlipbook.on('flip', function() { updateGeorgiaFlipbookNav(); });
-        __georgiaFlipbook.on('init', function() { updateGeorgiaFlipbookNav(); });
-      }
-      setTimeout(updateGeorgiaFlipbookNav, 80);
-      window.addEventListener('resize', onGeorgiaFlipbookResize);
-    }
-    async function mountGeorgiaStPageFlip(mount, urls, pageAspect) {
-      mount.innerHTML = '';
-      await new Promise(function(r) { requestAnimationFrame(function() { requestAnimationFrame(r); }); });
-      var wrap = mount.parentElement;
-      var avail = (wrap && wrap.getBoundingClientRect().width) ? wrap.getBoundingClientRect().width : 720;
-      var w = Math.max(220, Math.min(420, Math.floor((avail - 72) / 2)));
-      var h = Math.max(280, Math.round(w * pageAspect));
-      __georgiaFlipbook = new St.PageFlip(mount, {
-        width: w,
-        height: h,
-        size: 'stretch',
-        minWidth: 180,
-        maxWidth: 960,
-        minHeight: 240,
-        maxHeight: 1400,
-        maxShadowOpacity: 0.45,
-        showCover: false,
-        mobileScrollSupport: true,
-        flippingTime: 900,
-        drawShadow: true,
-        usePortrait: true
-      });
-      __georgiaFlipbook.loadFromImages(urls);
-      wireGeorgiaFlipbookControls();
-    }
-    function georgiaFlipbookEmbedSrc(raw) {
-      if (!raw || typeof raw !== 'string') return '';
-      var s = raw.trim();
-      if (!s) return '';
-      try {
-        var u = new URL(s, window.location.href);
-        if (u.protocol !== 'http:' && u.protocol !== 'https:') return '';
-        return u.href;
-      } catch (e) {
-        return '';
-      }
-    }
-    function loadGeorgiaFlipbookEmbed(p) {
-      var mount = document.getElementById('caseFlipbookMount');
-      var flipSec = document.getElementById('caseFlipbookSection');
-      var hint = document.querySelector('#caseFlipbookSection .case-flipbook-hint');
-      if (!mount) return;
-      var src = georgiaFlipbookEmbedSrc(p && p.flipbookEmbedUrl);
-      if (!src) {
-        mount.innerHTML = '<p class="case-flipbook-error">Invalid flipbook link.</p>';
-        return;
-      }
-      if (flipSec) flipSec.classList.add('case-flipbook-section--embed');
-      if (hint) hint.textContent = 'Use the controls in the reader to browse the issue.';
-      mount.innerHTML = '';
-      var iframe = document.createElement('iframe');
-      iframe.className = 'case-flipbook-embed';
-      iframe.src = src;
-      iframe.setAttribute('title', (p && p.title) ? p.title : 'Magazine flipbook');
-      iframe.loading = 'lazy';
-      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-      iframe.setAttribute('allowfullscreen', 'true');
-      mount.appendChild(iframe);
-    }
-    async function loadGeorgiaFlipbook(p) {
-      destroyGeorgiaFlipbook();
-      var mount = document.getElementById('caseFlipbookMount');
-      if (!mount) return;
-      if (p && p.flipbookEmbedUrl) {
-        loadGeorgiaFlipbookEmbed(p);
-        return;
-      }
-      mount.innerHTML = '<p class="case-flipbook-loading">Preparing your magazine…</p>';
-      try {
-        await loadFlipbookLibs();
-      } catch (e) {
-        mount.innerHTML = '<p class="case-flipbook-error">Flipbook scripts did not load. Refresh the page.</p>';
-        return;
-      }
-      if (typeof pdfjsLib === 'undefined' || typeof St === 'undefined' || !St.PageFlip) {
-        mount.innerHTML = '<p class="case-flipbook-error">Flipbook scripts did not load. Refresh the page.</p>';
-        return;
-      }
-      pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-
-      var doc = null;
-      var candidates = georgiaPdfCandidateUrls(p);
-      for (var ci = 0; ci < candidates.length && !doc; ci++) {
-        var pdfUrl = candidates[ci];
-        try {
-          var res = await fetch(pdfUrl);
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          doc = await pdfjsLib.getDocument({ data: await res.arrayBuffer() }).promise;
-        } catch (e1) {
-          try {
-            doc = await pdfjsLib.getDocument({ url: pdfUrl }).promise;
-          } catch (e2) {}
-        }
-      }
-
-      if (!doc) {
-        mount.innerHTML = '<p class="case-flipbook-error">Could not open the PDF. Run a local server from this folder (python3 -m http.server 8080) so assets/georgia-entertainment-cej26.pdf can load.</p>';
-        var prev = document.getElementById('caseFlipbookPrev');
-        var next = document.getElementById('caseFlipbookNext');
-        if (prev && prev.blur) prev.blur();
-        if (next && next.blur) next.blur();
-        return;
-      }
-
-      var urls = [];
-      var pageAspect = 1.35;
-      try {
-        var maxPages = Math.min(doc.numPages, 48);
-        var rasterMaxW = 540;
-        for (var pi = 1; pi <= maxPages; pi++) {
-          var page = await doc.getPage(pi);
-          var v1 = page.getViewport({ scale: 1 });
-          var sc = Math.min(1.7, rasterMaxW / v1.width);
-          var vp = page.getViewport({ scale: sc });
-          pageAspect = vp.height / vp.width;
-          var canvas = document.createElement('canvas');
-          var ctx = canvas.getContext('2d', { alpha: false });
-          canvas.width = Math.floor(vp.width);
-          canvas.height = Math.floor(vp.height);
-          await page.render({ canvasContext: ctx, viewport: vp }).promise;
-          urls.push(canvas.toDataURL('image/jpeg', 0.82));
-        }
-        try {
-          if (typeof doc.destroy === 'function') doc.destroy();
-        } catch (e) {}
-        await mountGeorgiaStPageFlip(mount, urls, pageAspect);
-      } catch (err) {
-        mount.innerHTML = '<p class="case-flipbook-error">Could not build the flipbook. Check the console for details.</p>';
-        var prevE = document.getElementById('caseFlipbookPrev');
-        var nextE = document.getElementById('caseFlipbookNext');
-        if (prevE && prevE.blur) prevE.blur();
-        if (nextE && nextE.blur) nextE.blur();
-        console.error(err);
-      }
-    }
-
     var CASE_PROJECT_ORDER = [3, 2, 1, 0, 5, 7, 6];
 
     function caseOrderForNav() {
@@ -5699,7 +5349,7 @@
       }).join('');
     }
 
-    async function openCase(i) {
+    function openCase(i) {
       const p = projects[i];
       if (!p) return;
       window.__currentCaseIndex = i;
@@ -5797,12 +5447,8 @@
 
       const grid = document.getElementById('caseGrid');
       const galleryStage = document.getElementById('caseGalleryStage');
-      const flipWrap = document.getElementById('caseFlipbookWrap');
-      const flipSec = document.getElementById('caseFlipbookSection');
-      destroyGeorgiaFlipbook();
       const overlay = document.getElementById('caseOverlay');
 
-      const hasFlipbook = !!(p.flipbookEmbedUrl || p.flipbookPdf);
       const hasGallery = !!((p.images && p.images.length) || (p.processImages && p.processImages.length));
 
       if (hasGallery) {
@@ -5828,27 +5474,13 @@
         if (galleryStage) galleryStage.hidden = true;
       }
 
-      if (hasFlipbook) {
-        if (flipWrap) flipWrap.hidden = false;
-        if (flipSec) flipSec.hidden = false;
-      } else {
-        if (flipWrap) flipWrap.hidden = true;
-        if (flipSec) flipSec.hidden = true;
-      }
-
       overlay.scrollTop = 0;
       overlay.classList.add('open');
-      if (p.flipbookEmbedUrl || p.flipbookPdf) {
-        await loadGeorgiaFlipbook(p);
-      }
       updateCaseProjectNav();
     }
 
     function closeCase() {
-      destroyGeorgiaFlipbook();
       var grid = document.getElementById('caseGrid');
-      var flipWrap = document.getElementById('caseFlipbookWrap');
-      var flipSec = document.getElementById('caseFlipbookSection');
       var galleryStage = document.getElementById('caseGalleryStage');
       if (grid) {
         pauseCaseVideos(grid);
@@ -5856,8 +5488,6 @@
         grid.innerHTML = '';
       }
       if (galleryStage) galleryStage.hidden = false;
-      if (flipWrap) flipWrap.hidden = true;
-      if (flipSec) flipSec.hidden = true;
       document.getElementById('caseOverlay').classList.remove('open');
       document.body.classList.remove('case-open');
       var descEl = document.getElementById('caseDesc');
