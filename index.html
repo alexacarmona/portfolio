@@ -719,6 +719,7 @@
       position: absolute;
       inset: 0;
       overflow: hidden;
+      background: #111;
       will-change: clip-path;
       backface-visibility: hidden;
       transform: translateZ(0);
@@ -928,6 +929,9 @@
       height: 100%;
       object-fit: cover;
       display: block;
+    }
+    .photo-hero-slide[data-slide="0"] img {
+      object-position: center 72%;
     }
     .photo-hero-shade {
       position: absolute;
@@ -2627,7 +2631,7 @@
     <header class="photo-hero" id="photoHero" aria-label="Featured photography">
       <div class="photo-hero-slides" id="photoHeroSlides">
         <div class="photo-hero-slide is-active" data-slide="0">
-          <img src="opt/alexa_viv_32.jpg" alt="Viviene in a white dress kneeling in tall grass at night" fetchpriority="high" loading="eager" decoding="async" />
+          <img src="opt/viv_alexa231.jpg" alt="Viviene kneeling in a white dress in tall grass at night" fetchpriority="high" loading="eager" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="1">
           <img src="opt/alexa_erika_soccercurl-19.jpg" alt="Erika in hair rollers applying makeup beside a soccer goal at night" loading="lazy" decoding="async" />
@@ -3934,6 +3938,8 @@
         images: [
           { src: 'viviene_alexa1.jpg', orientation: 'landscape' },
           { src: 'viviene_alexa2.jpg', orientation: 'portrait' },
+          { src: 'viv_alexa231.jpg', orientation: 'landscape' },
+          { src: 'viv_alexa232.jpg', orientation: 'landscape' },
           { src: 'alexa_viv_32.jpg', orientation: 'landscape' },
           { src: 'alexa_viv_31.jpg', orientation: 'landscape' },
           { src: 'viviene_alexa3.jpg', orientation: 'portrait' },
@@ -4130,7 +4136,9 @@
           '4secretlifeofwalter_proj1.jpg',
           '5secretlifeofwalter_proj1.jpg',
           '6secretlifeofwalter_proj1.jpg',
-          '7secretlifeofwalter_proj1.jpg',
+          '7secretlifeofwalter_proj1.jpg'
+        ],
+        processImages: [
           'walterbts1.JPG',
           'walterbts2.JPG',
           'walterbts3.JPG',
@@ -4165,13 +4173,13 @@
           '4swissdesignstamps_proj3.jpg',
           '5swissdesignstamps_proj3.jpg',
           '6swissdesignstamps_proj3.jpg',
-          '7swissdesignstamps_proj3.jpg',
+          '7swissdesignstamps_proj3.jpg'
+        ],
+        processImages: [
           'swissbts1.JPG',
           'swissbts2.JPG',
-          'swissbts3.JPG',
-          'process images/swiss_bts2.MOV'
+          'swissbts3.JPG'
         ],
-        videoAutoplayLoop: true,
         description: 'A set of stamps that follows three pioneers in Swiss design. I designed and printed the full set: stamps, envelopes, and a small brochure that works as both a keepsake and a guide to the designers. The process started by breaking down their systems into grids, color, and type rules, then rebuilding them at stamp scale so each piece feels precise but still playful. The envelope and brochure extend those rules into larger surfaces, layering type and image so the set feels like a pocket-sized archive of Swiss design thinking.',
         feedSummary: 'A stamp and print system honoring three Swiss design pioneers at miniature scale. I designed and produced the full set, from perforated stamps to envelope and brochure.',
         productionBlurb: 'A set of stamps following three pioneers of Swiss design. This project was a deep dive into the production side, taking rigid design principles and translating them into a physical, perforated format.',
@@ -4193,16 +4201,18 @@
         panelRight: '2gargabemagazine_proj4.jpg',
         images: [
           '1gargabemagazine_proj4.jpg',
-          'martabts1.jpg',
           '2gargabemagazine_proj4.jpg',
-          'martabts2.jpg',
           '4gargabemagazine_proj4.jpg',
-          'martabts3.jpg',
           '5gargabemagazine_proj4.jpg',
-          'martabts4.jpg',
           'gar_atlanta_skyline.png',
-          'martabts5.jpg',
           '3gargabemagazine_proj4.jpg'
+        ],
+        processImages: [
+          'martabts1.jpg',
+          'martabts2.jpg',
+          'martabts3.jpg',
+          'martabts4.jpg',
+          'martabts5.jpg'
         ],
         description: 'Garbage Magazine is a self-initiated editorial project built around photographs and design from ATL, following MARTA and the everyday infrastructure that usually gets ignored. The spreads layer typography, image, and texture to feel like a low-fi archive of construction zones, train platforms, underpasses, and street-level ephemera. I treated each story like a visual mixtape, mixing my own photos with bold type systems, high-contrast crops, and moments of quiet white space so it reads somewhere between a zine, a lookbook, and a field study of the city.',
         feedSummary: 'A self-initiated editorial zine documenting Atlanta and MARTA through my photography and layout. I mixed street imagery, type, and texture into a field study of the city’s overlooked infrastructure.',
@@ -4238,14 +4248,16 @@
           '1breadly_proj5.jpeg',
           '3breadly_proj5.jpeg',
           '5breadly_proj5.jpeg',
-          'breadbts1.png',
-          'breadbts2.png',
           '10breadly_proj5.jpg',
           '14breadly_proj5.jpg',
           '15breadly_proj5.jpg',
           '22breadly_proj5.jpg',
           '23breadly_proj5.jpg',
-          '26breadly_proj5.jpg',
+          '26breadly_proj5.jpg'
+        ],
+        processImages: [
+          'breadbts1-png.jpg',
+          'breadbts2-png.jpg',
           'breadlybts1.JPG',
           'breadbts1.jpg',
           'breadlybts2.JPG',
@@ -4327,12 +4339,14 @@
           '4shirleyzhangatlantahawks_proj23.jpg',
           '4quintinwilliamsshoedesign_proj17.jpg',
           '5shirleyzhangatlantahawks_proj23.jpg',
-          'artandathletics_proj16.jpg',
-          'qwbts.png',
+          'artandathletics_proj16.jpg'
+        ],
+        processImages: [
+          'qwbts.jpg',
           'alexa_shirley-10.jpg',
-          { src: 'gaentbst.png', solo: true },
-          'process images/theatre_spread1.png',
-          'process images/theatre_spread2.png'
+          { src: 'gaentbst.jpg', solo: true },
+          'process images/theatre_spread1.jpg',
+          'process images/theatre_spread2.jpg'
         ],
         collaborators: 'Leo Ruiz',
         featureCredit: 'Shoe designer feature: Quintin Williams',
@@ -4358,22 +4372,24 @@
         hideBarTitle: true,
         images: [
           'Animated_Lockup.gif',
-          'process images/TRADEMARKBTS1.jpg',
-          'process images/ftopbts1.png',
-          'process images/GraphicWMotif 1.png',
-          'process images/TRADEMARKBTS2.png',
+          'process images/GraphicWMotif 1.jpg',
           '1trademarkxchicago_proj24.jpg',
-          'process images/TRADEMARKBTS3.jpg',
           '2trademarkxchicago_proj24.jpg',
-          'process images/TRADEMARKBTS4.png',
           '3trademarkxchicago_proj24.jpg',
-          'process images/TRADEMARKBTS5.jpg',
           '4trademarkxchicago_proj24.png',
-          'process images/TRADEMARKBTS6.jpg',
           '5trademarkxchicago_proj24.jpg',
-          'process images/TRADEMARKBTS7.jpg',
           '6trademarkxchicago_proj24.png',
           '7trademarkxchicago_proj24.png'
+        ],
+        processImages: [
+          'process images/TRADEMARKBTS1.jpg',
+          'process images/ftopbts1.jpg',
+          'process images/TRADEMARKBTS2.jpg',
+          'process images/TRADEMARKBTS3.jpg',
+          'process images/TRADEMARKBTS4.jpg',
+          'process images/TRADEMARKBTS5.jpg',
+          'process images/TRADEMARKBTS6.jpg',
+          'process images/TRADEMARKBTS7.jpg'
         ],
         collaborators: 'Kaki Kwan, Bella Ahn, and Ahana',
         description: 'A collaboration with FTOP (For The One Percent) focused on highlighting the work artists are doing in Chicago and building community around them. We created a visual language that feels sharp and aspirational, then applied it to a series of posters, motion tests, and social assets that function as a pop-up moment for artists to interact, share work, and be seen.',
@@ -4397,9 +4413,10 @@
       var intro = document.getElementById('mersiIntro');
       if (!designSection || !leftStack || !rightStack || !barTitleWrap || !projectBar) return;
 
-      var SNAP_MS = 800;
-      var SNAP_DEBOUNCE = 500;
+      var SNAP_MS = 620;
+      var SNAP_DEBOUNCE = 180;
       var WHEEL_MULT = 1;
+      var WHEEL_THRESHOLD = 48;
       var SNAP_EDGE = 0.005;
       var MOBILE_MAX = 900;
 
@@ -4533,6 +4550,12 @@
         hydrateMersiImages(idx);
         preloadPair(mersiItems[((idx + 1) % n + n) % n]);
         preloadPair(mersiItems[((idx - 1) % n + n) % n]);
+        preloadPair(mersiItems[((idx + 2) % n + n) % n]);
+        preloadPair(mersiItems[((idx - 2) % n + n) % n]);
+      }
+
+      function preloadAllMersiImages() {
+        mersiItems.forEach(function(item) { preloadPair(item); });
       }
 
       function hydrateMersiImages(idx) {
@@ -4542,14 +4565,17 @@
         want[idx] = true;
         want[(idx + 1) % n] = true;
         want[(idx - 1 + n) % n] = true;
+        want[(idx + 2) % n] = true;
+        want[(idx - 2 + n) % n] = true;
         function hydrate(slides) {
           if (!slides) return;
           slides.forEach(function(s, i) {
-            if (!want[i] || !s || !s.el) return;
+            if (!s || !s.el) return;
             var img = s.el.querySelector('img');
             if (!img) return;
             var pending = img.getAttribute('data-src');
             if (pending && !img.getAttribute('src')) img.src = pending;
+            if (want[i] && img.decode) img.decode().catch(function() {});
           });
         }
         hydrate(leftSlides);
@@ -4565,13 +4591,6 @@
         if (!stack) return;
         stack.innerHTML = '';
         slides.length = 0;
-        var nSlides = mersiItems.length;
-        var eager = {};
-        if (nSlides) {
-          eager[activeIndex] = true;
-          eager[(activeIndex + 1) % nSlides] = true;
-          eager[(activeIndex - 1 + nSlides) % nSlides] = true;
-        }
         mersiItems.forEach(function(item, idx) {
           var slide = document.createElement('div');
           slide.className = 'mersi-slide-item';
@@ -4579,12 +4598,8 @@
           if (item.panelImageOffset) slide.classList.add('mersi-slide-item--' + item.panelImageOffset);
           var src = edge === 'top' ? item.leftSrc : (item.singlePanel ? item.leftSrc : item.rightSrc);
           var displaySrc = typeof window.optImgSrc === 'function' ? window.optImgSrc(src) : src;
-          var loadMode = eager[idx] ? 'eager' : 'lazy';
-          var fetchPri = eager[idx] && idx === activeIndex ? ' fetchpriority="high"' : '';
-          var srcAttr = eager[idx]
-            ? ' src="' + escHtml(displaySrc) + '"'
-            : ' data-src="' + escHtml(displaySrc) + '"';
-          slide.innerHTML = '<img' + srcAttr + ' alt="' + escHtml(item.title) + ' project image" decoding="async" loading="' + loadMode + '"' + fetchPri + ' />';
+          var fetchPri = idx === activeIndex ? ' fetchpriority="high"' : '';
+          slide.innerHTML = '<img src="' + escHtml(displaySrc) + '" alt="' + escHtml(item.title) + ' project image" decoding="async" loading="eager"' + fetchPri + ' />';
           stack.appendChild(slide);
           slides.push({ el: slide, edge: edge });
         });
@@ -4666,8 +4681,8 @@
         var item = mersiItems[index];
         if (!item || !projectBar) return;
         projectBar.setAttribute('aria-label', 'View ' + item.title);
-        designSection.classList.toggle('mersi--single-panel', !!item.singlePanel);
         projectBar.classList.toggle('mersi-project-bar--no-title', !!item.hideBarTitle);
+        designSection.classList.toggle('mersi--single-panel', !!item.singlePanel);
       }
 
       function updateSlideStack(slides, currentIndex, nextIndex, progress, edge) {
@@ -4825,10 +4840,10 @@
           }
           scrollPos = endPos;
           activeIndex = target;
+          animating = false;
           applyMotionState(false);
           updateBarLabel(target);
           preloadNeighbors(target);
-          animating = false;
           snapRaf = null;
           if (done) done();
         }
@@ -4874,10 +4889,10 @@
           }
           scrollPos = to * (window.innerHeight || 1);
           activeIndex = to;
+          animating = false;
           applyMotionState(false);
           updateBarLabel(to);
           preloadNeighbors(to);
-          animating = false;
           snapRaf = null;
           if (done) done();
         }
@@ -4944,36 +4959,27 @@
         try { sessionStorage.setItem('mersiIntroDismissed', '1'); } catch (e) {}
       }
 
+      var wheelAcc = 0;
+      var wheelResetTimer = null;
       function onWheel(e) {
         if (location.hash !== '#design') return;
         if (document.body.classList.contains('case-open')) return;
-        if (!mersiItems.length || animating) return;
+        if (!mersiItems.length) return;
         e.preventDefault();
         dismissIntro();
-        cancelSnapAnimation();
-        if (snapTimer) {
-          clearTimeout(snapTimer);
-          snapTimer = null;
-        }
-
-        var n = mersiItems.length;
-        var state = getMotionState();
-        if (e.deltaY > 0 && state.currentIndex === n - 1 && state.progress <= SNAP_EDGE) {
-          animateWrapToIndex(0);
-          return;
-        }
-        if (e.deltaY < 0 && state.currentIndex === 0 && state.progress <= SNAP_EDGE) {
-          animateWrapToIndex(n - 1);
-          return;
-        }
-
-        scrollPos += e.deltaY * WHEEL_MULT;
-        applyMotionState(false);
-        scheduleSnap();
+        if (animating) return;
+        wheelAcc += e.deltaY * WHEEL_MULT;
+        if (wheelResetTimer) clearTimeout(wheelResetTimer);
+        wheelResetTimer = setTimeout(function() { wheelAcc = 0; }, 160);
+        if (Math.abs(wheelAcc) < WHEEL_THRESHOLD) return;
+        var dir = wheelAcc > 0 ? 1 : -1;
+        wheelAcc = 0;
+        setActiveIndex(activeIndex + dir, false);
       }
 
       buildMersiItems();
       rebuildMotionDom();
+      preloadAllMersiImages();
       goToBreadlyProject();
 
       designSection.addEventListener('wheel', onWheel, { passive: false });
@@ -5029,6 +5035,7 @@
         goToBreadlyProject();
         requestAnimationFrame(function() {
           showInstant(activeIndex);
+          preloadAllMersiImages();
           preloadNeighbors(activeIndex);
         });
       }
@@ -5204,7 +5211,8 @@
         return '<figure class="' + videoClass + '"><video src="' + safeSrc + '" ' + videoAttrs + ' aria-label="' + safeTitle + ' project video"></video></figure>';
       }
       var imgPath = typeof window.optImgSrc === 'function' ? window.optImgSrc(src) : safeSrc;
-      return '<figure class="case-media-piece"><img src="' + imgPath + '" alt="' + safeTitle + ' project image" loading="lazy" decoding="async" /></figure>';
+      var loading = opts.eager ? 'eager' : 'lazy';
+      return '<figure class="case-media-piece"><img src="' + imgPath + '" alt="' + safeTitle + ' project image" loading="' + loading + '" decoding="async" /></figure>';
     }
 
     function playCaseAutoplayVideos(root) {
@@ -5273,10 +5281,11 @@
 
     function buildCaseProcessSection(images, title, opts) {
       if (!images || !images.length) return '';
+      var processOpts = Object.assign({}, opts || {}, { eager: true });
       return (
         '<section class="case-process-section" aria-label="Process">' +
           '<h3 class="case-process-label">Process</h3>' +
-          buildCaseMediaStack(images, title, opts) +
+          buildCaseMediaStack(images, title, processOpts) +
         '</section>'
       );
     }
