@@ -924,6 +924,11 @@
     .photo-hero-slide.is-wiping {
       z-index: 3;
     }
+    .photo-hero-slide picture {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
     .photo-hero-slide img {
       width: 100%;
       height: 100%;
@@ -932,6 +937,11 @@
     }
     .photo-hero-slide[data-slide="0"] img {
       object-position: center 72%;
+    }
+    @media (max-width: 800px) {
+      .photo-hero-slide[data-slide="0"] img {
+        object-position: center center;
+      }
     }
     .photo-hero-shade {
       position: absolute;
@@ -2633,7 +2643,10 @@
     <header class="photo-hero" id="photoHero" aria-label="Featured photography">
       <div class="photo-hero-slides" id="photoHeroSlides">
         <div class="photo-hero-slide is-active" data-slide="0">
-          <img src="opt/viv_alexa231.jpg" alt="Viviene kneeling in a white dress in tall grass at night" fetchpriority="high" loading="eager" decoding="async" />
+          <picture>
+            <source media="(max-width: 800px)" srcset="opt/viviene_alexa4.jpg" />
+            <img src="opt/viv_alexa231.jpg" alt="Viviene photographed by Alexa Carmona" fetchpriority="high" loading="eager" decoding="async" />
+          </picture>
         </div>
         <div class="photo-hero-slide" data-slide="1">
           <img src="opt/alexa_erika_soccercurl-19.jpg" alt="Erika in hair rollers applying makeup beside a soccer goal at night" loading="lazy" decoding="async" />
