@@ -3371,11 +3371,33 @@
       setHeroSlide(0, { force: true, instant: true });
       startHeroAutoplay();
 
+      var keepGoingAnim = 0;
+      function easePhotoScroll(to, ms) {
+        var from = photoSection.scrollTop;
+        var dist = to - from;
+        if (!dist) return;
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          photoSection.scrollTop = to;
+          return;
+        }
+        var token = ++keepGoingAnim;
+        var start = null;
+        function frame(now) {
+          if (token !== keepGoingAnim) return;
+          if (start == null) start = now;
+          var p = Math.min(1, (now - start) / ms);
+          var e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+          photoSection.scrollTop = from + dist * e;
+          if (p < 1) requestAnimationFrame(frame);
+        }
+        requestAnimationFrame(frame);
+      }
+
       if (heroKeepGoingEl) {
         heroKeepGoingEl.addEventListener('click', function() {
           var bar = photoSection.querySelector('.photo-grid-bar');
           var top = bar ? bar.offsetTop : window.innerHeight;
-          photoSection.scrollTop = top;
+          easePhotoScroll(top, 1100);
         });
       }
 
