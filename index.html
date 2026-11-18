@@ -999,30 +999,6 @@
     @media (prefers-reduced-motion: reduce) {
       .photo-hero-slide { transition: none; }
     }
-    .photo-hero-index {
-      position: absolute;
-      z-index: 5;
-      left: clamp(28px, 4vw, 56px);
-      bottom: clamp(28px, 4vh, 44px);
-      display: flex;
-      gap: 16px;
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      font-variant-numeric: tabular-nums;
-      color: rgba(255,255,255,0.5);
-    }
-    .photo-hero-index-btn {
-      background: none;
-      border: none;
-      padding: 0;
-      font: inherit;
-      color: inherit;
-      cursor: pointer;
-    }
-    .photo-hero-index-btn.is-active {
-      color: #fff;
-      font-weight: 600;
-    }
     .photo-hero-scroll-label {
       position: absolute;
       z-index: 5;
@@ -2670,11 +2646,6 @@
       <div class="photo-hero-copy">
         <span id="photoHeroRotator" class="home-hero-rotator" aria-live="polite"></span>
       </div>
-      <div class="photo-hero-index" id="photoHeroIndex" role="tablist" aria-label="Slides">
-        <button type="button" class="photo-hero-index-btn is-active" data-slide="0">01</button>
-        <button type="button" class="photo-hero-index-btn" data-slide="1">02</button>
-        <button type="button" class="photo-hero-index-btn" data-slide="2">03</button>
-      </div>
       <span class="photo-hero-scroll-label">scroll</span>
       <div class="photo-hero-caption">
         <a href="#" class="photo-hero-cta is-hidden" id="photoHeroCta">view project</a>
@@ -3288,7 +3259,6 @@
       var heroIndex = 0;
       var heroWipeTimer = null;
       var heroAnimating = false;
-      var heroIndexBtns = photoSection.querySelectorAll('.photo-hero-index-btn');
       var heroCtaEl = document.getElementById('photoHeroCta');
       var heroAutoplayTimer = null;
       var HERO_AUTO_MS = 4500;
@@ -3315,9 +3285,6 @@
       resetHeroSlidesDom();
 
       function updateHeroMeta(logicalIndex) {
-        heroIndexBtns.forEach(function(btn, idx) {
-          btn.classList.toggle('is-active', idx === logicalIndex);
-        });
         var slide = heroSlides[logicalIndex];
         if (heroCtaEl) {
           if (slide.projectId != null && typeof openPhotoDetail === 'function') {
@@ -3406,12 +3373,6 @@
         heroAutoplayTimer = setInterval(advanceHeroSlide, HERO_AUTO_MS);
       }
 
-      heroIndexBtns.forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          setHeroSlide(parseInt(btn.dataset.slide, 10) || 0);
-          startHeroAutoplay();
-        });
-      });
       setHeroSlide(0, { force: true, instant: true });
       startHeroAutoplay();
 
