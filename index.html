@@ -3253,7 +3253,7 @@
       var projectCategory = {
         0: 'fashion', 10: 'fashion', 12: 'fashion', 16: 'fashion', 22: 'fashion', 29: 'fashion', 30: 'fashion', 31: 'fashion', 32: 'fashion', 33: 'fashion',
         1: 'editorial', 5: 'editorial', 6: 'editorial', 7: 'editorial', 17: 'editorial', 18: 'editorial', 23: 'editorial', 24: 'editorial', 25: 'editorial', 26: 'editorial', 27: 'editorial', 28: 'editorial', 34: 'editorial',
-        9: 'product', 11: 'product',
+        9: 'product', 11: 'product', 35: 'product',
         14: 'branding', 15: 'branding'
       };
 
@@ -3276,7 +3276,7 @@
       var heroSlides = [
         { title: '', projectId: 34 },
         { title: '', projectId: 25 },
-        { title: '', projectId: null }
+        { title: '', projectId: 35 }
       ];
       var heroIndex = 0;
       var heroWipeTimer = null;
@@ -3984,6 +3984,22 @@
           { src: 'alexaxjaylon-66.jpg', orientation: 'landscape' }
         ]
       },
+      {
+        id: 35,
+        title: 'press',
+        year: '',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: 'press_coffee3.jpg',
+        images: [
+          { src: 'press_coffee3.jpg', orientation: 'landscape' },
+          { src: 'press_coffee11.jpg', orientation: 'landscape' },
+          { src: 'press_coffee7.jpg', orientation: 'portrait' },
+          { src: 'press_coffee4.jpg', orientation: 'landscape' }
+        ]
+      },
     ];
     window.photoProjects = photoProjects;
 
@@ -4270,7 +4286,7 @@
         barColor: 'rgba(255, 168, 196, 0.94)',
         hero: '25breadly_proj5.jpg',
         panelSingle: '24breadly_proj5.jpg',
-        panelImageOffset: 'shift-up',
+        panelImageOffset: 'shift-down',
         images: [
           '24breadly_proj5.jpg',
           '1breadly_proj5.jpeg',
