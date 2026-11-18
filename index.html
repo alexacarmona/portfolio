@@ -690,6 +690,17 @@
       overflow: hidden;
       background: inherit;
     }
+    .mersi-stage::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: min(38vh, 260px);
+      pointer-events: none;
+      z-index: 50;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.36) 100%);
+    }
 
     .mersi-slider {
       position: absolute;
@@ -790,6 +801,7 @@
       width: auto;
       max-width: min(92vw, 920px);
       min-height: 0;
+      z-index: 101;
       padding: 0 0 clamp(28px, 5vh, 56px) clamp(28px, 4vw, 56px);
       margin: 0;
       border: none;
@@ -826,13 +838,13 @@
       margin: 0;
       width: auto;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: clamp(28px, 4.8vw, 56px);
+      font-size: clamp(36px, 5vw, 62px);
       font-weight: 300;
-      letter-spacing: 0.03em;
-      line-height: 1;
-      text-transform: uppercase;
+      letter-spacing: -0.025em;
+      line-height: 1.06;
+      text-transform: lowercase;
       text-align: left;
-      color: #fff;
+      color: rgba(255, 255, 255, 0.92);
       text-shadow: none;
       -webkit-font-smoothing: antialiased;
       max-width: 100%;
@@ -870,8 +882,8 @@
         padding: 0;
       }
       .mersi-bar-title {
-        font-size: clamp(16px, 4.8vw, 32px);
-        letter-spacing: 0.02em;
+        font-size: clamp(28px, 7vw, 42px);
+        letter-spacing: -0.025em;
       }
     }
 
@@ -881,7 +893,7 @@
         padding: 0 0 clamp(18px, 3.5vh, 32px) clamp(16px, 4vw, 24px);
       }
       .mersi-bar-title {
-        font-size: clamp(14px, 4.2vw, 24px);
+        font-size: clamp(24px, 8vw, 36px);
       }
     }
 
@@ -4344,7 +4356,7 @@
         barKind: 'photo and design',
         barColor: 'rgba(35, 85, 145, 0.94)',
         hero: 'gotem_port24.jpg',
-        panelSingle: 'gotem_port22.jpg',
+        panelSingle: 'gotem_port23.jpg',
         panelImageOffset: 'shift-down',
         images: [
           '1gotem_proj14.jpg',
@@ -4660,10 +4672,10 @@
 
       function fitBarTitle() {
         if (!barTitleEl || !barTitleWrap) return;
+        barTitleEl.style.fontSize = '';
         var mobile = isMobileView();
-        var size = mobile ? 36 : 56;
-        var min = mobile ? 14 : 18;
-        barTitleEl.style.fontSize = size + 'px';
+        var size = parseFloat(window.getComputedStyle(barTitleEl).fontSize) || (mobile ? 36 : 62);
+        var min = mobile ? 18 : 22;
         var maxW = barTitleWrap.clientWidth;
         if (!maxW) return;
         while (barTitleEl.scrollWidth > maxW && size > min) {
@@ -4680,7 +4692,7 @@
           return;
         }
         barTitleEl.textContent = item.title;
-        barTitleEl.style.color = item.titleColor || '#fff';
+        barTitleEl.style.color = '';
         barTitleEl.style.opacity = String(Math.max(0, Math.min(1, opacity)));
         fitBarTitle();
       }
