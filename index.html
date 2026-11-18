@@ -1041,6 +1041,32 @@
     @media (prefers-reduced-motion: reduce) {
       .photo-hero-slide { transition: none; }
     }
+    .photo-hero-dots {
+      position: absolute;
+      z-index: 6;
+      right: clamp(28px, 4vw, 56px);
+      bottom: clamp(24px, 3.5vh, 40px);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: auto;
+    }
+    .photo-hero-dot {
+      width: 9px;
+      height: 9px;
+      padding: 0;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      border-radius: 50%;
+      background: transparent;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      box-sizing: border-box;
+    }
+    .photo-hero-dot.is-active {
+      background: #fff;
+      border-color: #fff;
+    }
     .photo-hero-caption {
       position: absolute;
       z-index: 5;
@@ -2701,6 +2727,7 @@
       <div class="photo-hero-copy">
         <span id="photoHeroRotator" class="home-hero-rotator" aria-live="polite"></span>
       </div>
+      <div class="photo-hero-dots" id="photoHeroDots" role="tablist" aria-label="Hero photographs"></div>
       <div class="photo-hero-caption">
         <button type="button" class="photo-hero-cta" id="photoHeroKeepGoing">
           <svg class="photo-hero-arrow" viewBox="0 0 12 8" aria-hidden="true">
@@ -3345,6 +3372,37 @@
 
       resetHeroSlidesDom();
 
+      var heroDotsEl = document.getElementById('photoHeroDots');
+
+      function updateHeroDots() {
+        if (!heroDotsEl) return;
+        var buttons = heroDotsEl.querySelectorAll('.photo-hero-dot');
+        buttons.forEach(function(btn, idx) {
+          var on = idx === heroIndex;
+          btn.classList.toggle('is-active', on);
+          btn.setAttribute('aria-selected', on ? 'true' : 'false');
+        });
+      }
+
+      function buildHeroDots() {
+        if (!heroDotsEl) return;
+        heroDotsEl.innerHTML = '';
+        heroSlides.forEach(function(_, idx) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'photo-hero-dot' + (idx === heroIndex ? ' is-active' : '');
+          btn.setAttribute('role', 'tab');
+          btn.setAttribute('aria-label', 'Photograph ' + (idx + 1));
+          btn.setAttribute('aria-selected', idx === heroIndex ? 'true' : 'false');
+          btn.addEventListener('click', function() {
+            if (idx === heroIndex) return;
+            setHeroSlide(idx);
+            startHeroAutoplay();
+          });
+          heroDotsEl.appendChild(btn);
+        });
+      }
+
       function snapHeroSlide(target) {
         if (heroWipeTimer) {
           clearTimeout(heroWipeTimer);
@@ -3358,6 +3416,7 @@
           if (idx === target) el.classList.add('is-active');
         });
         heroIndex = target;
+        updateHeroDots();
       }
 
       function setHeroSlide(i, opts) {
@@ -3399,6 +3458,7 @@
             if (idx === target) el.classList.add('is-active');
           });
           heroIndex = target;
+          updateHeroDots();
         }, HERO_WIPE_MS);
       }
 
@@ -3419,6 +3479,7 @@
         heroAutoplayTimer = setInterval(advanceHeroSlide, HERO_AUTO_MS);
       }
 
+      buildHeroDots();
       setHeroSlide(0, { force: true, instant: true });
       startHeroAutoplay();
 
@@ -3788,8 +3849,8 @@
         thumbnail: '7stellabrauneeditorial.jpg',
         images: [
           { src: '1stellabrauneeditorial.jpg', orientation: 'landscape' },
-          { src: '2stellabrauneeditorial.jpg', orientation: 'landscape' },
           { src: '3stellabrauneeditorial.jpg', orientation: 'landscape' },
+          { src: '2stellabrauneeditorial.jpg', orientation: 'landscape' },
           { src: '4stellabrauneeditorial.jpg', orientation: 'landscape' },
           { src: '5stellabrauneeditorial.jpg', orientation: 'landscape' },
           { src: '6stellabrauneeditorial.jpg', orientation: 'landscape' },
