@@ -780,25 +780,26 @@
       inset: 0;
       z-index: 100;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: flex-end;
+      justify-content: flex-start;
       pointer-events: none;
     }
 
     .mersi-project-bar {
       display: block;
-      width: min(96vw, 920px);
-      min-height: clamp(120px, 18vh, 200px);
-      padding: 0;
+      width: auto;
+      max-width: min(92vw, 920px);
+      min-height: 0;
+      padding: 0 0 clamp(28px, 5vh, 56px) clamp(28px, 4vw, 56px);
       margin: 0;
       border: none;
       cursor: pointer;
       font: inherit;
-      text-align: center;
+      text-align: left;
       background: transparent;
       color: #fff;
       pointer-events: auto;
-      overflow: hidden;
+      overflow: visible;
       position: relative;
       isolation: isolate;
       box-shadow: none;
@@ -811,28 +812,26 @@
     }
 
     .mersi-bar-title-wrap {
-      position: absolute;
-      inset: 0;
+      position: relative;
+      inset: auto;
       z-index: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 clamp(12px, 2vw, 24px);
-      overflow: hidden;
+      display: block;
+      padding: 0;
+      overflow: visible;
       pointer-events: none;
     }
 
     .mersi-bar-title {
-      position: absolute;
+      position: relative;
       margin: 0;
-      width: 100%;
+      width: auto;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       font-size: clamp(28px, 4.8vw, 56px);
       font-weight: 300;
       letter-spacing: 0.03em;
       line-height: 1;
       text-transform: uppercase;
-      text-align: center;
+      text-align: left;
       color: #fff;
       text-shadow: none;
       -webkit-font-smoothing: antialiased;
@@ -862,11 +861,13 @@
         width: 100%;
       }
       .mersi-project-bar {
-        width: min(92vw, 100%);
-        min-height: clamp(88px, 14vh, 140px);
+        width: auto;
+        max-width: min(92vw, 100%);
+        min-height: 0;
+        padding: 0 0 clamp(22px, 4vh, 40px) clamp(20px, 4vw, 28px);
       }
       .mersi-bar-title-wrap {
-        padding: 0 10px;
+        padding: 0;
       }
       .mersi-bar-title {
         font-size: clamp(16px, 4.8vw, 32px);
@@ -876,7 +877,8 @@
 
     @media (max-width: 520px) {
       .mersi-project-bar {
-        min-height: clamp(76px, 12vh, 120px);
+        min-height: 0;
+        padding: 0 0 clamp(18px, 3.5vh, 32px) clamp(16px, 4vw, 24px);
       }
       .mersi-bar-title {
         font-size: clamp(14px, 4.2vw, 24px);
