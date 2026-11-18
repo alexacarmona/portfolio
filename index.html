@@ -13,7 +13,8 @@
   <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-  <link rel="preload" as="image" href="opt/alexa_viv_32.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="opt/alexa_viv_32.jpg" media="(min-width: 801px)" fetchpriority="high" />
+  <link rel="preload" as="image" href="opt/viviene_alexa4.jpg" media="(max-width: 800px)" fetchpriority="high" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     .sr-only {
@@ -993,7 +994,7 @@
         background: #0c1210;
       }
       .photo-hero-slide[data-slide="0"] img {
-        object-position: center 78%;
+        object-position: center center;
       }
     }
     .photo-hero-shade {
@@ -2727,7 +2728,10 @@
     <header class="photo-hero" id="photoHero" aria-label="Featured photography">
       <div class="photo-hero-slides" id="photoHeroSlides">
         <div class="photo-hero-slide is-active" data-slide="0">
-          <img src="opt/alexa_viv_32.jpg" alt="Viviene photographed by Alexa Carmona" fetchpriority="high" loading="eager" decoding="async" />
+          <picture>
+            <source media="(max-width: 800px)" srcset="opt/viviene_alexa4.jpg" />
+            <img src="opt/alexa_viv_32.jpg" alt="Viviene photographed by Alexa Carmona" fetchpriority="high" loading="eager" decoding="async" />
+          </picture>
         </div>
         <div class="photo-hero-slide" data-slide="1">
           <img src="opt/press_coffee4.jpg" alt="Press coffee photographed by Alexa Carmona" loading="lazy" decoding="async" />
