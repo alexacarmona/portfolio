@@ -734,8 +734,9 @@
       transform: translateZ(0);
     }
 
+    .mersi-slide-item--single.mersi-slide-item--shift-up img,
     .mersi-slide-item--shift-up img {
-      object-position: center calc(50% - 2in);
+      object-position: center 28%;
     }
 
     #design.mersi--single-panel .mersi-slider--right {
@@ -1006,10 +1007,10 @@
     .photo-hero-caption {
       position: absolute;
       z-index: 5;
-      left: 50%;
+      left: clamp(28px, 4vw, 56px);
       bottom: clamp(24px, 3.5vh, 40px);
-      transform: translateX(-50%);
-      text-align: center;
+      transform: none;
+      text-align: left;
       color: #fff;
       max-width: min(720px, 88vw);
       opacity: 0;
@@ -1038,7 +1039,7 @@
       padding: 0;
       font: inherit;
       cursor: pointer;
-      font-size: 11px;
+      font-size: 14px;
       font-weight: 300;
       letter-spacing: 0.2em;
       text-transform: lowercase;
@@ -1049,8 +1050,8 @@
     .photo-hero-cta:hover { color: #fff; }
     .photo-hero-arrow {
       display: block;
-      width: 11px;
-      height: 7px;
+      width: 13px;
+      height: 8px;
       flex: none;
     }
 
@@ -2656,7 +2657,7 @@
           <img src="opt/alexa_erika_soccercurl-19.jpg" alt="Erika in hair rollers applying makeup beside a soccer goal at night" loading="lazy" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="2">
-          <img src="opt/1atlprobikes_proj19.jpg" alt="Cyclists and spectators at an Atlanta Pro Bikes event" loading="lazy" decoding="async" />
+          <img src="opt/press_coffee4.jpg" alt="Press coffee photographed by Alexa Carmona" loading="lazy" decoding="async" />
         </div>
       </div>
       <div class="photo-hero-shade" aria-hidden="true"></div>
@@ -3275,7 +3276,7 @@
       var heroSlides = [
         { title: '', projectId: 34 },
         { title: '', projectId: 25 },
-        { title: '', projectId: 11 }
+        { title: '', projectId: null }
       ];
       var heroIndex = 0;
       var heroWipeTimer = null;
@@ -4269,7 +4270,7 @@
         barColor: 'rgba(255, 168, 196, 0.94)',
         hero: '25breadly_proj5.jpg',
         panelSingle: '24breadly_proj5.jpg',
-        panelImageOffset: 'shift-down',
+        panelImageOffset: 'shift-up',
         images: [
           '24breadly_proj5.jpg',
           '1breadly_proj5.jpeg',
