@@ -13,7 +13,7 @@
   <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-  <link rel="preload" as="image" href="opt/alexa_viv_32.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="opt/alexa_studio_breadly7.jpg" fetchpriority="high" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     .sr-only {
@@ -983,17 +983,11 @@
       object-position: center center;
       display: block;
     }
-    .photo-hero-slide[data-slide="0"] img {
-      object-position: center 84%;
-    }
     @media (max-width: 800px) {
       .photo-hero {
         height: 100dvh;
         min-height: 100dvh;
         background: #0c1210;
-      }
-      .photo-hero-slide[data-slide="0"] img {
-        object-position: center 78%;
       }
     }
     .photo-hero-shade {
@@ -2688,12 +2682,15 @@
     <header class="photo-hero" id="photoHero" aria-label="Featured photography">
       <div class="photo-hero-slides" id="photoHeroSlides">
         <div class="photo-hero-slide is-active" data-slide="0">
-          <img src="opt/alexa_viv_32.jpg" alt="Viviene photographed by Alexa Carmona" fetchpriority="high" loading="eager" decoding="async" />
+          <img src="opt/alexa_studio_breadly7.jpg" alt="Studio Breadly photographed by Alexa Carmona" fetchpriority="high" loading="eager" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="1">
-          <img src="opt/press_coffee4.jpg" alt="Press coffee photographed by Alexa Carmona" loading="lazy" decoding="async" />
+          <img src="opt/alexa_viv_32.jpg" alt="Viviene photographed by Alexa Carmona" loading="lazy" decoding="async" />
         </div>
         <div class="photo-hero-slide" data-slide="2">
+          <img src="opt/press_coffee4.jpg" alt="Press coffee photographed by Alexa Carmona" loading="lazy" decoding="async" />
+        </div>
+        <div class="photo-hero-slide" data-slide="3">
           <img src="opt/alexa_erika_soccercurl-19.jpg" alt="Erika in hair rollers applying makeup beside a soccer goal at night" loading="lazy" decoding="async" />
         </div>
       </div>
@@ -3313,6 +3310,7 @@
       }
 
       var heroSlides = [
+        { title: '', projectId: 36 },
         { title: '', projectId: 34 },
         { title: '', projectId: 35 },
         { title: '', projectId: 25 }
