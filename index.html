@@ -1043,27 +1043,39 @@
     }
     .photo-hero-dots {
       position: absolute;
-      z-index: 6;
-      right: clamp(28px, 4vw, 56px);
-      bottom: clamp(24px, 3.5vh, 40px);
+      z-index: 80;
+      right: clamp(16px, 3vw, 40px);
+      bottom: clamp(16px, 3vh, 36px);
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 2px;
       pointer-events: auto;
     }
     .photo-hero-dot {
-      width: 9px;
-      height: 9px;
+      width: 28px;
+      height: 28px;
       padding: 0;
-      border: 1px solid rgba(255, 255, 255, 0.72);
-      border-radius: 50%;
+      border: none;
+      border-radius: 0;
       background: transparent;
       cursor: pointer;
       appearance: none;
       -webkit-appearance: none;
       box-sizing: border-box;
+      display: grid;
+      place-items: center;
+      pointer-events: auto;
     }
-    .photo-hero-dot.is-active {
+    .photo-hero-dot::after {
+      content: '';
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.72);
+      background: transparent;
+      box-sizing: border-box;
+    }
+    .photo-hero-dot.is-active::after {
       background: #fff;
       border-color: #fff;
     }
@@ -1118,7 +1130,8 @@
       flex: none;
     }
 
-    #photography:target ~ .site-footer {
+    #photography:target ~ .site-footer,
+    body:not(:has(.section:target)) .site-footer {
       pointer-events: none;
     }
     #photography:target ~ .site-footer .footer-left,
@@ -3394,9 +3407,12 @@
           btn.setAttribute('role', 'tab');
           btn.setAttribute('aria-label', 'Photograph ' + (idx + 1));
           btn.setAttribute('aria-selected', idx === heroIndex ? 'true' : 'false');
-          btn.addEventListener('click', function() {
+          btn.addEventListener('pointerdown', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
             if (idx === heroIndex) return;
-            setHeroSlide(idx);
+            if (heroAnimating) snapHeroSlide(idx);
+            else setHeroSlide(idx);
             startHeroAutoplay();
           });
           heroDotsEl.appendChild(btn);
