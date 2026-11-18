@@ -3288,13 +3288,14 @@
 
       var CATEGORY_RANK = { fashion: 0, editorial: 1, product: 2, branding: 3 };
       var projectCategory = {
-        0: 'fashion', 10: 'fashion', 12: 'fashion', 16: 'fashion', 22: 'fashion', 29: 'fashion', 30: 'fashion', 31: 'fashion', 32: 'fashion', 33: 'fashion',
+        0: 'fashion', 10: 'fashion', 12: 'fashion', 16: 'fashion', 22: 'fashion', 29: 'fashion', 30: 'fashion', 31: 'fashion', 32: 'fashion', 33: 'fashion', 36: 'fashion',
         1: 'editorial', 5: 'editorial', 6: 'editorial', 7: 'editorial', 17: 'editorial', 18: 'editorial', 23: 'editorial', 24: 'editorial', 25: 'editorial', 26: 'editorial', 27: 'editorial', 28: 'editorial', 34: 'editorial',
         9: 'product', 11: 'product', 35: 'product',
         14: 'branding', 15: 'branding'
       };
 
       function projectRank(proj) {
+        if (proj.id === 36) return -1;
         var cat = projectCategory[proj.id] || 'editorial';
         return (CATEGORY_RANK[cat] != null ? CATEGORY_RANK[cat] : 1) * 1000 + (proj.id || 0);
       }
@@ -3506,7 +3507,7 @@
           var pair = [];
           var imgs = proj.images || [];
           if (imgs.length) {
-            imgs.slice(0, 2).forEach(function(item, imgIndex) {
+            imgs.slice(0, proj.gridCount || 2).forEach(function(item, imgIndex) {
               var src = typeof item === 'object' && item && item.src ? item.src : item;
               if (src) pair.push({ src: src, pid: proj.id, alt: proj.title || '', imgIndex: imgIndex });
             });
@@ -4035,6 +4036,29 @@
           { src: 'press_coffee11.jpg', orientation: 'landscape' },
           { src: 'press_coffee7.jpg', orientation: 'portrait' },
           { src: 'press_coffee4.jpg', orientation: 'landscape' }
+        ]
+      },
+      {
+        id: 36,
+        title: 'studio breadly',
+        year: '',
+        time: '',
+        location: '',
+        description: '',
+        details: '',
+        thumbnail: 'alexa_studio_breadly7.jpg',
+        gridCount: 3,
+        images: [
+          { src: 'alexa_studio_breadly7.jpg', orientation: 'landscape' },
+          { src: 'alexa_studio_breadly5.jpg', orientation: 'landscape' },
+          { src: 'alexa_studio_breadly3.jpg', orientation: 'landscape' },
+          { src: 'alexa_studio_breadly1.jpg', orientation: 'portrait' },
+          { src: 'alexa_studio_breadly2.jpg', orientation: 'portrait' },
+          { src: 'alexa_studio_breadly4.jpg', orientation: 'landscape' },
+          { src: 'alexa_studio_breadly6.jpg', orientation: 'landscape' },
+          { src: 'alexa_studio_breadly8.jpg', orientation: 'portrait' },
+          { src: 'alexa_studio_breadly9.jpg', orientation: 'portrait' },
+          { src: 'alexa_studio_breadly10.jpg', orientation: 'landscape' }
         ]
       },
     ];
