@@ -3411,8 +3411,7 @@
             e.preventDefault();
             e.stopPropagation();
             if (idx === heroIndex) return;
-            if (heroAnimating) snapHeroSlide(idx);
-            else setHeroSlide(idx);
+            snapHeroSlide(idx);
             startHeroAutoplay();
           });
           heroDotsEl.appendChild(btn);
