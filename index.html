@@ -838,10 +838,11 @@
       margin: 0;
       width: auto;
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      font-size: clamp(36px, 5vw, 62px);
+      font-size: clamp(26px, 3.6vw, 42px);
       font-weight: 300;
       letter-spacing: -0.025em;
-      line-height: 1.06;
+      line-height: 1.2;
+      padding: 0.08em 0 0.18em;
       text-transform: lowercase;
       text-align: left;
       color: rgba(255, 255, 255, 0.92);
@@ -849,7 +850,7 @@
       -webkit-font-smoothing: antialiased;
       max-width: 100%;
       white-space: nowrap;
-      overflow: hidden;
+      overflow: visible;
       pointer-events: none;
       will-change: opacity;
     }
@@ -882,7 +883,7 @@
         padding: 0;
       }
       .mersi-bar-title {
-        font-size: clamp(28px, 7vw, 42px);
+        font-size: clamp(22px, 5.2vw, 32px);
         letter-spacing: -0.025em;
       }
     }
@@ -893,7 +894,7 @@
         padding: 0 0 clamp(18px, 3.5vh, 32px) clamp(16px, 4vw, 24px);
       }
       .mersi-bar-title {
-        font-size: clamp(24px, 8vw, 36px);
+        font-size: clamp(18px, 5.5vw, 26px);
       }
     }
 
@@ -4478,8 +4479,8 @@
       var SNAP_EDGE = 0.005;
       var MOBILE_MAX = 900;
 
-      /* project indices: 0 Walter, 1 Swiss, 2 Garbage, 3 Breadly, 5 Gotem, 6 Georgia, 7 Trademark (4 Mariana excluded) */
-      var designDisplayOrder = [3, 2, 1, 0, 5, 7, 6];
+      /* project indices: 0 Walter, 1 Swiss, 2 Garbage, 3 Breadly, 5 Gotem, 6 Georgia, 7 Trademark (2 Garbage and 4 Mariana excluded) */
+      var designDisplayOrder = [3, 1, 0, 5, 7, 6];
       var preloadCache = {};
       var activeIndex = 0;
       var scrollPos = 0;
@@ -4674,7 +4675,7 @@
         if (!barTitleEl || !barTitleWrap) return;
         barTitleEl.style.fontSize = '';
         var mobile = isMobileView();
-        var size = parseFloat(window.getComputedStyle(barTitleEl).fontSize) || (mobile ? 36 : 62);
+        var size = parseFloat(window.getComputedStyle(barTitleEl).fontSize) || (mobile ? 26 : 42);
         var min = mobile ? 18 : 22;
         var maxW = barTitleWrap.clientWidth;
         if (!maxW) return;
