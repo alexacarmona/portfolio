@@ -13,7 +13,7 @@
   <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png" />
   <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png" />
-  <link rel="preload" as="image" href="opt/alexa_erika_soccercurl-19.jpg" fetchpriority="high" />
+  <link rel="preload" as="image" href="opt/alexa_viv_32.jpg" fetchpriority="high" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     .sr-only {
@@ -999,17 +999,6 @@
     @media (prefers-reduced-motion: reduce) {
       .photo-hero-slide { transition: none; }
     }
-    .photo-hero-scroll-label {
-      position: absolute;
-      z-index: 5;
-      right: clamp(28px, 4vw, 56px);
-      bottom: clamp(28px, 4vh, 44px);
-      font-size: 12px;
-      font-weight: 300;
-      letter-spacing: 0.22em;
-      text-transform: lowercase;
-      color: rgba(255,255,255,0.75);
-    }
     .photo-hero-caption {
       position: absolute;
       z-index: 5;
@@ -1030,25 +1019,45 @@
       line-height: 1.25;
     }
     .photo-hero-cta {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
       font-size: 11px;
       font-weight: 300;
       letter-spacing: 0.2em;
-      text-transform: uppercase;
+      text-transform: lowercase;
       color: rgba(255,255,255,0.92);
       text-decoration: none;
       transition: color 0.2s;
     }
     .photo-hero-cta:hover { color: #fff; }
-    .photo-hero-cta.is-hidden { visibility: hidden; pointer-events: none; }
+    .photo-hero-arrow {
+      display: block;
+      width: 11px;
+      height: 7px;
+      flex: none;
+    }
 
+    #photography:target ~ .site-footer {
+      pointer-events: none;
+    }
     #photography:target ~ .site-footer .footer-left,
-    #photography:target ~ .site-footer .footer-center {
+    #photography:target ~ .site-footer .footer-center,
+    #photography:target ~ .site-footer .footer-right {
       opacity: 0;
       pointer-events: none;
     }
+    #photography:target.is-past-hero ~ .site-footer {
+      pointer-events: all;
+    }
     #photography:target.is-past-hero ~ .site-footer .footer-left,
-    #photography:target.is-past-hero ~ .site-footer .footer-center {
+    #photography:target.is-past-hero ~ .site-footer .footer-center,
+    #photography:target.is-past-hero ~ .site-footer .footer-right {
       opacity: 1;
       pointer-events: all;
     }
@@ -2632,7 +2641,7 @@
         <div class="photo-hero-slide is-active" data-slide="0">
           <picture>
             <source media="(max-width: 800px)" srcset="opt/viviene_alexa4.jpg" />
-            <img src="opt/viv_alexa231.jpg" alt="Viviene photographed by Alexa Carmona" fetchpriority="high" loading="eager" decoding="async" />
+            <img src="opt/alexa_viv_32.jpg" alt="Viviene photographed by Alexa Carmona" fetchpriority="high" loading="eager" decoding="async" />
           </picture>
         </div>
         <div class="photo-hero-slide" data-slide="1">
@@ -2646,9 +2655,13 @@
       <div class="photo-hero-copy">
         <span id="photoHeroRotator" class="home-hero-rotator" aria-live="polite"></span>
       </div>
-      <span class="photo-hero-scroll-label">scroll</span>
       <div class="photo-hero-caption">
-        <a href="#" class="photo-hero-cta is-hidden" id="photoHeroCta">view project</a>
+        <button type="button" class="photo-hero-cta" id="photoHeroKeepGoing">
+          <svg class="photo-hero-arrow" viewBox="0 0 12 8" aria-hidden="true">
+            <path d="M1 1.5 L6 6.5 L11 1.5" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span>keep going pal</span>
+        </button>
       </div>
     </header>
     <div class="photo-grid-bar">
@@ -3259,7 +3272,7 @@
       var heroIndex = 0;
       var heroWipeTimer = null;
       var heroAnimating = false;
-      var heroCtaEl = document.getElementById('photoHeroCta');
+      var heroKeepGoingEl = document.getElementById('photoHeroKeepGoing');
       var heroAutoplayTimer = null;
       var HERO_AUTO_MS = 4500;
       var HERO_WIPE_MS = 1000;
@@ -3284,19 +3297,6 @@
 
       resetHeroSlidesDom();
 
-      function updateHeroMeta(logicalIndex) {
-        var slide = heroSlides[logicalIndex];
-        if (heroCtaEl) {
-          if (slide.projectId != null && typeof openPhotoDetail === 'function') {
-            heroCtaEl.classList.remove('is-hidden');
-            heroCtaEl.onclick = function(e) { e.preventDefault(); openPhotoDetail(slide.projectId, 0); };
-          } else {
-            heroCtaEl.classList.add('is-hidden');
-            heroCtaEl.onclick = null;
-          }
-        }
-      }
-
       function snapHeroSlide(target) {
         if (heroWipeTimer) {
           clearTimeout(heroWipeTimer);
@@ -3310,7 +3310,6 @@
           if (idx === target) el.classList.add('is-active');
         });
         heroIndex = target;
-        updateHeroMeta(heroIndex);
       }
 
       function setHeroSlide(i, opts) {
@@ -3331,7 +3330,6 @@
         if (!outEl || !inEl || outEl === inEl) return;
 
         heroAnimating = true;
-        updateHeroMeta(target);
 
         outEl.classList.remove('is-active');
         outEl.classList.add('is-under');
@@ -3375,6 +3373,14 @@
 
       setHeroSlide(0, { force: true, instant: true });
       startHeroAutoplay();
+
+      if (heroKeepGoingEl) {
+        heroKeepGoingEl.addEventListener('click', function() {
+          var bar = photoSection.querySelector('.photo-grid-bar');
+          var top = bar ? bar.offsetTop : window.innerHeight;
+          photoSection.scrollTop = top;
+        });
+      }
 
       document.addEventListener('visibilitychange', function() {
         if (document.hidden) stopHeroAutoplay();
