@@ -752,6 +752,9 @@
       object-fit: cover;
       object-position: center center;
     }
+    .mersi-slide-item--shift-down img {
+      object-position: center 70%;
+    }
 
     .mersi-slide-item--zoom-out img {
       position: absolute;
@@ -942,7 +945,7 @@
       display: block;
     }
     .photo-hero-slide[data-slide="0"] img {
-      object-position: center 72%;
+      object-position: center 84%;
     }
     @media (max-width: 800px) {
       .photo-hero {
@@ -951,7 +954,7 @@
         background: #0c1210;
       }
       .photo-hero-slide[data-slide="0"] img {
-        object-position: center center;
+        object-position: center 78%;
       }
     }
     .photo-hero-shade {
@@ -1008,6 +1011,13 @@
       text-align: center;
       color: #fff;
       max-width: min(720px, 88vw);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.45s ease;
+    }
+    #photography.nav-revealed:not(.is-past-hero) .photo-hero-caption {
+      opacity: 1;
+      pointer-events: auto;
     }
     .photo-hero-title {
       margin: 0 0 14px;
@@ -2657,7 +2667,7 @@
           <svg class="photo-hero-arrow" viewBox="0 0 12 8" aria-hidden="true">
             <path d="M1 1.5 L6 6.5 L11 1.5" fill="none" stroke="currentColor" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span>keep going pal</span>
+          <span>scroll</span>
         </button>
       </div>
     </header>
@@ -3406,13 +3416,18 @@
         else if (location.hash === '#photography') startHeroAutoplay();
       });
 
+      function isPhotographyView() {
+        var h = location.hash;
+        return !h || h === '#' || h === '#photography';
+      }
+
       function revealPhotoNav() {
-        if (location.hash !== '#photography') return;
+        if (!isPhotographyView()) return;
         photoSection.classList.add('nav-revealed');
       }
 
       function updatePhotoScrollState() {
-        if (location.hash !== '#photography') {
+        if (!isPhotographyView()) {
           photoSection.classList.remove('is-past-hero');
           photoSection.classList.remove('nav-revealed');
           return;
@@ -3425,6 +3440,8 @@
       photoSection.addEventListener('touchstart', revealPhotoNav, { passive: true });
       photoSection.addEventListener('touchmove', revealPhotoNav, { passive: true });
       photoSection.addEventListener('wheel', revealPhotoNav, { passive: true });
+      photoSection.addEventListener('mousemove', revealPhotoNav, { passive: true });
+      photoSection.addEventListener('pointerdown', revealPhotoNav, { passive: true });
       window.addEventListener('hashchange', updatePhotoScrollState);
       updatePhotoScrollState();
 
@@ -4207,7 +4224,7 @@
         barKind: 'photo + design',
         barColor: 'rgba(130, 130, 130, 0.94)',
         hero: '1gargabemagazine_proj4.jpg',
-        panelSingle: '3gargabemagazine_proj4.jpg',
+        panelSingle: '5gargabemagazine_proj4.jpg',
         images: [
           '1gargabemagazine_proj4.jpg',
           '2gargabemagazine_proj4.jpg',
@@ -4251,6 +4268,7 @@
         barColor: 'rgba(255, 168, 196, 0.94)',
         hero: '25breadly_proj5.jpg',
         panelSingle: '24breadly_proj5.jpg',
+        panelImageOffset: 'shift-down',
         images: [
           '24breadly_proj5.jpg',
           '1breadly_proj5.jpeg',
