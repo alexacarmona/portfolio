@@ -2328,6 +2328,12 @@
     .case-media-row--duo {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1.22fr);
     }
+    .case-media-row--trio {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .case-media-row--quad {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
     .case-media-row--solo {
       grid-template-columns: 1fr;
     }
@@ -4624,16 +4630,29 @@
       {
         title: 'fifa world cup x scadpro',
         tagline: '',
-        tags: [],
-        barKind: '',
+        tags: ['photography', 'signage', 'art direction'],
+        barKind: 'photography + wayfinding',
         barColor: 'rgba(8, 18, 28, 0.94)',
+        client: 'scad pro x atlanta chamber hosting committee',
+        featureCredit: 'Photography + Color Grade By Alexa Carmona',
         hero: 'videos/alexa_x_world_cup.mp4',
         panelSingle: 'videos/alexa_x_world_cup.mp4',
         videoAutoplayLoop: true,
         images: [
-          'videos/alexa_x_world_cup.mp4'
+          { src: 'videos/alexa_x_world_cup.mp4', solo: true },
+          { src: 'fw26_tower_03.jpg', row: 'trio' },
+          { src: 'fw26_tower_23.jpg', row: 'trio' },
+          { src: 'fw26_tower_28.jpg', row: 'trio' },
+          { src: 'fw26_tower_32.jpg', row: 'trio' },
+          { src: 'fw26_tower_01.jpg', row: 'trio' },
+          { src: 'fw26_tower_40.jpg', row: 'trio' },
+          { src: 'ATL_WAYFINDING.jpg', solo: true }
         ],
-        description: ''
+        aboutParagraphs: [
+          'Wayfinding photography and signage for the 2026 FIFA World Cup, with SCAD Pro and the Metro Atlanta Chamber Hosting Committee. A visual system for the city: portraits, signage, and live experience running through downtown Atlanta for the People’s World Cup.',
+          'Led photography and visual across the project — 30+ people, 7,000 frames, from cast and set through edit and audit. Directed the team through production, live-action client experiences, and the wayfinding that went up across the city.'
+        ],
+        feedSummary: 'Wayfinding photography and signage for the 2026 FIFA World Cup with SCAD Pro and the Metro Atlanta Chamber. Led photography and visual across a city-scale system in downtown Atlanta.'
       }
     ];
 
@@ -4655,7 +4674,7 @@
       var MOBILE_MAX = 900;
 
       /* project indices: 0 Walter, 1 Swiss, 2 Garbage, 3 Breadly, 5 Gotem, 6 Georgia, 7 Trademark, 8 FIFA (2 Garbage and 4 Mariana excluded) */
-      var designDisplayOrder = [3, 8, 1, 0, 5, 7, 6];
+      var designDisplayOrder = [8, 3, 1, 0, 5, 7, 6];
       var preloadCache = {};
       var activeIndex = 0;
       var scrollPos = 0;
@@ -5244,7 +5263,7 @@
       buildMersiItems();
       rebuildMotionDom();
       preloadAllMersiImages();
-      goToBreadlyProject();
+      goToFirstProject();
 
       designSection.addEventListener('wheel', onWheel, { passive: false });
 
@@ -5276,27 +5295,18 @@
       window.addEventListener('resize', onDesignViewportChange);
       window.addEventListener('orientationchange', onDesignViewportChange);
 
-      function breadlyMersiIndex() {
-        var i;
-        for (i = 0; i < mersiItems.length; i++) {
-          if (mersiItems[i].id === 3) return i;
-        }
-        return 0;
-      }
-
-      function goToBreadlyProject() {
-        var idx = breadlyMersiIndex();
-        activeIndex = idx;
+      function goToFirstProject() {
+        activeIndex = 0;
         scrollPos = 0;
-        showInstant(idx);
-        preloadNeighbors(idx);
+        showInstant(0);
+        preloadNeighbors(0);
       }
 
       function initMersiProjects() {
         dismissIntro();
         buildMersiItems();
         rebuildMotionDom();
-        goToBreadlyProject();
+        goToFirstProject();
         requestAnimationFrame(function() {
           showInstant(activeIndex);
           preloadAllMersiImages();
@@ -5324,7 +5334,7 @@
         if (location.hash !== '#design' || !mersiItems.length) return;
         cancelSnapAnimation();
         animating = false;
-        goToBreadlyProject();
+        goToFirstProject();
       }
 
       document.querySelectorAll('a[href="#design"]').forEach(function(link) {
@@ -5426,7 +5436,7 @@
     })();
 
 
-    var CASE_PROJECT_ORDER = [3, 8, 1, 0, 5, 7, 6];
+    var CASE_PROJECT_ORDER = [8, 3, 1, 0, 5, 7, 6];
 
     function caseOrderForNav() {
       return CASE_PROJECT_ORDER;
@@ -5510,6 +5520,13 @@
       return !!(entry && typeof entry === 'object' && entry.solo);
     }
 
+    function caseMediaRowSize(entry) {
+      if (!entry || typeof entry !== 'object') return 0;
+      if (entry.row === 'quad' || entry.cols === 4) return 4;
+      if (entry.row === 'trio' || entry.cols === 3) return 3;
+      return 0;
+    }
+
     function buildCaseMediaStack(images, title, opts) {
       if (!images || !images.length) return '';
       var html = '<div class="case-media-stack">';
@@ -5521,6 +5538,18 @@
           html += buildCaseMediaPiece(curSrc, title, opts);
           html += '</div>';
           i += 1;
+          continue;
+        }
+        var rowN = caseMediaRowSize(cur);
+        if (rowN >= 3) {
+          var rowClass = rowN === 4 ? 'case-media-row--quad' : 'case-media-row--trio';
+          html += '<div class="case-media-row ' + rowClass + '">';
+          var n;
+          for (n = 0; n < rowN && (i + n) < images.length; n++) {
+            html += buildCaseMediaPiece(caseMediaEntrySrc(images[i + n]), title, opts);
+          }
+          html += '</div>';
+          i += n;
           continue;
         }
         var next = images[i + 1];
@@ -5666,12 +5695,16 @@
       }
 
       if (featureEl) {
-        if (p.featureCredit) {
+        var credits = Array.isArray(p.featureCredit) ? p.featureCredit : (p.featureCredit ? [p.featureCredit] : []);
+        credits = credits.map(function(line) { return String(line).trim(); }).filter(Boolean);
+        if (credits.length) {
           featureEl.hidden = false;
-          featureEl.textContent = p.featureCredit;
+          featureEl.innerHTML = credits.map(function(line) {
+            return caseEscHtml(line);
+          }).join('<br>');
         } else {
           featureEl.hidden = true;
-          featureEl.textContent = '';
+          featureEl.innerHTML = '';
         }
       }
 
