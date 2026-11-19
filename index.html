@@ -15,6 +15,22 @@
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=3" />
   <link rel="preload" as="image" href="opt/alexa_viv_32.jpg" media="(min-width: 801px)" fetchpriority="high" />
   <link rel="preload" as="image" href="opt/viviene_alexa4.jpg" media="(max-width: 800px)" fetchpriority="high" />
+  <script>
+    (function() {
+      if ((location.hash || '').split('?')[0] !== '#design') return;
+      var poster = document.createElement('link');
+      poster.rel = 'preload';
+      poster.as = 'image';
+      poster.href = 'opt/fifa_world_cup_poster.jpg';
+      poster.fetchPriority = 'high';
+      document.head.appendChild(poster);
+      var video = document.createElement('link');
+      video.rel = 'preload';
+      video.as = 'video';
+      video.href = 'videos/alexa_x_world_cup.mp4?v=2';
+      document.head.appendChild(video);
+    })();
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     .sr-only {
@@ -4190,8 +4206,8 @@
       if (!path) return '';
       var p = String(path).replace(/^\.\//, '');
       if (/^(https?:)?\/\//i.test(p) || /^data:/i.test(p)) return p;
-      if (/^opt\//i.test(p)) return encodeURI(p);
-      if (/\.(svg|gif|mp4|webm|mov|pdf)$/i.test(p)) return encodeURI(p);
+      if (/^opt\//i.test(p) || /^videos\//i.test(p)) return encodeURI(p);
+      if (/\.(svg|gif|mp4|webm|mov|pdf)(?:$|\?)/i.test(p)) return encodeURI(p);
       return encodeURI('opt/' + p);
     }
     window.optImgSrc = optImgSrc;
@@ -4635,11 +4651,12 @@
         barColor: 'rgba(8, 18, 28, 0.94)',
         client: 'scad pro x atlanta chamber hosting committee',
         featureCredit: 'Photography + Color Grade By Alexa Carmona',
-        hero: 'videos/alexa_x_world_cup.mp4',
-        panelSingle: 'videos/alexa_x_world_cup.mp4',
+        hero: 'videos/alexa_x_world_cup.mp4?v=2',
+        panelSingle: 'videos/alexa_x_world_cup.mp4?v=2',
+        panelPoster: 'fifa_world_cup_poster.jpg',
         videoAutoplayLoop: true,
         images: [
-          { src: 'videos/alexa_x_world_cup.mp4', solo: true },
+          { src: 'videos/alexa_x_world_cup.mp4?v=2', solo: true },
           { src: 'fw26_tower_03.jpg', row: 'trio' },
           { src: 'fw26_tower_23.jpg', row: 'trio' },
           { src: 'fw26_tower_28.jpg', row: 'trio' },
@@ -4719,7 +4736,7 @@
       }
 
       function isMersiVideoSrc(src) {
-        return /\.(mov|mp4|webm|m4v)$/i.test(String(src || ''));
+        return /\.(mov|mp4|webm|m4v)(?:$|\?)/i.test(String(src || ''));
       }
 
       function panelImagesForProject(p) {
@@ -4763,6 +4780,7 @@
             singlePanel: !!panels.singlePanel,
             panelFit: p.panelFit || '',
             panelImageOffset: p.panelImageOffset || '',
+            posterSrc: p.panelPoster || '',
             titleColor: p.titleColor || '',
             hideBarTitle: !!p.hideBarTitle
           });
@@ -4776,6 +4794,7 @@
         }
         var opt = typeof window.optImgSrc === 'function' ? window.optImgSrc : function(u) { return u; };
         var urls = [opt(item.leftSrc), opt(item.rightSrc)];
+        if (item.posterSrc) urls.push(opt(item.posterSrc));
         var pending = 0;
         var i;
         for (i = 0; i < urls.length; i++) {
@@ -4857,7 +4876,9 @@
           var displaySrc = typeof window.optImgSrc === 'function' ? window.optImgSrc(src) : src;
           var fetchPri = idx === activeIndex ? ' fetchpriority="high"' : '';
           if (isMersiVideoSrc(src)) {
-            slide.innerHTML = '<video src="' + escHtml(displaySrc) + '" muted loop playsinline webkit-playsinline preload="' + (idx === activeIndex ? 'auto' : 'metadata') + '" aria-label="' + escHtml(item.title) + ' project video"></video>';
+            var posterSrc = item.posterSrc && (typeof window.optImgSrc === 'function' ? window.optImgSrc(item.posterSrc) : item.posterSrc);
+            var poster = posterSrc ? ' poster="' + escHtml(posterSrc) + '"' : '';
+            slide.innerHTML = '<video src="' + escHtml(displaySrc) + '"' + poster + ' muted loop playsinline webkit-playsinline preload="' + (idx === activeIndex ? 'auto' : 'metadata') + '" aria-label="' + escHtml(item.title) + ' project video"></video>';
           } else {
             slide.innerHTML = '<img src="' + escHtml(displaySrc) + '" alt="' + escHtml(item.title) + ' project image" decoding="async" loading="eager"' + fetchPri + ' />';
           }
@@ -5337,8 +5358,26 @@
         goToFirstProject();
       }
 
+      function prefetchWorksHeroVideo() {
+        if (document.getElementById('worksHeroVideoPreload')) return;
+        var poster = document.createElement('link');
+        poster.rel = 'preload';
+        poster.as = 'image';
+        poster.href = 'opt/fifa_world_cup_poster.jpg';
+        document.head.appendChild(poster);
+        var video = document.createElement('link');
+        video.id = 'worksHeroVideoPreload';
+        video.rel = 'preload';
+        video.as = 'video';
+        video.href = 'videos/alexa_x_world_cup.mp4?v=2';
+        document.head.appendChild(video);
+      }
+
       document.querySelectorAll('a[href="#design"]').forEach(function(link) {
+        link.addEventListener('pointerenter', prefetchWorksHeroVideo);
+        link.addEventListener('pointerdown', prefetchWorksHeroVideo);
         link.addEventListener('click', function() {
+          prefetchWorksHeroVideo();
           if (location.hash === '#design') onProjectsNavActivate();
         });
       });
@@ -5472,7 +5511,7 @@
     }
 
     function isCaseVideoSrc(src) {
-      return /\.(mov|mp4|webm|m4v)$/i.test(String(src));
+      return /\.(mov|mp4|webm|m4v)(?:$|\?)/i.test(String(src));
     }
 
     function buildCaseMediaPiece(src, title, opts) {
